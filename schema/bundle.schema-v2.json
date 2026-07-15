@@ -1,0 +1,158 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "playbooks/bundle.schema-v2.json",
+  "title": "Bound Bundle v2 Schema (OPF bind, issue #286)",
+  "description": "The v2 bundle wrapper: an OPF v0.2 document plus the deployment concerns the toaster's bind step attaches (model policy, output contract, activation, optional precision profile). Written by scripts/bind_bundle.py. Artifact-only in this slice -- no runtime consumer reads this schema yet.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "bundle_schema_version",
+    "playbook_id",
+    "opf",
+    "lineage",
+    "model_policy",
+    "output_contract_version",
+    "profile",
+    "activation"
+  ],
+  "properties": {
+    "bundle_schema_version": {
+      "const": 2,
+      "description": "Wrapper format version. Always 2 for this schema."
+    },
+    "playbook_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Registry key this bundle binds to. Always one of the OPF document's own agreement_type.id/aliases -- never invented by the bind step."
+    },
+    "opf": {
+      "type": "object",
+      "description": "The FULL embedded OPF v0.2 document, unmodified (deep-equal to the input)."
+    },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["opf_content_hash", "opf_section_digests"],
+      "description": "OPF spec section 8 lineage -- copied verbatim from opf.identity.",
+      "properties": {
+        "opf_content_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$"
+        },
+        "opf_section_digests": {
+          "type": "object",
+          "description": "Copied verbatim from opf.identity.section_digests."
+        }
+      }
+    },
+    "model_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "hash"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Repo-relative path to the model-policy JSON file this bundle was bound against."
+        },
+        "hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "canonicalize.content_hash of the model-policy file's JSON."
+        }
+      }
+    },
+    "output_contract_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile": {
+      "type": "string",
+      "enum": ["knowledge", "precision"]
+    },
+    "precision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "anchor_map_path",
+        "section_config_path",
+        "standard_form_docx",
+        "legacy_playbook_path"
+      ],
+      "properties": {
+        "anchor_map_path": { "type": "string", "minLength": 1 },
+        "section_config_path": { "type": "string", "minLength": 1 },
+        "standard_form_docx": { "type": ["string", "null"] },
+        "legacy_playbook_path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The existing detector/topic data file, e.g. playbooks/eiaa-v1.0.0.json."
+        }
+      }
+    },
+    "activation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["approved_by", "approved_at"],
+      "properties": {
+        "approved_by": { "type": ["string", "null"] },
+        "approved_at": { "type": ["string", "null"] }
+      }
+    },
+    "pen_rules": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "RESERVED in this slice -- semantics and validation land in #293. The CLI passes this through unvalidated when supplied programmatically; no CLI flag exists for it yet."
+    },
+    "overrides": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "GC single-item corrections (issue #294): a governed Posture-version edit and/or stricter-only Floor additions. Absent entirely for a bundle with no corrections applied -- byte-identical to a v2 bundle predating this issue. There is deliberately NO key here for removing or weakening a genesis invariant or genesis posture -- additions/edits only, enforced by additionalProperties: false on this object.",
+      "properties": {
+        "posture": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["version", "system_prompt", "parent_section_digest"],
+          "description": "A governed edit to the Posture block's system_prompt. version is monotonic per playbook (int >= 1; absent overrides implies genesis version 0). parent_section_digest MUST equal this OPF document's own opf.identity.section_digests.posture -- a stale-edit guard enforced by scripts/bind_bundle.py (not re-derivable from this schema alone).",
+          "properties": {
+            "version": { "type": "integer", "minimum": 1 },
+            "system_prompt": { "type": "string", "minLength": 1 },
+            "parent_section_digest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+            "edited_by": { "type": ["string", "null"] },
+            "approved_at": { "type": ["string", "null"] }
+          }
+        },
+        "floor_additions": {
+          "type": "array",
+          "description": "Stricter-only Floor invariant additions, unioned with opf.floor.invariants at composition/judging time (genesis first, stable order). Every id must be new -- scripts/bind_bundle.py rejects any id colliding with a genesis opf.floor.invariants id.",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "statement"],
+            "properties": {
+              "id": { "type": "string", "minLength": 1 },
+              "statement": { "type": "string", "minLength": 1 },
+              "rationale": { "type": ["string", "null"] }
+            }
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "profile": { "const": "precision" } },
+        "required": ["profile"]
+      },
+      "then": { "required": ["precision"] }
+    },
+    {
+      "if": {
+        "properties": { "profile": { "const": "knowledge" } },
+        "required": ["profile"]
+      },
+      "then": { "not": { "required": ["precision"] } }
+    }
+  ]
+}

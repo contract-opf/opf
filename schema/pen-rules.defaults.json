@@ -1,0 +1,12 @@
+{
+  "$comment": "Toaster-global pen-rules defaults (issue #293). These are the last-resort layer in scripts/replacement_text_enforcement.resolve_pen_rules's precedence: bundle per_topic > bundle default > THIS FILE. Deliberately generic starter values -- no tenant positions, no playbook-specific substance. A bundle's own `pen_rules.default` and `pen_rules.per_topic[...]` override these per-key (scalars wholesale); any entry here carrying a `floor_ref` would be STICKY (never removable by a more specific layer), but none do -- floor-derived entries belong at the bundle level, tied to that OPF's own opf.floor.invariants ids (see scripts/bind_bundle.py --pen-rules validation).",
+  "default": {
+    "mode": "replace",
+    "max_chars": 1500,
+    "must_not_introduce": [
+      { "phrase": "unlimited liability" },
+      { "phrase": "irrevocable" },
+      { "phrase": "perpetual" }
+    ]
+  }
+}

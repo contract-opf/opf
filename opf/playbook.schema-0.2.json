@@ -1,0 +1,538 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contract-opf.github.io/playbook-engine/spec/playbook.schema-0.2.json",
+  "title": "Open Playbook Format (OPF) v0.2",
+  "description": "Schema for the three-section (Evidence/Posture/Floor) OPF playbook. See docs/OPF-SPEC.md.",
+  "type": "object",
+  "required": [
+    "opf_version",
+    "agreement_type",
+    "baseline",
+    "taxonomy",
+    "evidence",
+    "posture",
+    "floor",
+    "corpus",
+    "compiler"
+  ],
+  "additionalProperties": false,
+  "patternProperties": { "^x_": true },
+  "properties": {
+    "opf_version": { "type": "string", "const": "0.2" },
+    "agreement_type": {
+      "type": "object",
+      "required": ["id", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "aliases": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Other names this agreement type is known by, e.g. a consuming app's own dial key."
+        }
+      }
+    },
+    "baseline": {
+      "type": "object",
+      "required": ["has_canonical_template"],
+      "additionalProperties": false,
+      "properties": {
+        "has_canonical_template": { "type": "boolean" },
+        "template_ref": {
+          "type": ["object", "null"],
+          "properties": {
+            "document_id": { "type": "string" },
+            "title": { "type": "string" },
+            "source": { "type": "string" },
+            "sha256": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "Content address of the template source file (§4 resolution) — a consumer verifies it holds the cited template by hashing its own copy."
+            }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "taxonomy": {
+      "type": "object",
+      "required": ["source", "entries"],
+      "additionalProperties": false,
+      "properties": {
+        "source": { "type": "string" },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label", "status"],
+            "additionalProperties": false,
+            "properties": {
+              "id": { "type": "string", "pattern": "^[a-z0-9_]+$" },
+              "label": { "type": "string" },
+              "status": { "type": "string", "enum": ["active", "inactive", "custom"] },
+              "cuad_origin": { "type": ["string", "null"] },
+              "description": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "composes": {
+      "type": "array",
+      "description": "OPTIONAL — pinned external clause-intelligence modules (OPF-SPEC.md §3.4). Recorded for lineage; wiring into runtime behavior is a later slice.",
+      "items": {
+        "type": "object",
+        "required": ["module", "version", "integrity", "role"],
+        "additionalProperties": false,
+        "properties": {
+          "module": { "type": "string" },
+          "version": { "type": "string" },
+          "integrity": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+          "applies_to_taxonomy": { "type": "array", "items": { "type": "string" } },
+          "role": { "type": "string" },
+          "notes": { "type": "string" }
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "description": "§3.5 — the compiled, cited, descriptive knowledge. Advisory at runtime.",
+      "required": ["clauses"],
+      "additionalProperties": false,
+      "properties": {
+        "clauses": { "type": "array", "items": { "$ref": "#/$defs/clausePosition" } },
+        "clause_library": { "type": "array", "items": { "$ref": "#/$defs/clauseConcept" } }
+      }
+    },
+    "posture": {
+      "type": "object",
+      "description": "§3.6 — negotiation intent as generated prose. Soft at runtime. MAY be empty (e.g. a corpus-only compile with no interview yet run).",
+      "additionalProperties": false,
+      "patternProperties": { "^x_": true },
+      "properties": {
+        "system_prompt": { "type": "string" },
+        "version": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Governed version counter (issue #156). Starts at 1 on the first generated Posture; bumped by 1 each time the interview is re-run against an existing Posture. The genesis (compiler-generated) version; a consumer that lets a human edit the Posture owns subsequent versions per §8."
+        },
+        "generation": {
+          "type": "object",
+          "description": "Provenance for how system_prompt was produced.",
+          "additionalProperties": false,
+          "properties": {
+            "generated_by": { "type": "string" },
+            "generated_at": { "type": "string", "format": "date-time" },
+            "interview": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["q", "question", "answer"],
+                "additionalProperties": false,
+                "properties": {
+                  "q": { "type": "string" },
+                  "question": { "type": "string" },
+                  "answer": { "type": "string" }
+                }
+              }
+            },
+            "grounded_in": { "type": "string" }
+          }
+        }
+      }
+    },
+    "floor": {
+      "type": "object",
+      "description": "§3.7 — deterministic red lines. Hard at runtime. Invariants are OPTIONAL natural-language statements; a judge (not lexical detection) evaluates them. MAY be empty (a corpus-mined playbook compiles with zero invariants).",
+      "additionalProperties": false,
+      "patternProperties": { "^x_": true },
+      "properties": {
+        "invariants": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "statement"],
+            "additionalProperties": false,
+            "patternProperties": { "^x_": true },
+            "properties": {
+              "id": { "type": "string" },
+              "statement": { "type": "string" },
+              "rationale": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "perspective": {
+      "type": "object",
+      "description": "Whose perspective this playbook is reviewed 'as' — an open-standard OPF instance must say who 'us' is.",
+      "required": ["party", "counterparty_type"],
+      "additionalProperties": false,
+      "properties": {
+        "party": { "type": "string", "description": "Our legal entity/party name for this agreement type." },
+        "counterparty_type": { "type": "string", "description": "What the other side typically is, e.g. 'Educational Institution'." }
+      }
+    },
+    "de_minimis": {
+      "type": "array",
+      "description": "Categories of change accepted even if technically novel. Negotiation knowledge, owned by OPF.",
+      "items": { "type": "string" }
+    },
+    "curation": {
+      "type": "object",
+      "description": "OPTIONAL — embedded attorney-pinned positions (issue #147). Pins are EMBEDDED here (not a sidecar) so they survive a recompile: the pipeline's merge layer preserves every pin and flags `conflict` when fresh evidence contradicts it. Excluded from `identity.content_hash`; digested separately as `identity.section_digests.curation` so pin edits/conflict flags don't perturb the playbook's own content identity.",
+      "additionalProperties": false,
+      "properties": {
+        "pins": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/curationPin" }
+        }
+      }
+    },
+    "corpus": {
+      "type": "object",
+      "required": ["documents", "stats"],
+      "additionalProperties": false,
+      "properties": {
+        "documents": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["document_id", "provenance", "in_scope"],
+            "additionalProperties": false,
+            "patternProperties": { "^x_": true },
+            "properties": {
+              "document_id": { "type": "string" },
+              "title": { "type": "string" },
+              "provenance": { "$ref": "#/$defs/provenance" },
+              "provenance_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+              "provenance_is_ambiguous": { "type": "boolean" },
+              "in_scope": { "type": "boolean" },
+              "scope_rationale": { "type": "string" },
+              "scope_confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+              "versions": { "type": "integer", "minimum": 0 },
+              "versions_found": { "type": "integer", "minimum": 0 },
+              "versions_mined": { "type": "integer", "minimum": 0 },
+              "version_ingest": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": ["version", "status"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "version": { "type": "string" },
+                    "status": { "type": "string", "enum": ["ok", "failed", "unknown"] },
+                    "error": { "type": ["string", "null"] },
+                    "extractor": { "type": ["string", "null"] }
+                  }
+                }
+              },
+              "signed_version": { "type": ["integer", "null"] },
+              "version_order_basis": { "type": "string" },
+              "version_files": {
+                "type": "array",
+                "description": "Per-version content addresses (§4, issue #185): sha256 of each SOURCE file's bytes, keyed by the same inferred ordinal citations use — a consumer holding the corpus verifies 'I have the cited document' by hashing its copy. Hashes of confidential files leak nothing; source_uri does and is stripped by the public export profile.",
+                "items": {
+                  "type": "object",
+                  "required": ["version", "sha256"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "version": { "type": "integer", "minimum": 1 },
+                    "sha256": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+                    "media_type": { "type": "string" },
+                    "source_uri": { "type": "string" }
+                  }
+                }
+              }
+            },
+            "allOf": [
+              {
+                "if": { "properties": { "in_scope": { "const": false } } },
+                "then": { "required": ["scope_rationale"] }
+              }
+            ]
+          }
+        },
+        "stats": { "type": "object" },
+        "snapshot": {
+          "type": "object",
+          "description": "Corpus snapshot identity (§3.8, issue #185): manifest_hash = sha256 of the canonical JSON of sorted [(document_id, version, sha256), …] — one value naming the exact corpus state this playbook was compiled from.",
+          "required": ["manifest_hash"],
+          "additionalProperties": false,
+          "properties": {
+            "id": { "type": "string" },
+            "manifest_hash": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+          }
+        }
+      }
+    },
+    "compiler": {
+      "type": "object",
+      "required": ["name", "version", "generated_at"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "version": { "type": "string" },
+        "run_id": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "stub_basis_present": { "type": "boolean" }
+      }
+    },
+    "identity": {
+      "type": "object",
+      "description": "Artifact identity (issue #143) — content-addressed hash + per-section digests, so a consumer can record which exact playbook governed which document and lineage is reconstructible. `content_hash`/`section_digests` are engine-computed and always populated by this compiler; `id`/`version`/`supersedes` are lineage metadata a producer/orchestrator may assign (like `compiler.run_id`) and are omitted, not fabricated, when not supplied. OPTIONAL at the top level (not every producer populates it) — see playbook_engine/canonicalize.py for the canonical-form + hashing definition.",
+      "required": ["content_hash", "section_digests"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "description": "Producer-assigned playbook identifier. Not derived from content." },
+        "version": { "type": "string", "description": "Producer-assigned version label for this playbook id." },
+        "supersedes": { "type": ["string", "null"], "description": "Identifier of the playbook (id/version or content_hash) this one supersedes, if any." },
+        "content_hash": {
+          "type": "string",
+          "pattern": "^sha256:[0-9a-f]{64}$",
+          "description": "sha256 over the whole-document canonical form, excluding `identity`, `curation` (digested separately as section_digests.curation — see §3.11), and `compiler.generated_at`/`compiler.run_id`."
+        },
+        "section_digests": {
+          "type": "object",
+          "required": ["evidence", "posture", "floor"],
+          "additionalProperties": false,
+          "properties": {
+            "evidence": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+            "posture": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+            "floor": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+            "curation": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "Digest of the `curation` section alone (issue #147), computed even when `curation` is absent (digests `{}`)."
+            }
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "provenance": { "type": "string", "enum": ["our_paper", "counterparty_paper"] },
+    "citation": {
+      "type": "object",
+      "required": ["document_id", "version", "clause_path"],
+      "additionalProperties": false,
+      "properties": {
+        "document_id": { "type": "string", "minLength": 1 },
+        "version": { "oneOf": [{ "type": "integer" }, { "const": "template" }] },
+        "clause_path": { "type": "string", "minLength": 1 },
+        "char_span": {
+          "type": "array",
+          "items": { "type": "integer", "minimum": 0 },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      }
+    },
+    "riskDelta": {
+      "type": "object",
+      "required": ["direction", "magnitude"],
+      "additionalProperties": false,
+      "properties": {
+        "direction": { "type": "string", "enum": ["better", "neutral", "worse"] },
+        "magnitude": { "type": "string", "enum": ["none", "minor", "material"] }
+      }
+    },
+    "acceptableIfEntry": {
+      "type": "object",
+      "description": "Structured tolerance-condition triple (issue #141), adopted from the toaster's acceptable_variations shape so the acceptable-variations-vs-Floor consistency lint can run. Each entry cites the observation it is derived from via observation_ref, so the tolerance is traceable to real corpus evidence rather than free text.",
+      "required": ["if", "to", "rationale", "observation_ref"],
+      "additionalProperties": false,
+      "properties": {
+        "if": { "type": "string", "description": "The condition/pattern under which this variation is tolerated." },
+        "to": { "type": "string", "description": "The accepted alternative clause language." },
+        "rationale": { "type": "string", "description": "Why this variation is tolerated." },
+        "observation_ref": {
+          "$ref": "#/$defs/citation",
+          "description": "Citation to the supporting observation (must resolve against corpus.documents, per §4)."
+        }
+      }
+    },
+    "observation": {
+      "type": "object",
+      "required": ["text_summary", "example_ref", "deviation", "risk_delta", "provenance", "outcome"],
+      "additionalProperties": false,
+      "patternProperties": { "^x_": true },
+      "properties": {
+        "text_summary": { "type": "string" },
+        "full_text": { "type": "string" },
+        "example_ref": { "$ref": "#/$defs/citation" },
+        "deviation": { "type": "string", "enum": ["none", "reworded_equivalent", "substantive"] },
+        "risk_delta": { "$ref": "#/$defs/riskDelta" },
+        "provenance": { "$ref": "#/$defs/provenance" },
+        "outcome": { "type": "string", "enum": ["signed", "proposed_then_reversed"] },
+        "precedent_count": { "type": "integer", "minimum": 1 },
+        "proposed_by": {
+          "type": "string",
+          "enum": ["us", "counterparty", "unknown"],
+          "description": "Who introduced this change (§3.5.3). Derived from tracked-changes authorship or draft-side inference; never guessed from filenames. OPTIONAL — omitted when underivable."
+        },
+        "observed_at": {
+          "type": ["string", "null"],
+          "format": "date",
+          "description": "ISO-8601 date for recency (§3.5.3). Precedence: e-sign cert date > embedded document metadata > trustworthy filename date. OPTIONAL — never fabricated."
+        },
+        "counterparty_ref": {
+          "type": "object",
+          "description": "Per-deal counterparty segment (§3.5.3). alias is the entity-registry pseudonym (born-safe: raw names never appear).",
+          "required": ["alias"],
+          "additionalProperties": false,
+          "properties": {
+            "alias": { "type": "string" },
+            "counterparty_type": { "type": "string" }
+          }
+        }
+      }
+    },
+    "clausePosition": {
+      "type": "object",
+      "required": ["id", "taxonomy_id", "title", "observed_positions", "summary"],
+      "additionalProperties": false,
+      "patternProperties": { "^x_": true },
+      "properties": {
+        "id": { "type": "string" },
+        "taxonomy_id": { "type": "string" },
+        "title": { "type": "string" },
+        "our_standard": {
+          "type": ["object", "null"],
+          "required": ["text", "source_ref"],
+          "additionalProperties": false,
+          "properties": {
+            "text": { "type": "string" },
+            "source_ref": { "$ref": "#/$defs/citation" }
+          }
+        },
+        "observed_positions": { "type": "array", "items": { "$ref": "#/$defs/observation" } },
+        "negotiation_trail": {
+          "type": "array",
+          "description": "Round-by-round ask→landing trajectory for this clause (§3.5.3). One entry per negotiation round of each deal in which this clause changed — surfaced from the compiler's per-round diffs. Descriptive: lets a consumer distinguish deal-breakers from trading chips without a prescriptive label.",
+          "items": {
+            "type": "object",
+            "required": ["document_id", "round", "moved_by", "change_summary", "ref"],
+            "additionalProperties": false,
+            "properties": {
+              "document_id": { "type": "string" },
+              "round": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Version-transition ordinal (v2→v3 = round 2)."
+              },
+              "moved_by": { "type": "string", "enum": ["us", "counterparty", "unknown"] },
+              "change_summary": { "type": "string", "description": "One-line what-moved on THIS clause in this round." },
+              "risk_delta": { "$ref": "#/$defs/riskDelta" },
+              "ref": {
+                "$ref": "#/$defs/citation",
+                "description": "Post-move state; must resolve against corpus.documents per §4."
+              }
+            }
+          }
+        },
+        "summary": {
+          "type": "object",
+          "description": "Replaces v0.1's rollup. Descriptive, not prescriptive (§2.2 of OPF-SPEC.md) — historical_stance answers 'what has the corpus shown', never 'what must you do'.",
+          "required": ["historical_stance", "confidence"],
+          "additionalProperties": false,
+          "properties": {
+            "historical_stance": {
+              "type": "string",
+              "enum": ["consistently_held", "usually_held", "mixed", "usually_conceded", "no_signal"]
+            },
+            "stance_detail": {
+              "type": "object",
+              "description": "Held-rate behind the historical_stance enum (§3.5.3, resolves Appendix A.3): held X of Y opportunities, on the stated basis.",
+              "required": ["held", "of", "basis"],
+              "additionalProperties": false,
+              "properties": {
+                "held": { "type": "integer", "minimum": 0 },
+                "of": { "type": "integer", "minimum": 0 },
+                "basis": { "type": "string", "enum": ["our_paper", "all"] }
+              }
+            },
+            "acceptable_if": {
+              "type": "array",
+              "items": {
+                "oneOf": [
+                  { "type": "string" },
+                  { "$ref": "#/$defs/acceptableIfEntry" }
+                ]
+              },
+              "description": "Cited tolerance conditions. A compiler MUST emit the {if,to,rationale} triple (issue #141); a bare string is accepted on input for backward compatibility with hand-authored/legacy playbooks but is never produced by this engine."
+            },
+            "fallbacks": { "type": "array", "items": { "$ref": "#/$defs/observation" } },
+            "rejected": { "type": "array", "items": { "$ref": "#/$defs/observation" } },
+            "confidence": {
+              "type": "object",
+              "required": ["score"],
+              "additionalProperties": false,
+              "properties": {
+                "score": { "type": "number", "minimum": 0, "maximum": 1 },
+                "basis": { "type": "string" },
+                "n_our_paper": { "type": "integer", "minimum": 0 },
+                "n_counterparty_paper": { "type": "integer", "minimum": 0 },
+                "evidence_sufficient": { "type": "boolean" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "curationPin": {
+      "type": "object",
+      "description": "One attorney-pinned clause position (issue #147). `position` is the attorney's asserted stance (free-form — the engine preserves and surfaces it but does not validate or interpret it); `baseline_stance` is the engine's own `summary.historical_stance` for this clause at the moment the pin was made, i.e. what the attorney was overriding FROM. On recompile, `conflict` is set when the freshly recomputed historical_stance differs from `baseline_stance` (evidence moved since the pin was made) and cleared when it matches — see playbook_engine/curation.py.",
+      "required": ["clause_id", "item_id", "position", "baseline_stance", "pinned_at"],
+      "additionalProperties": false,
+      "patternProperties": { "^x_": true },
+      "properties": {
+        "clause_id": { "type": "string", "description": "clausePosition.id this pin applies to." },
+        "item_id": { "type": "string", "description": "Viewer item number (e.g. 'C3') at pin time — informational, not authoritative (clause_id is)." },
+        "position": { "type": "string", "description": "Attorney-asserted position. Not validated against any enum." },
+        "baseline_stance": { "type": "string", "description": "summary.historical_stance for this clause at the moment this pin was made." },
+        "pinned_at": { "type": "string", "format": "date-time" },
+        "pinned_by": { "type": "string" },
+        "comment": { "type": "string" },
+        "conflict": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "properties": {
+            "flagged_at": { "type": "string", "format": "date-time" },
+            "recomputed_historical_stance": { "type": "string" },
+            "reason": { "type": "string" }
+          }
+        }
+      }
+    },
+    "clauseConcept": {
+      "type": "object",
+      "required": ["concept_id", "taxonomy_id", "description", "accepted_forms"],
+      "additionalProperties": false,
+      "patternProperties": { "^x_": true },
+      "properties": {
+        "concept_id": { "type": "string" },
+        "taxonomy_id": { "type": "string" },
+        "description": { "type": "string" },
+        "risk_profile": { "type": "string" },
+        "accepted_forms": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["text_summary", "example_ref", "provenance"],
+            "additionalProperties": false,
+            "properties": {
+              "text_summary": { "type": "string" },
+              "example_ref": { "$ref": "#/$defs/citation" },
+              "provenance": { "$ref": "#/$defs/provenance" },
+              "risk_delta_vs_our_standard": { "$ref": "#/$defs/riskDelta" }
+            }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    }
+  }
+}

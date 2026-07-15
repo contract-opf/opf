@@ -1,0 +1,210 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://teamexos.com/playbooks/output-schema/v1.json",
+  "title": "Exos Contract Review — Model Response Schema v1",
+  "description": "Versioned JSON Schema for the model response produced by both the primary reviewer and the adversarial critic in the Exos contract-review pipeline. This schema is the single validation source of truth for both model passes. Its content_hash is part of the release bundle (see playbooks/schema.json release.output_contract_hash and ARCHITECTURE.md). Any change to this file requires a new output_contract_hash in the release bundle and a legal-governance review. See docs/output-contract.md for the coupling rules.",
+  "output_contract_version": "v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "decision",
+    "confidence_state",
+    "issues"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "output-schema-v1",
+      "description": "Identifies the schema version the model response conforms to. Must equal 'output-schema-v1' for this schema. A mismatch causes the pipeline to route to ERROR_MANUAL_REVIEW_REQUIRED."
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["ACCEPT", "REQUEST_CHANGE"],
+      "description": "The external binary legal decision. ACCEPT = no requested changes identified by tool. REQUEST_CHANGE = one or more issues require attention. There is no third legal category; uncertainty is carried by confidence_state."
+    },
+    "confidence_state": {
+      "type": "string",
+      "enum": [
+        "OK",
+        "LOW_CONFIDENCE",
+        "MANUAL_REVIEW_REQUIRED",
+        "ERROR_MANUAL_REVIEW_REQUIRED"
+      ],
+      "description": "Internal pipeline confidence, distinct from the external legal decision. OK = normal confidence. LOW_CONFIDENCE = model flagged uncertainty; if a concrete issue exists the decision is still REQUEST_CHANGE; if no concrete issue exists the pipeline routes to MANUAL_REVIEW_REQUIRED status. ERROR_MANUAL_REVIEW_REQUIRED is set by the pipeline on schema-invalid-after-retry or leakage hits — the model must not emit this value directly."
+    },
+    "confidence_band": {
+      "description": "System metadata: the low-confidence band for this review, surfaced in the result view pre-download. Framed as a system status (not a legal verdict or a third legal category). null when confidence_state is OK. Set by the pipeline from confidence_state; mirrors the confidence_state signal as a UI-surface label so the result view can render the band before the attorney downloads the redline.",
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "string",
+          "enum": ["LOW_CONFIDENCE", "MANUAL_REVIEW_REQUIRED", "ERROR_MANUAL_REVIEW_REQUIRED"],
+          "description": "One of the non-OK system confidence states, rendered as a visible band in the result view. Always a system-status label, never a legal decision."
+        }
+      ]
+    },
+    "issues": {
+      "type": "array",
+      "description": "Per-issue list. Empty array for an ACCEPT decision (the model must not invent issues when accepting). For REQUEST_CHANGE, at least one issue must be present.",
+      "items": {
+        "$ref": "#/definitions/Issue"
+      }
+    },
+    "critic_delta": {
+      "description": "Adversarial-critic output. Null when this response is from the primary reviewer or when the critic found no differences. Present when this response carries critic-only additions, contested replacements, or rationale objections. Structured as a CriticDelta object or null.",
+      "oneOf": [
+        {"type": "null"},
+        {"$ref": "#/definitions/CriticDelta"}
+      ]
+    },
+    "verdict_summary": {
+      "description": "ACCEPT-path summary: a brief model-generated narrative of what the counterparty changed and why each change was acceptable under the playbook. Source field for the ACCEPT result view ('no requested changes identified by tool — summary of changes reviewed'). Also present on REQUEST_CHANGE for a high-level narrative alongside the per-issue list. Passes the pre-render leakage scan before being surfaced in the UI or stored in a context accessible to non-admin users. Optional — absent for responses generated before this field was added or when the model omits it. See docs/output-contract.md § ACCEPT summary shape.",
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "description": "Non-empty summary string. Subject to the leakage scan (same scope as other human-surfaced model prose). Must not disclose counterparty names, precedent deal dates, verbatim precedent text, internal playbook IDs, or system-prompt fragments."
+        }
+      ]
+    }
+  },
+  "definitions": {
+    "Issue": {
+      "type": "object",
+      "description": "A single flagged issue in a REQUEST_CHANGE response.",
+      "required": [
+        "section_ref",
+        "section_title",
+        "counterparty_change_summary",
+        "decision",
+        "external_rationale_for_footnote",
+        "proposed_replacement_text",
+        "playbook_topic_id",
+        "internal_precedent_citation",
+        "provenance"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "section_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "description": "Section number and/or title from the counterparty document (e.g. '8 Limitation on Liability'). Must match the section_ref convention from the standard-form diff anchors."
+        },
+        "section_title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300,
+          "description": "Human-readable section title for display in the review output."
+        },
+        "counterparty_change_summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "description": "Brief factual description of what the counterparty changed relative to the Exos standard form. No internal strategy or precedent disclosure."
+        },
+        "decision": {
+          "type": "string",
+          "enum": ["REQUEST_CHANGE"],
+          "description": "Per-issue decision. Always REQUEST_CHANGE at the issue level (issues are only emitted for changes that require redlining)."
+        },
+        "external_rationale_for_footnote": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 800,
+          "description": "One or two sentence rationale for the external-facing footnote. Must cite the contract position only (section reference and Exos standard). Must not disclose counterparty names, precedent deal dates, verbatim precedent text, system-prompt fragments, or internal playbook IDs. Enforced by the pre-render leakage scan."
+        },
+        "proposed_replacement_text": {
+          "type": "string",
+          "maxLength": 8000,
+          "description": "Proposed replacement clause language. Bounded by the topic's replacement_text constraints (mode, max_chars, must_not_introduce). An empty string signals mode='none' (flag only, no replacement proposed). The pipeline enforces topic-level max_chars post-validation."
+        },
+        "playbook_topic_id": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+          "description": "The kebab-case topic id from the active playbook (topics[].id) that governs this issue. Used by the pipeline to look up replacement_text constraints and by the audit table to record topic coverage."
+        },
+        "internal_precedent_citation": {
+          "description": "Internal audit-only reference to corpus precedent (clause_id, source document, or null). Stripped from generated .docx footnotes. Must not appear in external output. Retained only in retention-governed confidential storage.",
+          "oneOf": [
+            {"type": "null"},
+            {
+              "type": "string",
+              "maxLength": 500
+            }
+          ]
+        },
+        "provenance": {
+          "type": "string",
+          "pattern": "^(model|critic-added|detector:[a-z0-9][a-z0-9-]*)$",
+          "description": "System metadata: identifies which pipeline component produced this issue. One of: 'model' (the LLM primary reviewer flagged this issue), 'critic-added' (the adversarial critic added this issue — not present in the primary output), or 'detector:<rule_id>' (a deterministic hard-rejection rule fired; rule_id is the kebab-case id from the playbook hard_rejections list). This field is framed as system metadata in the result view, never as a third legal category. It enables attorneys to calibrate scrutiny: a deterministic detector fire (near-certain, mechanical) warrants different verification effort than an LLM judgment call (probabilistic). The binary external decision (ACCEPT | REQUEST_CHANGE) is unaffected by provenance — provenance is a trust-calibration signal, not a decision modifier."
+        }
+      }
+    },
+    "CriticDelta": {
+      "type": "object",
+      "description": "The adversarial critic's delta: issues the critic adds, replacements the critic contests, and rationale objections. Preserved in the final result for audit. The critic may not silently overwrite the primary's replacement text; a contested replacement surfaces here rather than being swapped in.",
+      "additionalProperties": false,
+      "properties": {
+        "added_issues": {
+          "type": "array",
+          "description": "Issues the critic found that the primary missed.",
+          "items": {
+            "$ref": "#/definitions/Issue"
+          }
+        },
+        "contested_replacements": {
+          "type": "array",
+          "description": "Primary replacement texts the critic flagged as drifting from the playbook position.",
+          "items": {
+            "type": "object",
+            "required": ["section_ref", "primary_replacement_text", "critic_objection"],
+            "additionalProperties": false,
+            "properties": {
+              "section_ref": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "primary_replacement_text": {
+                "type": "string",
+                "maxLength": 8000
+              },
+              "critic_objection": {
+                "type": "string",
+                "maxLength": 800,
+                "description": "Why the critic believes the primary's replacement drifts from the playbook."
+              },
+              "critic_suggested_replacement": {
+                "type": "string",
+                "maxLength": 8000,
+                "description": "Optional critic suggestion. The deterministic reconciler decides whether to surface this; it does not automatically replace the primary's text."
+              }
+            }
+          }
+        },
+        "rationale_objections": {
+          "type": "array",
+          "description": "Rationale weaknesses the critic flagged (e.g. over-flagging, weak reasoning) without necessarily contesting the decision.",
+          "items": {
+            "type": "object",
+            "required": ["section_ref", "objection"],
+            "additionalProperties": false,
+            "properties": {
+              "section_ref": {
+                "type": "string",
+                "maxLength": 200
+              },
+              "objection": {
+                "type": "string",
+                "maxLength": 800
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

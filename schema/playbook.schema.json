@@ -1,0 +1,825 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://teamexos.com/playbooks/schema/v1.json",
+  "title": "Exos Contract Review Playbook",
+  "description": "Schema for an Exos contract-review playbook. One playbook governs the review of one agreement type. The schema is intentionally agreement-type-agnostic so the same engine can review ContractToasters, MSAs, NDAs, vendor agreements, etc.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "playbook",
+    "general_principles",
+    "decision_rubric",
+    "topics",
+    "hard_rejections",
+    "de_minimis_categories",
+    "output_format"
+  ],
+  "properties": {
+    "playbook": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "version",
+        "agreement_type",
+        "exos_party",
+        "counterparty_type",
+        "created_at",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Short stable identifier, e.g. 'contract-toaster'"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$",
+          "description": "Semantic version"
+        },
+        "agreement_type": {
+          "type": "string",
+          "description": "Human-readable type, e.g. 'Educational Institution Affiliate Agreement'"
+        },
+        "agreement_aliases": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Other names this agreement is called"
+        },
+        "exos_party": {
+          "type": "string",
+          "description": "Default Exos legal entity for this agreement type"
+        },
+        "counterparty_type": {
+          "type": "string",
+          "description": "What the other side is, e.g. 'Educational Institution'"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "based_on_corpus": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Document IDs in our reference corpus this playbook was distilled from"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "active",
+            "retired"
+          ],
+          "description": "SNAPSHOT LABEL ONLY — NOT the lifecycle authority. This field is written at upload time for human readability; it is a projection of playbook_versions.status (the DynamoDB row), which is the sole runtime lifecycle gate. Changing this field does NOT promote or retire a bundle; only the DB row does. Because this field is excluded from the canonical form (see 'canonicalization' at the schema root), flipping it draft→active does NOT change the content_hash, preserving the 'content-addressed immutable snapshot' guarantee. Semantics: draft = not yet approved; active = exactly one per playbook id, governs production reviews; retired = superseded, preserved for rollback lineage. A review must record the active version and content_hash at execution start; draft and retired playbooks must never govern a production review."
+        },
+        "release": {
+          "type": "object",
+          "description": "Signed release bundle metadata. Required before a playbook may become active. The release bundle binds the playbook, prompt, canonical standard form, anchor map, model policy, corpus snapshot, and evaluation run that Legal approved as one content-addressed unit. The anchor_map_hash field is required: a bundle cannot activate without it. NOTE: the release block and playbook.status are EXCLUDED from the canonical form used to compute content_hash — see 'canonicalization' property at the schema root for the normative definition.",
+          "required": [
+            "content_hash",
+            "standard_form_hash",
+            "anchor_map_hash",
+            "prompt_hash",
+            "model_policy_hash",
+            "output_contract_hash",
+            "corpus_snapshot_version",
+            "eval_run_id",
+            "legal_approval"
+          ],
+          "properties": {
+            "content_hash": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "SHA-256 over the CANONICAL playbook content, prefixed 'sha256:'. The canonical form is the playbook JSON with 'playbook.status' and 'playbook.release' removed, serialized with sorted keys, no whitespace, UTF-8. This exclusion prevents circularity (the hash cannot include itself) and ensures the hash is stable under status flips (draft→active) and release-block population. Computed by scripts/canonicalize.py::content_hash(). Identifies the immutable snapshot; every review records this value. The activation gate (Gate 7) reads playbook_versions.content_hash and asserts it equals playbook_versions.legal_approval.content_hash before promotion."
+            },
+            "snapshot_id": {
+              "type": "string",
+              "description": "Content-addressed snapshot identifier in the playbook store (typically equals or derives from content_hash)."
+            },
+            "approved_by": {
+              "type": "string",
+              "description": "Identity (Cognito sub or email) of the legal approver who authorized this release."
+            },
+            "approved_at": {
+              "type": "string",
+              "format": "date-time",
+              "description": "When legal approval was recorded."
+            },
+            "legal_approval": {
+              "type": "object",
+              "description": "Explicit legal sign-off captured before activation. CI must verify this block exists and is internally consistent (see [docs/playbook-governance.md](../docs/playbook-governance.md)) before allowing status='active'.",
+              "required": [
+                "approved",
+                "approver",
+                "approved_at"
+              ],
+              "properties": {
+                "approved": {
+                  "type": "boolean",
+                  "description": "True only when a named legal owner has signed off on this exact content_hash."
+                },
+                "approver": {
+                  "type": "string",
+                  "description": "Legal owner of record for this release."
+                },
+                "approved_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "signature": {
+                  "type": "string",
+                  "description": "Optional detached signature / KMS-signed token over content_hash for tamper-evidence."
+                }
+              }
+            },
+            "supersedes": {
+              "type": "string",
+              "description": "version this release replaces, for rollback/quarantine lineage."
+            },
+            "standard_form_hash": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "SHA-256 over the canonical standard-form .docx paired with this playbook version."
+            },
+            "prompt_hash": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "SHA-256 over the prompt/review-guidance artifact paired with this playbook version."
+            },
+            "model_policy_hash": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "SHA-256 over the model-policy artifact that pins primary/critic model IDs, the embedding model ID, region, request contract (single-region native inference ID; geo and global inference profiles forbidden), and cost assumptions. A change to the embedding model is a model-policy change and forces a new model_policy_hash."
+            },
+            "output_contract_hash": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "SHA-256 over playbooks/output-schema-v1.json (the versioned model-response schema). This binds the response shape to the release bundle: a change to the output schema — which defines what fields the model must emit and how they are validated — is a legal-output-affecting change and must force a new release bundle, just as a prompt or playbook change does. The CI subset-check verifies output_format.every_issue_includes ⊆ schema properties on every change. See docs/output-contract.md for the coupling rules."
+            },
+            "corpus_snapshot_version": {
+              "type": "string",
+              "description": "Active corpus snapshot approved for use with this release bundle."
+            },
+            "eval_run_id": {
+              "type": "string",
+              "description": "Evaluation run that passed schema, detector coverage, redline fixture, stochastic stability, retrieval, and leakage gates for this bundle."
+            },
+            "anchor_map_hash": {
+              "type": "string",
+              "pattern": "^sha256:[0-9a-f]{64}$",
+              "description": "SHA-256 hash of the anchor-map artifact (standard-forms/<name>.anchor-map.json) derived from the bundled standard form at bundle-build time. This content-addresses the anchor map — including the §10 sub-clause splitting config — as a named release-bundle component. A change to the standard form's section structure (heading text, renumbering, sub-clause splits) forces a new anchor_map_hash and triggers the heading-hash drift gate in CI. Every review records this hash so anchor-map lineage is auditable."
+            }
+          }
+        },
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "decision_mode": {
+              "type": "string",
+              "enum": [
+                "binary"
+              ],
+              "description": "External legal decision shape. Always 'binary' = ACCEPT | REQUEST_CHANGE only. Uncertainty and manual-review needs are NOT a third legal category; they are carried by the internal system_status (see output_format.system_status), which is distinct from the binary decision and never surfaced as a legal verdict."
+            },
+            "primary_model_id": {
+              "type": "string",
+              "description": "Pinned in-region Bedrock model ID for the primary reviewer. Global or geo inference IDs are rejected by CI unless explicitly approved."
+            },
+            "critic_model_id": {
+              "type": "string",
+              "description": "Pinned in-region Bedrock model ID for the adversarial critic. SHOULD be a DIFFERENT model from the primary so the two passes have decorrelated blind spots (and lower cost). v1 uses a Sonnet critic against an Opus primary."
+            },
+            "embedding_model_id": {
+              "type": "string",
+              "description": "Pinned in-region Bedrock embedding model ID used by the Knowledge Base. A change here (or any re-embedding) changes which precedents are retrieved and therefore legal output, so it is governed: recorded on every review, recertified quarterly, and requires admin (GC) approval. A re-embedding produces a new corpus_snapshot_version."
+            },
+            "fallback_model_id": {
+              "type": "string",
+              "description": "Optional pinned fallback model. Fallback use must be explicit, audited, and separately evaluated."
+            },
+            "model_region": {
+              "type": "string",
+              "description": "AWS region where inference runs, e.g. us-east-1."
+            },
+            "request_contract": {
+              "type": "string",
+              "description": "Named request-contract policy, including unsupported sampling params and extended-thinking constraints."
+            }
+          }
+        },
+        "legal_approval": {
+          "type": "object",
+          "description": "Standalone GC/legal sign-off record at the playbook level (distinct from release.legal_approval). Captures change-level approval for governance tracking; recorded when a GC authorizes a material edit outside of a full release bundle.",
+          "properties": {
+            "issue": {
+              "type": "string",
+              "description": "GitHub issue or PR URL authorizing this change."
+            },
+            "scope": {
+              "type": "string",
+              "description": "Plain-English summary of what was approved."
+            },
+            "approved_by": {
+              "type": "string",
+              "description": "Name and title of the approver."
+            },
+            "approved_at": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "approved_commit": {
+              "type": "string",
+              "description": "Git commit SHA at which approval was recorded."
+            },
+            "note": {
+              "type": "string",
+              "description": "Extended rationale or approval note."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "active"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "release"
+            ]
+          }
+        }
+      ]
+    },
+    "general_principles": {
+      "type": "array",
+      "description": "High-level constitution. Goes verbatim into the system prompt.",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "decision_rubric": {
+      "type": "object",
+      "required": [
+        "accept_when",
+        "request_change_when"
+      ],
+      "properties": {
+        "accept_when": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "request_change_when": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        }
+      }
+    },
+    "topics": {
+      "type": "array",
+      "description": "Topic-by-topic positions. Each topic typically maps to a section or recurring clause. Topic 'id' values MUST be unique across the array and 'section_ref' values MUST be unique; CI enforces this (JSON Schema uniqueItems only de-dupes whole objects, so topic-coverage tests assert per-key uniqueness). Coverage rule: every section PRESENT in the canonical standard form maps to exactly one topic; topics that describe a position on a clause NOT in the standard form set 'not_in_standard': true, are exempt from the form-coverage check, but still need a unique 'section_ref'. See [docs/playbook-governance.md](../docs/playbook-governance.md) for the coverage and anchor gates.",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "section_ref",
+          "exos_standard",
+          "must_preserve",
+          "reject_if_proposed",
+          "hard_rejection_refs",
+          "replacement_text"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "description": "Lowercase kebab-case slug, e.g. 'limitation-of-liability'. Unique across all topics; used as a stable cross-reference key from hard_rejections and from review output."
+          },
+          "section_ref": {
+            "type": "string",
+            "description": "Human-readable section number/title for display, e.g. '8 Limitation on Liability'. Unique across all topics (CI-enforced). This is a display label, not the machine key — see section_anchors."
+          },
+          "section_anchors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "description": "Machine anchors (e.g. ['sec-8'], or ['sec-1.2','sec-1.4','sec-1.7'] for a topic spanning several clauses) into the canonical standard-form section-anchor map derived at bundle-build time from the standard-form .docx. The deterministic diff tags each hunk with its section_anchor; a hard_rejection scoped to this topic only reads hunks whose anchor is listed here. When not_in_standard is true, section_anchors MUST contain exactly ['sec-_new'] and nothing else. 'sec-_new' is a reserved pseudo-anchor (see sec-_new_anchor below): the diff tagger assigns it to any inserted hunk that does not fall inside an existing standard-form section. CI verifies every other anchor resolves to a real section of the bundled standard form; 'sec-_new' is exempt from that resolution check because it is a pseudo-anchor, not a real section."
+          },
+          "not_in_standard": {
+            "type": "boolean",
+            "default": false,
+            "description": "True when this topic states a position on a clause that is NOT present in the canonical standard form (e.g. indemnification, insurance, governing-law). Such topics MUST carry section_anchors: ['sec-_new'] (the reserved pseudo-anchor for wholly new inserted hunks — see sec-_new_anchor), are exempt from the form-coverage check, and may only be referenced by hard_rejections of kind 'on_insert' (you cannot remove a clause the standard form does not contain) — CI enforces this."
+          },
+          "exos_standard": {
+            "type": "string",
+            "description": "Plain-English statement of our default position"
+          },
+          "acceptable_variations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "if",
+                "to",
+                "rationale"
+              ],
+              "properties": {
+                "if": {
+                  "type": "string",
+                  "description": "What counterparty might propose"
+                },
+                "to": {
+                  "type": "string",
+                  "description": "What we'd accept in response"
+                },
+                "rationale": {
+                  "type": "string",
+                  "description": "Why we'd accept it"
+                },
+                "requires_attorney_override": {
+                  "type": "boolean",
+                  "default": false,
+                  "description": "Issue #213: true when implementing this variation's 'to' text necessarily deletes or alters a protects.required_token guarded by an on_remove_or_alter hard_rejection scoped to this topic (e.g. raising a mutual liability cap changes the specific dollar figure a preserve-* Floor rule protects). Per playbooks/schema.json's hard_rejections[].protects description, numeric-threshold judgments ('is the new figure still acceptable') are deliberately NOT decided by the on_remove_or_alter detector -- that stays with attorney judgment. Marking a variation true here does NOT suppress or weaken the Floor: the deterministic layer still fires and forces REQUEST_CHANGE exactly as it does for any other protected-token change; the model can never auto-accept it. It documents that this specific, named acceptable outcome is reachable only via the attorney's disposition of that REQUEST_CHANGE (backend/src/disposition.py -- attorney_disposition is always recorded outside the tool), not via silent detector pass-through. tests/lint-acceptable-variations.py's on_remove_or_alter check (issue #213) treats a variation marked true as an intentional, documented exception from its zero-fire assertion (and fails if a marked variation does NOT actually fire anything, to catch stale markers) rather than a silent self-contradiction."
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "must_preserve": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "description": "Elements of our position that cannot be removed regardless of other changes"
+          },
+          "reject_if_proposed": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "description": "Specific deviations we will not accept"
+          },
+          "hard_rejection_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "description": "IDs of hard_rejections (see hard_rejections[].id) that apply to this topic. Required mapping: any topic whose section can carry an absolute line (e.g. indemnity, liability) MUST reference at least one hard_rejection id; CI's required-hard-rejection-mapping test enforces this for the configured high-risk topics."
+          },
+          "replacement_text": {
+            "type": "object",
+            "description": "Constraints on how the model may propose replacement language for this topic. Replacement text is a redline suggestion only and is bounded so the model cannot free-draft novel obligations.",
+            "properties": {
+              "mode": {
+                "type": "string",
+                "enum": [
+                  "fixed",
+                  "from_template",
+                  "bounded_edit",
+                  "none"
+                ],
+                "description": "fixed = use 'fixed_text' verbatim; from_template = adapt a footnote/clause template; bounded_edit = minimal edit anchored to the existing clause; none = no replacement text permitted (flag only)."
+              },
+              "fixed_text": {
+                "type": "string",
+                "description": "Exact replacement language when mode='fixed'."
+              },
+              "max_chars": {
+                "type": "integer",
+                "minimum": 1,
+                "description": "Upper bound on proposed replacement length to prevent unbounded drafting."
+              },
+              "must_not_introduce": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "uniqueItems": true,
+                "description": "Terms/concepts the replacement must never add (e.g. 'indemnify', 'consequential damages'), aligned with hard_rejections trigger_terms."
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "not": {
+                "properties": {
+                  "not_in_standard": {"const": true}
+                },
+                "required": ["not_in_standard"]
+              }
+            },
+            "then": {
+              "properties": {
+                "section_anchors": {
+                  "minItems": 1
+                }
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "not_in_standard": {"const": true}
+              },
+              "required": ["not_in_standard"]
+            },
+            "then": {
+              "properties": {
+                "section_anchors": {
+                  "minItems": 1,
+                  "maxItems": 1,
+                  "items": {
+                    "const": "sec-_new"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "hard_rejections": {
+      "type": "array",
+      "description": "Absolute lines we do not cross, applied across the topics they scope to. Active playbooks must use only structured detector-backed objects so the deterministic layer can force REQUEST_CHANGE without relying on semantic retrieval or model recall. CRITICAL: detectors run over the deterministic STANDARD-FORM DIFF (insertions / deletions / modifications anchored to standard-form sections), NEVER over raw full-document text. Running over raw text is a defect: most legal terms of art (e.g. 'limitation on liability', 'consequential damages', 'business associate', 'employee') appear in the canonical standard form itself and in fully-compliant drafts, so a raw-text matcher would force REQUEST_CHANGE on clean drafts that must ACCEPT. Each rule declares a 'kind': 'on_insert' (additive prohibition — reject if the counterparty INTRODUCES language) or 'on_remove_or_alter' (protective invariant — reject if the counterparty REMOVES/weakens a protection the standard form already provides). See [docs/playbook-governance.md](../docs/playbook-governance.md).",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "description",
+          "kind"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+            "description": "Unique kebab-case id, e.g. 'no-indemnity'. Referenced by topics[].hard_rejection_refs."
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable statement of the line we don't cross."
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "on_insert",
+              "on_remove_or_alter"
+            ],
+            "description": "Discriminator that selects the detection mechanism. 'on_insert' = additive prohibition: trigger_terms are matched ONLY against inserted/modified-new diff spans (you cannot be punished for REMOVING a prohibited term). 'on_remove_or_alter' = protective invariant: fires when a required_token present in the standard side of the anchored section is deleted or materially altered on the counterparty side. CI enforces the conditional field requirements below."
+          },
+          "trigger_terms": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "Required for kind='on_insert', forbidden for kind='on_remove_or_alter'. Exact lexical phrases the deterministic detector matches against INSERTED/MODIFIED-NEW diff spans only (never raw full text, never deleted text), e.g. 'indemnify', 'hold harmless', 'duty to defend', 'business associate', 'exclusive'. Case-insensitive, whole-phrase. A match within scope is a deterministic hard rejection."
+          },
+          "match": {
+            "type": "string",
+            "enum": [
+              "substring",
+              "word_boundary",
+              "regex"
+            ],
+            "default": "word_boundary",
+            "description": "How trigger_terms are matched (kind='on_insert' only). 'word_boundary' (default) = whole-phrase word-boundary match; 'substring' = case-insensitive substring; 'regex' = full Python re pattern applied to EVERY entry in trigger_terms. WARNING — ReDoS risk: 'regex' mode is an escape hatch for rules that cannot be expressed as phrase matches. Forbidden constructs (catastrophic backtracking, per issue #7 governance decision): nested unbounded quantifiers (X+)+, ambiguous alternation in unbounded repeat (a|ab)+, and unrestricted [^X]{n,} inside alternation. Every 'regex' trigger_term must complete in under 0.5 s on the adversarial corpus and pass the static structural check in tests/detector/test_regex_redos_guard.py. GC sign-off required on every 'regex' rule. See docs/playbook-governance.md § 'Regex-dialect and ReDoS constraint'. Setting match:'regex' applies to ALL of trigger_terms — a rule that needs to mix plain phrases with one regex pattern must NOT put the plain phrases in trigger_terms under match:'regex' (issue #220: this silently compiles plain phrases like 'hold harmless' as regex). Use regex_trigger_terms instead for the regex-only subset and leave trigger_terms/match on 'word_boundary' or 'substring' for the plain phrases."
+          },
+          "regex_trigger_terms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "description": "Optional (kind='on_insert' only). Additional trigger phrases ALWAYS compiled as a full Python re pattern, regardless of this rule's 'match' value — the per-trigger-term escape hatch for a rule that needs to mix plain-phrase trigger_terms (matched per 'match', default word_boundary) with one or more regex patterns, without forcing every plain phrase in trigger_terms through the regex compiler (issue #220). Subject to the same ReDoS constraints as match:'regex' (forbidden constructs, 0.5s adversarial-corpus bound, static structural check, GC sign-off) — see docs/playbook-governance.md § 'Regex-dialect and ReDoS constraint'. A pattern here that fails to compile is a build failure, not a silent substring fallback."
+          },
+          "match_surface": {
+            "type": "string",
+            "enum": [
+              "inserted",
+              "inserted_or_modified"
+            ],
+            "default": "inserted_or_modified",
+            "description": "Which diff spans an 'on_insert' detector reads. 'inserted' = only counterparty-added runs; 'inserted_or_modified' = added runs plus the new side of a modification. Deleted (<w:del>) text is never scanned by an additive rule."
+          },
+          "exempt_terms": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "description": "Optional whole-phrase guards (kind='on_insert' only). A trigger hit that falls inside an exempt phrase does not fire — e.g. exempt_terms ['non-exclusive'] stops trigger 'exclusive' from firing on the compliant 'non-exclusive' language. Each exempt phrase must contain at least one trigger term (CI warns on dead config)."
+          },
+          "protects": {
+            "type": "object",
+            "description": "Required for kind='on_remove_or_alter', forbidden for kind='on_insert'. Identifies the standard-form protection whose removal/alteration is a hard rejection. Detection is simple and diff-driven: because the review is a diff against a known standard form, a removal is directly visible. 'Material alteration' means a required_token present in the standard side of the anchored span is absent (deleted) or changed on the counterparty side; numeric-threshold judgments (e.g. 'cap below $50,000') are NOT decided here — they stay with the LLM review and topics[].reject_if_proposed.",
+            "required": [
+              "section_anchor",
+              "required_tokens"
+            ],
+            "properties": {
+              "section_anchor": {
+                "type": "string",
+                "description": "Stable section anchor (see topics[].section_anchors) of the standard-form section that carries this protection. CI verifies it resolves to a real section of the bundled canonical standard form."
+              },
+              "required_tokens": {
+                "type": "array",
+                "minItems": 1,
+                "uniqueItems": true,
+                "items": {
+                  "type": "string"
+                },
+                "description": "Load-bearing tokens of the protection (e.g. ['$150,000', 'aggregate liability']). CI verifies every token is actually PRESENT in this section of the canonical standard form (a protective rule guarding a token the standard does not contain is dead config and fails the build — this prevents the inverted-semantics bug)."
+              },
+              "token_policy": {
+                "type": "string",
+                "enum": [
+                  "any",
+                  "all"
+                ],
+                "default": "any",
+                "description": "'any' = removal/alteration of any required_token fires; 'all' = fires only if every required_token is gone."
+              },
+              "fire_on": {
+                "type": "string",
+                "enum": [
+                  "delete_only",
+                  "delete_or_modify"
+                ],
+                "default": "delete_or_modify",
+                "description": "'delete_only' = only outright deletion fires; 'delete_or_modify' = deletion OR a modification that removes/changes the token fires."
+              }
+            },
+            "additionalProperties": false
+          },
+          "applies_to_topics": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true,
+            "description": "Topic ids this rejection scopes to. A detector only reads diff spans whose section_anchor is in the section_anchors of one of these topics. For on_insert rules scoped to not_in_standard topics, this includes the reserved pseudo-anchor 'sec-_new' (see sec-_new_anchor field in the schema root), which covers any inserted hunk that falls outside all existing standard-form sections. Omit for corpus-wide application (rare; discouraged for on_insert because it widens false-positive surface). CI verifies referential integrity: every id listed here must exist in topics[].id (both directions: topics[].hard_rejection_refs must resolve to hard_rejections[].id, and hard_rejections[].applies_to_topics must resolve to topics[].id). This is enforced by tests/test_schema_hardening.py and listed in docs/playbook-governance.md."
+          }
+        },
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "on_insert"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "trigger_terms"
+              ],
+              "not": {
+                "required": [
+                  "protects"
+                ]
+              }
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "on_remove_or_alter"
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "protects"
+              ],
+              "not": {
+                "anyOf": [
+                  {"required": ["trigger_terms"]},
+                  {"required": ["exempt_terms"]},
+                  {"required": ["match"]},
+                  {"required": ["match_surface"]},
+                  {"required": ["regex_trigger_terms"]}
+                ]
+              }
+            }
+          }
+        ]
+      },
+      "minItems": 1
+    },
+    "de_minimis_categories": {
+      "type": "array",
+      "description": "Categories of change that are accepted even if technically novel.",
+      "items": {
+        "type": "string"
+      }
+    },
+    "output_format": {
+      "type": "object",
+      "required": [
+        "decision_field",
+        "every_issue_includes",
+        "footnote_phrasing_rules",
+        "citation_rules",
+        "system_status"
+      ],
+      "properties": {
+        "decision_field": {
+          "type": "string",
+          "enum": [
+            "ACCEPT | REQUEST_CHANGE"
+          ],
+          "description": "The shape of the external legal decision label. Binary only. Note the required attorney-disposition framing handled at render time (see [docs/output-contract.md](../docs/output-contract.md)): an ACCEPT is rendered as 'no requested changes identified by tool', NOT 'no action needed', and every output is watermarked 'tool recommendation only; attorney approval required'."
+        },
+        "output_contract_version": {
+          "type": "string",
+          "description": "The version string of the machine-readable response schema that governs both model passes for this playbook. Must match the 'output_contract_version' field in the referenced playbooks/output-schema-v1.json artifact (currently 'v1'). The full schema artifact is content-addressed by the release bundle's output_contract_hash. A change to the response schema shape must be delivered as a new schema version artifact and update this field. See docs/output-contract.md for the coupling rules."
+        },
+        "every_issue_includes": {
+          "type": "array",
+          "description": "The canonical list of fields every issue in the model response must carry. CI enforces that every field listed here is a top-level property of the issues[] object in the referenced output-schema-v1.json (every_issue_includes ⊆ schema properties). Keeping this list machine-readable (not just prose) makes the subset relationship enforceable without a code change.",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "footnote_phrasing_rules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "citation_rules": {
+          "type": "object",
+          "description": "Constraints on what external-facing footnotes/citations may reference. Enforced by the pre-render leakage scan (see [docs/output-contract.md](../docs/output-contract.md)). Footnotes shown to the counterparty must cite the CONTRACT POSITION (the section and our standard), never internal precedent.",
+          "properties": {
+            "external_footnotes_cite": {
+              "type": "string",
+              "enum": [
+                "contract_position_only"
+              ],
+              "description": "External footnotes cite only the contract position / section reference and Exos standard. Counterparty name, deal date, and verbatim precedent language are NOT permitted in external footnotes."
+            },
+            "precedent_citations": {
+              "type": "string",
+              "enum": [
+                "internal_only"
+              ],
+              "description": "Any reference to corpus precedent (counterparty, date, executed-agreement language) is internal-audit-only and must be stripped from the generated .docx."
+            },
+            "forbid_in_external_output": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true,
+              "description": "Phrasing/content classes the leakage scan blocks from external output, e.g. 'counterparty_name', 'precedent_deal_date', 'verbatim_precedent_text', 'system_prompt_fragment', 'internal_playbook_id'."
+            }
+          }
+        },
+        "system_status": {
+          "type": "object",
+          "description": "INTERNAL operational status, distinct from the binary legal decision. This carries pipeline confidence and manual-review routing as a SYSTEM STATE, never as a legal verdict. Low confidence yields REQUEST_CHANGE only when a concrete playbook issue exists; otherwise the review is routed to MANUAL_REVIEW as a system status. Structured-output failures map to ERROR_MANUAL_REVIEW_REQUIRED (after one bounded retry), kept distinct from transient pipeline errors.",
+          "properties": {
+            "states": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "OK",
+                  "LOW_CONFIDENCE",
+                  "MANUAL_REVIEW_REQUIRED",
+                  "ERROR_MANUAL_REVIEW_REQUIRED"
+                ]
+              },
+              "description": "Allowed internal status values. These never appear as the external decision_field."
+            },
+            "confidence_field": {
+              "type": "string",
+              "description": "Name of the internal confidence indicator emitted with each review, e.g. 'confidence' (qualitative band or score)."
+            },
+            "manual_review_routing": {
+              "type": "string",
+              "description": "How a MANUAL_REVIEW status is routed; this is operational triage, not a legal category surfaced to the attorney as a third decision."
+            }
+          }
+        }
+      }
+    },
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema dialect reference. Allowed in playbook documents for tooling interop.",
+      "format": "uri"
+    },
+    "footnote_templates": {
+      "type": "object",
+      "description": "Reusable rationale snippets the model can adapt for footnotes. Keyed by short slug.",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "coverage_exempt_anchors_NOTE": {
+      "type": "string",
+      "description": "NOT a playbook field. Coverage exemptions are canonical in the anchor map (standard-forms/eiaa-v<version>.anchor-map.json), which carries 'coverage_exempt_anchors' and 'coverage_exempt_rationales' as siblings of 'anchors'. An exemption is a reviewed property of the standard-form section it describes (the section carries no reviewable legal clause), so it is governed alongside the form, not the playbook. The form-coverage gate (tests/anchor/test_form_coverage.py) reads exemptions from the anchor map only. This placeholder exists solely to document the single source of truth; it must not appear in a playbook instance."
+    },
+    "anchor_migrations": {
+      "type": "array",
+      "description": "Explicit records of anchor-to-heading-hash migrations across standard-form versions. Required whenever the canonical standard form is revised in a way that changes a section's heading text (including renumbering, which changes the heading). Each record documents the migration so the heading-hash drift CI gate can verify the change was intentional. An anchor whose heading hash changes without a covering migration record fails the drift gate. See RUNBOOK.md 'Revising the standard form' for the authoring procedure.",
+      "items": {
+        "type": "object",
+        "required": [
+          "anchor",
+          "from_heading_hash",
+          "to_heading_hash",
+          "from_standard_form_hash",
+          "to_standard_form_hash",
+          "reason",
+          "approved_by",
+          "approved_at"
+        ],
+        "properties": {
+          "anchor": {
+            "type": "string",
+            "description": "The stable anchor whose heading text changed."
+          },
+          "from_heading_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "description": "SHA-256 of the heading text in the prior standard-form version."
+          },
+          "to_heading_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "description": "SHA-256 of the heading text in the new standard-form version."
+          },
+          "from_standard_form_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "description": "standard_form_hash of the prior release bundle."
+          },
+          "to_standard_form_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$",
+            "description": "standard_form_hash of the new release bundle."
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why the heading text changed (e.g., 'section renumbered from §8 to §9 in v1.1 to accommodate new Insurance section')."
+          },
+          "approved_by": {
+            "type": "string",
+            "description": "Identity (email or Cognito sub) of the legal approver for this migration."
+          },
+          "approved_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When this migration was approved."
+          }
+        }
+      }
+    },
+    "sec-_new_anchor": {
+      "type": "object",
+      "description": "Normative definition of the reserved pseudo-anchor 'sec-_new'. This field is a schema-level definition block; it does not appear in playbook JSON instances. Playbook authors use 'sec-_new' in topics[].section_anchors; this block is the canonical specification of its semantics.\n\nPurpose: the deterministic diff tagger assigns the pseudo-anchor 'sec-_new' to any diff hunk that represents a wholly NEW inserted section — one that does not fall inside any existing standard-form section. Without this pseudo-anchor, on_insert rules scoped to not_in_standard topics (which by definition have no section in the standard form) would have an empty effective hunk-scope and could never fire on the highest-risk insertions: standalone indemnification articles, excess insurance levels sections, counterparty-home arbitration clauses.\n\nSemantics:\n  - The diff tagger assigns anchor 'sec-_new' to any inserted hunk whose position in the document does not correspond to any section in the canonical standard-form section-anchor map.\n  - 'sec-_new' is ONLY assigned to inserted/modified-new hunks; it is never assigned to deleted or unmodified hunks.\n  - An on_insert rule whose applies_to_topics includes a topic with section_anchors: ['sec-_new'] will read any 'sec-_new' hunk in the diff.\n  - Optional heading_keywords on the topic (not currently required) may further filter which sec-_new hunks a given topic's rules read, to reduce cross-topic false positives from unrelated new sections.\n\nCI rules:\n  - Every not_in_standard: true topic MUST carry section_anchors: ['sec-_new'] and nothing else. CI fails any not_in_standard topic with empty section_anchors (the dead-config bug) or with a real section anchor (which would violate the not_in_standard contract).\n  - 'sec-_new' is exempt from the normal anchor-resolution check (CI does not verify it against the standard-form section-anchor map, since it is a pseudo-anchor with no corresponding standard-form section).\n  - on_remove_or_alter rules MUST NOT reference 'sec-_new' (you cannot remove a clause the standard form never contained).",
+      "readOnly": true
+    },
+    "canonicalization": {
+      "type": "object",
+      "description": "Normative definition of the canonicalization rule used to compute release.content_hash. This field is a schema-level definition block; it does not appear in playbook JSON instances.\n\n## Problem\n\nThe original schema described release.content_hash as 'SHA-256 over the canonicalized playbook content' without specifying the canonical form. Because the release block itself (containing content_hash, the approval signature, and supersedes) and playbook.status both live inside the playbook JSON, hashing the whole document is circular:\n  - You need to know the hash before you can write it into release.content_hash.\n  - Writing it changes the bytes you are hashing.\n  - Flipping playbook.status from 'draft' to 'active' at promotion changes the bytes Legal approved.\n\n## Canonical form (normative)\n\nThe canonical form is the playbook JSON with the following two keys REMOVED from the 'playbook' object before serialization:\n  - playbook.status  — lifecycle state; playbook_versions.status (the DynamoDB row) is the sole authority.\n  - playbook.release — the release bundle metadata block, which contains content_hash itself.\n\nSerialization is deterministic:\n  - Keys are sorted recursively (sort_keys=True in Python json.dumps).\n  - No extra whitespace (separators=(',', ':')).\n  - UTF-8 encoding.\n\nThe hash is 'sha256:' followed by the hex digest of SHA-256 over the UTF-8 bytes.\n\nImplementation: scripts/canonicalize.py — functions canonicalize() and content_hash().\nGolden-hash CI fixture: tests/gold-fixtures/canonicalize-golden-hash.json.\n\n## Status authority (normative)\n\nplaybook_versions.status (the DynamoDB row) is the SOLE lifecycle authority.\nplaybook.status is a snapshot label written at upload time for human readability — a projection, never the runtime gate.\n\nConsequence: promoting a bundle from draft to active does NOT require re-hashing or re-signing the playbook JSON. The content_hash computed at upload time is stable through the entire lifecycle.\n\n## Gate 7 implementation\n\nGate 7 ('approved hashes match the artifacts being promoted') is implemented as follows:\n  1. At upload time: content_hash(playbook_doc) is computed (via scripts/canonicalize.py) and stored in playbook_versions.content_hash.\n  2. At legal-approval time: the approver records the exact content_hash they reviewed in playbook_versions.legal_approval.content_hash.\n  3. At activation time: the CI / admin activation endpoint asserts:\n       playbook_versions.content_hash == playbook_versions.legal_approval.content_hash\n     If they differ, the bundle cannot be activated (the bytes changed after approval).\n  4. The release.content_hash field in the JSON document is written at upload time so the document carries its own identity for audit — but activation reads the DB row, not the document field.",
+      "readOnly": true
+    }
+  }
+}

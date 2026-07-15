@@ -1,0 +1,23 @@
+{
+  "description": "Playbook registry (issue #209): the single source of truth mapping a playbook_id to its release-bundle artifact paths. Every script that resolves a playbook's playbook JSON, anchor-map JSON, section-config data file, or gold-fixtures directory does so through this file (see scripts/playbook_registry.py), keyed on playbook_id, instead of hard-coding a literal path. Adding a new contract type is: author a playbook.json + standard-form + anchor-map + section-config + fixtures dir, then add one entry here -- no code edit.",
+  "default_playbook_id": "eiaa",
+  "playbooks": {
+    "eiaa": {
+      "playbook_id": "eiaa",
+      "playbook_path": "playbooks/eiaa-v1.0.0.json",
+      "anchor_map_path": "standard-forms/eiaa-v1.0.0.anchor-map.json",
+      "section_config_path": "playbooks/eiaa-v1.0.0.sections.json",
+      "fixtures_dir": "tests/gold-fixtures",
+      "standard_form_docx": null,
+      "mock_output_key": "mock-fixtures/eiaa/pre-baked-redline.docx"
+    },
+    "synthetic-knowledge": {
+      "playbook_id": "synthetic-knowledge",
+      "playbook_path": "playbooks/synthetic-knowledge-v1.0.0.json",
+      "anchor_map_path": null,
+      "section_config_path": null,
+      "fixtures_dir": "tests/gold-fixtures-synthetic-knowledge",
+      "standard_form_docx": null
+    }
+  }
+}

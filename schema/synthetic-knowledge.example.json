@@ -1,0 +1,20 @@
+{
+  "$schema": "https://teamexos.com/playbooks/schema/v1.json",
+  "_synthetic": true,
+  "_note": "Authored fresh for issue #288 as the committed proof that a knowledge-profile registry entry (no anchor_map_path, no section_config_path -- see scripts/playbook_registry.py::profile()) goes green through CI with no anchor map. Not derived from any real contract, corpus, or production playbook. Deliberately has no 'hard_rejections' and no topic 'section_anchors' -- a knowledge-profile playbook answers questions from corpus knowledge, not from the precision anchor/detector/coverage pipeline that machinery requires.",
+  "playbook": {
+    "id": "synthetic-knowledge",
+    "version": "1.0.0",
+    "agreement_type": "Synthetic Knowledge-Profile Test Fixture",
+    "counterparty_type": "N/A -- synthetic fixture, not a real agreement type",
+    "created_at": "2026-07-13T00:00:00Z",
+    "status": "draft"
+  },
+  "topics": [
+    {
+      "id": "sample-knowledge-topic",
+      "label": "Sample knowledge-only topic (synthetic)",
+      "knowledge_summary": "Placeholder synthetic answer text for issue #288's knowledge-profile fixture. Deliberately carries no 'section_anchors' -- knowledge-profile topics are not mapped to a canonical standard-form section, because there is no standard form or anchor map for a knowledge-profile playbook."
+    }
+  ]
+}
