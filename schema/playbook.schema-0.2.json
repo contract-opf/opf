@@ -341,7 +341,7 @@
     },
     "acceptableIfEntry": {
       "type": "object",
-      "description": "Structured tolerance-condition triple (issue #141), adopted from the toaster's acceptable_variations shape so the acceptable-variations-vs-Floor consistency lint can run. Each entry cites the observation it is derived from via observation_ref, so the tolerance is traceable to real corpus evidence rather than free text.",
+      "description": "Structured tolerance-condition triple (issue #141), shaped to match the acceptable-variations format consuming review applications already use, so the acceptable-variations-vs-Floor consistency lint can run. Each entry cites the observation it is derived from via observation_ref, so the tolerance is traceable to real corpus evidence rather than free text.",
       "required": ["if", "to", "rationale", "observation_ref"],
       "additionalProperties": false,
       "properties": {
