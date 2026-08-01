@@ -105,11 +105,11 @@ OPF isn't a paper standard. There's a working, end-to-end ecosystem around it:
   playbook against a counterparty's draft and returns **ACCEPT** or a
   tracked-changes redline with footnoted rationale.
 
-- **[`eiaa-example-playbook`](https://github.com/contract-opf/eiaa-example-playbook)**
+- **[`playbooks`](https://github.com/contract-opf/playbooks)**
   — a real, browsable playbook, compiled from **44 negotiated
   educational-affiliation agreements (161 versions)** and published pseudonymized
   as a pedagogical example. Every position cites real observations.
-  **[See it rendered →](https://contract-opf.github.io/eiaa-example-playbook/)**
+  **[See it rendered →](https://contract-opf.github.io/playbooks/)**
 
 ---
 
@@ -216,7 +216,7 @@ negotiation playbooks — and we'd love implementers, reviewers, and critics.
   [`playbook-engine`](https://github.com/contract-opf/playbook-engine) — no API
   key needed.
 - **Browse** a real playbook:
-  [contract-opf.github.io/eiaa-example-playbook](https://contract-opf.github.io/eiaa-example-playbook/).
+  [contract-opf.github.io/playbooks](https://contract-opf.github.io/playbooks/).
 - **Open an issue or discussion** for: a new agreement type, a consumer
   implementation, a schema question, or any of the open questions above.
   Agreement-type `id`s are self-assigned — there's no central registry; a
