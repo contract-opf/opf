@@ -1,0 +1,542 @@
+{
+  "name": "party-alias-grouping",
+  "description": "The grouping key's party neutralization (OPF-SPEC §3.5.4): every entity-registry alias (Counterparty-<n>, case-insensitive, on word boundaries) becomes the token 'counterparty' and the document's perspective.party becomes the token 'party' before case and punctuation are dropped. Two deals whose signed texts differ only by the counterparty alias (Counterparty-2 vs Counterparty-5) are one variant with n_deals 2, and two refused asks that differ only by alias are one group with n_deals 2. The same words with the parties' places swapped stay a separate variant (our party and the counterparty are distinct tokens). The order of the two one-deal variants pins the perspective.party rewrite: 'notice of termination given to party ...' sorts before 'party may terminate ...'.",
+  "opf_version": "0.6",
+  "engine_version": "1.0.0",
+  "digest_version": "5",
+  "input": {
+    "opf_version": "0.6",
+    "agreement_type": {
+      "id": "conformance-fixture",
+      "name": "Conformance Fixture Agreement"
+    },
+    "baseline": {
+      "has_canonical_template": true
+    },
+    "taxonomy": {
+      "source": "custom",
+      "entries": []
+    },
+    "perspective": {
+      "party": "Fixture Co",
+      "counterparty_type": "Fixture Counterparty"
+    },
+    "evidence": {
+      "clauses": [
+        {
+          "id": "clause.termination",
+          "taxonomy_id": "termination",
+          "title": "Termination",
+          "our_standard": {
+            "text": "Either party may terminate this Agreement on thirty days' notice.",
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "11"
+            },
+            "parts": [
+              {
+                "part_id": "41980bd9",
+                "order": 1,
+                "text": "Either party may terminate this Agreement on thirty days' notice."
+              }
+            ]
+          },
+          "prior_standards": [],
+          "why_changed": null,
+          "n_deals": 4,
+          "n_signed_standard": 0,
+          "n_variants": 3,
+          "n_refused": 1,
+          "n_opened_standard": 0,
+          "n_kept_standard": 0,
+          "n_opened_prior": 0,
+          "n_kept_prior": 0,
+          "n_moved_to_current": 0,
+          "n_changed_openings": 0
+        }
+      ],
+      "precedent": [
+        {
+          "id": "prec.7d6e1d5aebde15a4",
+          "taxonomy_id": "termination",
+          "document_id": "deal-a",
+          "counterparty_ref": {
+            "alias": "Counterparty-2"
+          },
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 1,
+          "signed_text": {
+            "text": "Counterparty-2 may terminate this Agreement on notice to Fixture Co.",
+            "ref": {
+              "document_id": "deal-a",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": true,
+          "refused_asks": [
+            {
+              "text": "Counterparty-2 may terminate this Agreement at any time.",
+              "round": 1,
+              "ref": {
+                "document_id": "deal-a",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prec.d4886c201b871491",
+          "taxonomy_id": "termination",
+          "document_id": "deal-b",
+          "counterparty_ref": {
+            "alias": "Counterparty-5"
+          },
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": {
+            "text": "Counterparty-5 may terminate this Agreement on notice to Fixture Co.",
+            "ref": {
+              "document_id": "deal-b",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.a9f77771188c44d1",
+          "taxonomy_id": "termination",
+          "document_id": "deal-c",
+          "counterparty_ref": {
+            "alias": "Counterparty-3"
+          },
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 1,
+          "signed_text": {
+            "text": "Fixture Co may terminate this Agreement on notice to Counterparty-3.",
+            "ref": {
+              "document_id": "deal-c",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": true,
+          "refused_asks": [
+            {
+              "text": "Counterparty-3 may terminate this Agreement at any time.",
+              "round": 1,
+              "ref": {
+                "document_id": "deal-c",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prec.348c6acf6851dd53",
+          "taxonomy_id": "termination",
+          "document_id": "deal-d",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": {
+            "text": "Notice of termination given to Fixture Co is effective on receipt.",
+            "ref": {
+              "document_id": "deal-d",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        }
+      ],
+      "absence": {
+        "guard": 0.1,
+        "records": []
+      }
+    },
+    "posture": {},
+    "floor": {},
+    "corpus": {
+      "documents": [
+        {
+          "document_id": "deal-a",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-b",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-c",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-d",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        }
+      ],
+      "stats": {}
+    },
+    "compiler": {
+      "name": "playbook-engine",
+      "version": "1.0.0",
+      "run_id": "conformance-fixture-run",
+      "generated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  "expected": {
+    "canonical": "{\"agreement_type\":{\"id\":\"conformance-fixture\",\"name\":\"Conformance Fixture Agreement\"},\"baseline\":{\"has_canonical_template\":true},\"compiler\":{\"name\":\"playbook-engine\",\"version\":\"1.0.0\"},\"corpus\":{\"documents\":[{\"document_id\":\"deal-a\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-b\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-c\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-d\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3}],\"stats\":{}},\"evidence\":{\"absence\":{\"guard\":0.1,\"records\":[]},\"clauses\":[{\"id\":\"clause.termination\",\"n_changed_openings\":0,\"n_deals\":4,\"n_kept_prior\":0,\"n_kept_standard\":0,\"n_moved_to_current\":0,\"n_opened_prior\":0,\"n_opened_standard\":0,\"n_refused\":1,\"n_signed_standard\":0,\"n_variants\":3,\"our_standard\":{\"parts\":[{\"order\":1,\"part_id\":\"41980bd9\",\"text\":\"Either party may terminate this Agreement on thirty days' notice.\"}],\"source_ref\":{\"clause_path\":\"11\",\"document_id\":\"template\",\"version\":\"template\"},\"text\":\"Either party may terminate this Agreement on thirty days' notice.\"},\"prior_standards\":[],\"taxonomy_id\":\"termination\",\"title\":\"Termination\",\"why_changed\":null}],\"precedent\":[{\"counterparty_ref\":{\"alias\":\"Counterparty-2\"},\"document_id\":\"deal-a\",\"id\":\"prec.7d6e1d5aebde15a4\",\"moved\":true,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":2},\"round\":1,\"text\":\"Counterparty-2 may terminate this Agreement at any time.\"}],\"rounds\":1,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":3},\"text\":\"Counterparty-2 may terminate this Agreement on notice to Fixture Co.\"},\"standard\":false,\"taxonomy_id\":\"termination\"},{\"counterparty_ref\":{\"alias\":\"Counterparty-5\"},\"document_id\":\"deal-b\",\"id\":\"prec.d4886c201b871491\",\"moved\":false,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-b\",\"version\":3},\"text\":\"Counterparty-5 may terminate this Agreement on notice to Fixture Co.\"},\"standard\":false,\"taxonomy_id\":\"termination\"},{\"counterparty_ref\":{\"alias\":\"Counterparty-3\"},\"document_id\":\"deal-c\",\"id\":\"prec.a9f77771188c44d1\",\"moved\":true,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-c\",\"version\":2},\"round\":1,\"text\":\"Counterparty-3 may terminate this Agreement at any time.\"}],\"rounds\":1,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-c\",\"version\":3},\"text\":\"Fixture Co may terminate this Agreement on notice to Counterparty-3.\"},\"standard\":false,\"taxonomy_id\":\"termination\"},{\"document_id\":\"deal-d\",\"id\":\"prec.348c6acf6851dd53\",\"moved\":false,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-d\",\"version\":3},\"text\":\"Notice of termination given to Fixture Co is effective on receipt.\"},\"standard\":false,\"taxonomy_id\":\"termination\"}]},\"floor\":{},\"opf_version\":\"0.6\",\"perspective\":{\"counterparty_type\":\"Fixture Counterparty\",\"party\":\"Fixture Co\"},\"posture\":{},\"taxonomy\":{\"entries\":[],\"source\":\"custom\"}}",
+    "content_hash": "sha256:77e6f5efb731b8d8438c597b78edf55a827d3f298b5df979742b3e3b3d163832",
+    "section_digests": {
+      "evidence": "sha256:fb934d77751db1c918f655589ff950a8c4d424f76cc4e312353bc0ba62d2f16e",
+      "posture": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "floor": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "digest": {
+      "digest_version": "5",
+      "perspective": {
+        "party": "Fixture Co",
+        "counterparty_type": "Fixture Counterparty"
+      },
+      "agreement_type": {
+        "id": "conformance-fixture",
+        "name": "Conformance Fixture Agreement"
+      },
+      "corpus": {
+        "n_deals": 4,
+        "n_signed": 4,
+        "first_signed": null,
+        "last_signed": null
+      },
+      "part_map_legend": {
+        "part_map": {
+          "=": "our part is present with the same legal effect",
+          "+": "our part is present but more protective for perspective.party",
+          "-": "our part is present but less protective for perspective.party",
+          "x+": "our part is omitted, which is more protective for perspective.party",
+          "x-": "our part is omitted, which is less protective for perspective.party",
+          "x0": "our part is omitted with no effect on perspective.party"
+        },
+        "additions": {
+          "+": "an addition no part covers, more protective for perspective.party",
+          "-": "an addition no part covers, less protective for perspective.party",
+          "0": "an addition no part covers, neutral for perspective.party"
+        },
+        "label_by": {
+          "parts": "the default, so a digest entry omits label_by: the label is derived from the part map and additions; reason is the judgment's most important difference",
+          "owner": "the owner set the label over the judged part map and additions, which may imply another label; reason is the owner's and wins"
+        },
+        "settled": {
+          "agreed": "an independent blind check reached the same label and parts as the judgment",
+          "adjudicated": "the blind check disagreed and a fresh agent decided: the judgment shown is that decision, so this label was contested and deserves more scrutiny",
+          "unchecked": "no completed blind check (none yet, or a disagreement still awaiting adjudication): weaker evidence than agreed or adjudicated",
+          "owner": "the owner set or corrected the judgment; it is never blind-checked"
+        }
+      },
+      "clauses": [
+        {
+          "id": "clause.termination",
+          "taxonomy_id": "termination",
+          "title": "Termination",
+          "our_standard": {
+            "parts": [
+              {
+                "part_id": "41980bd9",
+                "text": "Either party may terminate this Agreement on thirty days' notice."
+              }
+            ],
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "11"
+            }
+          },
+          "n_deals": 4,
+          "first_signed": null,
+          "last_signed": null,
+          "n_signed_standard": 0,
+          "n_opened_standard": 0,
+          "n_kept_standard": 0,
+          "standard_history": {
+            "forms": [],
+            "why_changed": null
+          },
+          "positions": {
+            "standard": 0,
+            "equivalent": 0,
+            "more_protective": 0,
+            "less_protective": 0,
+            "mixed": 0,
+            "different_concept": 0,
+            "unjudged": 4
+          },
+          "signed_variants": [
+            {
+              "text": "Counterparty-2 may terminate this Agreement on notice to Fixture Co.",
+              "n_deals": 2,
+              "first_signed": null,
+              "last_signed": null,
+              "n_from_standard": 0,
+              "n_unchanged": 2,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-a",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.7d6e1d5aebde15a4",
+                "prec.d4886c201b871491"
+              ]
+            },
+            {
+              "text": "Notice of termination given to Fixture Co is effective on receipt.",
+              "n_deals": 1,
+              "first_signed": null,
+              "last_signed": null,
+              "n_from_standard": 0,
+              "n_unchanged": 1,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-d",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.348c6acf6851dd53"
+              ]
+            },
+            {
+              "text": "Fixture Co may terminate this Agreement on notice to Counterparty-3.",
+              "n_deals": 1,
+              "first_signed": null,
+              "last_signed": null,
+              "n_from_standard": 0,
+              "n_unchanged": 1,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-c",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.a9f77771188c44d1"
+              ]
+            }
+          ],
+          "refused_asks": [
+            {
+              "text": "Counterparty-2 may terminate this Agreement at any time.",
+              "n_deals": 2,
+              "first_signed": null,
+              "last_signed": null,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-a",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.7d6e1d5aebde15a4",
+                "prec.a9f77771188c44d1"
+              ]
+            }
+          ],
+          "changed_openings": [],
+          "n_variants_total": 3,
+          "n_refused_total": 1,
+          "n_changed_openings_total": 0,
+          "n_signed_without_verified": 0,
+          "n_signed_without_possible": 0,
+          "verified_absent_deals": []
+        }
+      ],
+      "uncovered_clause_types": []
+    },
+    "manifest": {
+      "hard_rules": []
+    },
+    "dossiers": {
+      "clause.termination": {
+        "clause_id": "clause.termination",
+        "taxonomy_id": "termination",
+        "title": "Termination",
+        "our_standard": {
+          "parts": [
+            {
+              "part_id": "41980bd9",
+              "text": "Either party may terminate this Agreement on thirty days' notice."
+            }
+          ]
+        },
+        "n_floor_rules": 0,
+        "floor_rules": [],
+        "excerpts": [
+          {
+            "precedent_id": "prec.7d6e1d5aebde15a4",
+            "kind": "signed_variant",
+            "opening": null,
+            "signed": "Counterparty-2 may terminate this Agreement on notice to Fixture Co.",
+            "outcome": "signed",
+            "vs_standard": null
+          },
+          {
+            "precedent_id": "prec.348c6acf6851dd53",
+            "kind": "signed_variant",
+            "opening": null,
+            "signed": "Notice of termination given to Fixture Co is effective on receipt.",
+            "outcome": "signed",
+            "vs_standard": null
+          }
+        ],
+        "n_omitted": 0,
+        "omitted_precedent_ids": []
+      }
+    },
+    "provenance_index": {
+      "compiler": {
+        "name": "playbook-engine",
+        "version": "1.0.0"
+      },
+      "corpus_manifest_hash": null,
+      "documents": [
+        {
+          "document_id": "deal-a",
+          "signed_on": null,
+          "version_files": []
+        },
+        {
+          "document_id": "deal-d",
+          "signed_on": null,
+          "version_files": []
+        }
+      ],
+      "dossiers": {
+        "clause.termination": [
+          {
+            "precedent_id": "prec.7d6e1d5aebde15a4",
+            "document_id": "deal-a",
+            "kind": "signed_variant",
+            "omitted": false
+          },
+          {
+            "precedent_id": "prec.348c6acf6851dd53",
+            "document_id": "deal-d",
+            "kind": "signed_variant",
+            "omitted": false
+          }
+        ]
+      }
+    }
+  }
+}

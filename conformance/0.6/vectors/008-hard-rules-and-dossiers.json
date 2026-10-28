@@ -1,0 +1,1791 @@
+{
+  "name": "hard-rules-and-dossiers",
+  "description": "The hard-rule manifest, the critic dossiers and the provenance index (OPF-SPEC §3.12.3). The Floor has seven invariants and the manifest seven rules in Floor order: venue-holds names clause.venue and carries a required_phrases condition, required_presence true and a permissible proof, with fallback_language the clause's standard; venue-no-arbitration states none of them (required_presence false, condition judged, no proof); term-cap names clause.term, which has no standard (fallback_language null), with a numeric_bound condition; survival-reference names clause.survival (a rule that demands presence or carries a predicate must name its clause) and carries a cross_reference condition with required_presence true; survival-scope and survival-period are two long judged rules on clause.survival; no-ghost-clause names a clause with no evidence (clause_id null). The venue dossier selects two excerpts from five candidate groups: first the concession on record (deal-a opened with our standard and signed the New York variant, although the Texas variant has more deals), then the first changed opening (deal-d's Oregon opening, which ended at our standard); its refused asks are not reached. It lists both Floor rules. No text is ever cut part-way. The term dossier (no standard, so a 1,000-token budget) selects two excerpts; its first, a long signed text, alone exceeds the budget and is kept whole; the second (deal-e's) is dropped whole and named (n_omitted 1, omitted_precedent_ids), then its Floor rule term-cap is dropped whole (n_floor_rules 1, none listed), since it is still over budget: a dossier holding its single kept excerpt is the only one that may exceed its budget. The survival dossier has a standard, no excerpt and three Floor rules that together exceed its budget, so the last listed (survival-period) is dropped whole and it fits (n_floor_rules 3, two listed). The assignment dossier pins how a group's record is chosen and a refused-ask excerpt: first the concession, deal-b's own opening-to-signed pair, although deal-a, which signed the same variant as proposed, is the lower document and precedent id (step 1 takes only members that opened with our standard); then, with no changed opening and the variant's group already chosen, the refused ask made in deal-c, deal-d and deal-f: deal-d and deal-f share the latest signed_on and deal-f has the lower precedent_id (deal-c has the lowest, but signed earlier; deal-d is the lower document), so the excerpt is deal-f's ask with what it signed instead (outcome ask_refused). Every deal but deal-f records source-file hashes and the corpus carries their snapshot hash: the provenance index repeats the hash and lists each excerpt deal's version_files (empty for deal-f). Its per-clause rows are in selection order, each marked omitted false or true: the term dossier's dropped excerpt is a row with omitted true that resolves to deal-e, which no kept excerpt cites, and deal-e is listed in documents for it.",
+  "opf_version": "0.6",
+  "engine_version": "1.0.0",
+  "digest_version": "5",
+  "input": {
+    "opf_version": "0.6",
+    "agreement_type": {
+      "id": "conformance-fixture",
+      "name": "Conformance Fixture Agreement"
+    },
+    "baseline": {
+      "has_canonical_template": true
+    },
+    "taxonomy": {
+      "source": "custom",
+      "entries": []
+    },
+    "perspective": {
+      "party": "Fixture Co",
+      "counterparty_type": "Fixture Counterparty"
+    },
+    "evidence": {
+      "clauses": [
+        {
+          "id": "clause.venue",
+          "taxonomy_id": "venue",
+          "title": "Venue",
+          "our_standard": {
+            "text": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "15"
+            },
+            "parts": [
+              {
+                "part_id": "68f94fdb",
+                "order": 1,
+                "text": "The courts of the State of Delaware have exclusive jurisdiction."
+              }
+            ]
+          },
+          "prior_standards": [],
+          "why_changed": null,
+          "n_deals": 6,
+          "n_signed_standard": 3,
+          "n_variants": 2,
+          "n_refused": 2,
+          "n_opened_standard": 3,
+          "n_kept_standard": 2,
+          "n_opened_prior": 0,
+          "n_kept_prior": 0,
+          "n_moved_to_current": 0,
+          "n_changed_openings": 1
+        },
+        {
+          "id": "clause.term",
+          "taxonomy_id": "term",
+          "title": "Term",
+          "our_standard": null,
+          "prior_standards": [],
+          "why_changed": null,
+          "n_deals": 2,
+          "n_signed_standard": 0,
+          "n_variants": 2,
+          "n_refused": 0,
+          "n_opened_standard": 0,
+          "n_kept_standard": 0,
+          "n_opened_prior": 0,
+          "n_kept_prior": 0,
+          "n_moved_to_current": 0,
+          "n_changed_openings": 0
+        },
+        {
+          "id": "clause.assignment",
+          "taxonomy_id": "assignment",
+          "title": "Assignment",
+          "our_standard": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "12"
+            },
+            "parts": [
+              {
+                "part_id": "4af3568d",
+                "order": 1,
+                "text": "Neither party may assign this Agreement without the other party's prior written consent."
+              }
+            ]
+          },
+          "prior_standards": [],
+          "why_changed": null,
+          "n_deals": 5,
+          "n_signed_standard": 3,
+          "n_variants": 1,
+          "n_refused": 1,
+          "n_opened_standard": 4,
+          "n_kept_standard": 3,
+          "n_opened_prior": 0,
+          "n_kept_prior": 0,
+          "n_moved_to_current": 0,
+          "n_changed_openings": 0
+        },
+        {
+          "id": "clause.survival",
+          "taxonomy_id": "survival",
+          "title": "Survival",
+          "our_standard": {
+            "text": "Sections on confidentiality and payment survive the end of this Agreement.",
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "20"
+            },
+            "parts": [
+              {
+                "part_id": "8c43b4b0",
+                "order": 1,
+                "text": "Sections on confidentiality and payment survive the end of this Agreement."
+              }
+            ]
+          },
+          "prior_standards": [],
+          "why_changed": null,
+          "n_deals": 0,
+          "n_signed_standard": 0,
+          "n_variants": 0,
+          "n_refused": 0,
+          "n_opened_standard": 0,
+          "n_kept_standard": 0,
+          "n_opened_prior": 0,
+          "n_kept_prior": 0,
+          "n_moved_to_current": 0,
+          "n_changed_openings": 0
+        }
+      ],
+      "precedent": [
+        {
+          "id": "prec.dcd670d1fc2dfeae",
+          "taxonomy_id": "venue",
+          "document_id": "deal-a",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 1,
+          "signed_text": {
+            "text": "The courts of the State of New York have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-a",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": {
+            "text": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-a",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": false,
+          "moved": true,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.b1baa3b00b844b89",
+          "taxonomy_id": "venue",
+          "document_id": "deal-b",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": {
+            "text": "The courts of the State of Texas have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-b",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.985b136ece155b0b",
+          "taxonomy_id": "venue",
+          "document_id": "deal-c",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-01-15",
+          "rounds": 0,
+          "signed_text": {
+            "text": "The courts of the State of Texas have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-c",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.9d7d9ff3e91b2a7b",
+          "taxonomy_id": "venue",
+          "document_id": "deal-d",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-06-30",
+          "rounds": 1,
+          "signed_text": {
+            "text": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-d",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": {
+            "text": "Disputes will be heard by the courts of the State of Oregon.",
+            "ref": {
+              "document_id": "deal-d",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": true,
+          "moved": true,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.08fa9082f948be5c",
+          "taxonomy_id": "venue",
+          "document_id": "deal-e",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 1,
+          "signed_text": {
+            "text": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-e",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": null,
+          "standard": true,
+          "moved": true,
+          "refused_asks": [
+            {
+              "text": "Each party waives its right to a trial by jury.",
+              "round": 1,
+              "ref": {
+                "document_id": "deal-e",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prec.ea2501d5471122b0",
+          "taxonomy_id": "venue",
+          "document_id": "deal-f",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-06-30",
+          "rounds": 1,
+          "signed_text": {
+            "text": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-f",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": null,
+          "standard": true,
+          "moved": true,
+          "refused_asks": [
+            {
+              "text": "Venue lies exclusively in the courts of Mars.",
+              "round": 1,
+              "ref": {
+                "document_id": "deal-f",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prec.935f0f00eba23b43",
+          "taxonomy_id": "term",
+          "document_id": "deal-a",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": {
+            "text": "Section 0 of the term provisions binds each party for the full period. Section 1 of the term provisions binds each party for the full period. Section 2 of the term provisions binds each party for the full period. Section 3 of the term provisions binds each party for the full period. Section 4 of the term provisions binds each party for the full period. Section 5 of the term provisions binds each party for the full period. Section 6 of the term provisions binds each party for the full period. Section 7 of the term provisions binds each party for the full period. Section 8 of the term provisions binds each party for the full period. Section 9 of the term provisions binds each party for the full period. Section 10 of the term provisions binds each party for the full period. Section 11 of the term provisions binds each party for the full period. Section 12 of the term provisions binds each party for the full period. Section 13 of the term provisions binds each party for the full period. Section 14 of the term provisions binds each party for the full period. Section 15 of the term provisions binds each party for the full period. Section 16 of the term provisions binds each party for the full period. Section 17 of the term provisions binds each party for the full period. Section 18 of the term provisions binds each party for the full period. Section 19 of the term provisions binds each party for the full period. Section 20 of the term provisions binds each party for the full period. Section 21 of the term provisions binds each party for the full period. Section 22 of the term provisions binds each party for the full period. Section 23 of the term provisions binds each party for the full period. Section 24 of the term provisions binds each party for the full period. Section 25 of the term provisions binds each party for the full period. Section 26 of the term provisions binds each party for the full period. Section 27 of the term provisions binds each party for the full period. Section 28 of the term provisions binds each party for the full period. Section 29 of the term provisions binds each party for the full period. Section 30 of the term provisions binds each party for the full period. Section 31 of the term provisions binds each party for the full period. Section 32 of the term provisions binds each party for the full period. Section 33 of the term provisions binds each party for the full period. Section 34 of the term provisions binds each party for the full period. Section 35 of the term provisions binds each party for the full period. Section 36 of the term provisions binds each party for the full period. Section 37 of the term provisions binds each party for the full period. Section 38 of the term provisions binds each party for the full period. Section 39 of the term provisions binds each party for the full period. Section 40 of the term provisions binds each party for the full period. Section 41 of the term provisions binds each party for the full period. Section 42 of the term provisions binds each party for the full period. Section 43 of the term provisions binds each party for the full period. Section 44 of the term provisions binds each party for the full period. Section 45 of the term provisions binds each party for the full period. Section 46 of the term provisions binds each party for the full period. Section 47 of the term provisions binds each party for the full period. Section 48 of the term provisions binds each party for the full period. Section 49 of the term provisions binds each party for the full period. Section 50 of the term provisions binds each party for the full period. Section 51 of the term provisions binds each party for the full period. Section 52 of the term provisions binds each party for the full period. Section 53 of the term provisions binds each party for the full period. Section 54 of the term provisions binds each party for the full period. Section 55 of the term provisions binds each party for the full period. Section 56 of the term provisions binds each party for the full period. Section 57 of the term provisions binds each party for the full period. Section 58 of the term provisions binds each party for the full period. Section 59 of the term provisions binds each party for the full period. Section 60 of the term provisions binds each party for the full period. Section 61 of the term provisions binds each party for the full period. Section 62 of the term provisions binds each party for the full period. Section 63 of the term provisions binds each party for the full period. Section 64 of the term provisions binds each party for the full period. Section 65 of the term provisions binds each party for the full period. Section 66 of the term provisions binds each party for the full period. Section 67 of the term provisions binds each party for the full period. Section 68 of the term provisions binds each party for the full period. Section 69 of the term provisions binds each party for the full period. Section 70 of the term provisions binds each party for the full period. Section 71 of the term provisions binds each party for the full period. Section 72 of the term provisions binds each party for the full period. Section 73 of the term provisions binds each party for the full period. Section 74 of the term provisions binds each party for the full period. Section 75 of the term provisions binds each party for the full period. Section 76 of the term provisions binds each party for the full period. Section 77 of the term provisions binds each party for the full period. Section 78 of the term provisions binds each party for the full period. Section 79 of the term provisions binds each party for the full period.",
+            "ref": {
+              "document_id": "deal-a",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.84aa5401e35ea65e",
+          "taxonomy_id": "term",
+          "document_id": "deal-e",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": {
+            "text": "The term of this Agreement is three years.",
+            "ref": {
+              "document_id": "deal-e",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.ca7de136d2fa7238",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-a",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": {
+            "text": "Either party may assign this Agreement to an affiliate without consent.",
+            "ref": {
+              "document_id": "deal-a",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.d650cf4dd30a76d2",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-b",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 1,
+          "signed_text": {
+            "text": "Either party may assign this Agreement to an affiliate without consent.",
+            "ref": {
+              "document_id": "deal-b",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "ref": {
+              "document_id": "deal-b",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": false,
+          "moved": true,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.5d40b231f6837800",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-c",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-01-15",
+          "rounds": 1,
+          "signed_text": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "ref": {
+              "document_id": "deal-c",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": null,
+          "standard": true,
+          "moved": true,
+          "refused_asks": [
+            {
+              "text": "Either party may assign this Agreement freely without consent.",
+              "round": 1,
+              "ref": {
+                "document_id": "deal-c",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prec.d3d90fbff1e62068",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-d",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-06-30",
+          "rounds": 1,
+          "signed_text": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "ref": {
+              "document_id": "deal-d",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": null,
+          "standard": true,
+          "moved": true,
+          "refused_asks": [
+            {
+              "text": "Either party may assign this Agreement freely without consent.",
+              "round": 1,
+              "ref": {
+                "document_id": "deal-d",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prec.642e03effa3a5b0d",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-f",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-06-30",
+          "rounds": 1,
+          "signed_text": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "ref": {
+              "document_id": "deal-f",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": null,
+          "standard": true,
+          "moved": true,
+          "refused_asks": [
+            {
+              "text": "Either party may assign this Agreement freely without consent.",
+              "round": 1,
+              "ref": {
+                "document_id": "deal-f",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              }
+            }
+          ]
+        }
+      ],
+      "absence": {
+        "guard": 0.1,
+        "records": [
+          {
+            "id": "abs.b340746e4d46a6c7",
+            "taxonomy_id": "survival",
+            "document_id": "deal-a",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 3,
+            "candidates": []
+          },
+          {
+            "id": "abs.b8066614965f14dc",
+            "taxonomy_id": "survival",
+            "document_id": "deal-b",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 2,
+            "candidates": []
+          },
+          {
+            "id": "abs.972a0d6813f4d4aa",
+            "taxonomy_id": "term",
+            "document_id": "deal-b",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 2,
+            "candidates": []
+          },
+          {
+            "id": "abs.5c66557d3d269912",
+            "taxonomy_id": "survival",
+            "document_id": "deal-c",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 2,
+            "candidates": []
+          },
+          {
+            "id": "abs.99a40464c597a02a",
+            "taxonomy_id": "term",
+            "document_id": "deal-c",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 2,
+            "candidates": []
+          },
+          {
+            "id": "abs.f3e1790e1b7ab487",
+            "taxonomy_id": "survival",
+            "document_id": "deal-d",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 2,
+            "candidates": []
+          },
+          {
+            "id": "abs.b87ce0fcfdc56047",
+            "taxonomy_id": "term",
+            "document_id": "deal-d",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 2,
+            "candidates": []
+          },
+          {
+            "id": "abs.95396f368c599e9e",
+            "taxonomy_id": "assignment",
+            "document_id": "deal-e",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 2,
+            "candidates": []
+          },
+          {
+            "id": "abs.53fe659ae94e06c8",
+            "taxonomy_id": "survival",
+            "document_id": "deal-e",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 2,
+            "candidates": []
+          },
+          {
+            "id": "abs.9395ee1a456d7f61",
+            "taxonomy_id": "survival",
+            "document_id": "deal-f",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 2,
+            "candidates": []
+          },
+          {
+            "id": "abs.6c0bb3e068beef1a",
+            "taxonomy_id": "term",
+            "document_id": "deal-f",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 2,
+            "candidates": []
+          }
+        ]
+      }
+    },
+    "posture": {},
+    "floor": {
+      "invariants": [
+        {
+          "id": "venue-holds",
+          "statement": "Venue must stay in Delaware or New York.",
+          "rationale": "Our litigation counsel sits in those two states.",
+          "x_signed_by": "Legal Owner",
+          "x_signed_at": "2026-01-01T00:00:00+00:00",
+          "x_taxonomy_id": "venue",
+          "x_required_presence": true,
+          "x_condition": {
+            "type": "required_phrases",
+            "phrases": [
+              "State of Delaware",
+              "State of New York"
+            ],
+            "match": "any"
+          },
+          "x_permissible_proof": [
+            "a venue waiver signed by the General Counsel"
+          ]
+        },
+        {
+          "id": "venue-no-arbitration",
+          "statement": "Do not agree to binding arbitration of venue disputes.",
+          "x_signed_by": "Legal Owner",
+          "x_signed_at": "2026-01-01T00:00:00+00:00",
+          "x_taxonomy_id": "venue"
+        },
+        {
+          "id": "term-cap",
+          "statement": "The term must not exceed five years.",
+          "x_signed_by": "Legal Owner",
+          "x_signed_at": "2026-01-01T00:00:00+00:00",
+          "x_taxonomy_id": "term",
+          "x_condition": {
+            "type": "numeric_bound",
+            "pattern": "([0-9]+) years",
+            "max": 5,
+            "unit": "years"
+          }
+        },
+        {
+          "id": "survival-reference",
+          "statement": "Survival must refer back to the term clause.",
+          "x_signed_by": "Legal Owner",
+          "x_signed_at": "2026-01-01T00:00:00+00:00",
+          "x_taxonomy_id": "survival",
+          "x_required_presence": true,
+          "x_condition": {
+            "type": "cross_reference",
+            "clause_id": "clause.term"
+          }
+        },
+        {
+          "id": "survival-scope",
+          "statement": "Survival scope 0: this obligation outlasts the Agreement for its full period. Survival scope 1: this obligation outlasts the Agreement for its full period. Survival scope 2: this obligation outlasts the Agreement for its full period. Survival scope 3: this obligation outlasts the Agreement for its full period. Survival scope 4: this obligation outlasts the Agreement for its full period. Survival scope 5: this obligation outlasts the Agreement for its full period. Survival scope 6: this obligation outlasts the Agreement for its full period. Survival scope 7: this obligation outlasts the Agreement for its full period. Survival scope 8: this obligation outlasts the Agreement for its full period. Survival scope 9: this obligation outlasts the Agreement for its full period. Survival scope 10: this obligation outlasts the Agreement for its full period. Survival scope 11: this obligation outlasts the Agreement for its full period. Survival scope 12: this obligation outlasts the Agreement for its full period. Survival scope 13: this obligation outlasts the Agreement for its full period. Survival scope 14: this obligation outlasts the Agreement for its full period. Survival scope 15: this obligation outlasts the Agreement for its full period. Survival scope 16: this obligation outlasts the Agreement for its full period. Survival scope 17: this obligation outlasts the Agreement for its full period. Survival scope 18: this obligation outlasts the Agreement for its full period. Survival scope 19: this obligation outlasts the Agreement for its full period. Survival scope 20: this obligation outlasts the Agreement for its full period. Survival scope 21: this obligation outlasts the Agreement for its full period. Survival scope 22: this obligation outlasts the Agreement for its full period. Survival scope 23: this obligation outlasts the Agreement for its full period.",
+          "x_signed_by": "Legal Owner",
+          "x_signed_at": "2026-01-01T00:00:00+00:00",
+          "x_taxonomy_id": "survival"
+        },
+        {
+          "id": "survival-period",
+          "statement": "Survival period 0: this obligation outlasts the Agreement for its full period. Survival period 1: this obligation outlasts the Agreement for its full period. Survival period 2: this obligation outlasts the Agreement for its full period. Survival period 3: this obligation outlasts the Agreement for its full period. Survival period 4: this obligation outlasts the Agreement for its full period. Survival period 5: this obligation outlasts the Agreement for its full period. Survival period 6: this obligation outlasts the Agreement for its full period. Survival period 7: this obligation outlasts the Agreement for its full period. Survival period 8: this obligation outlasts the Agreement for its full period. Survival period 9: this obligation outlasts the Agreement for its full period. Survival period 10: this obligation outlasts the Agreement for its full period. Survival period 11: this obligation outlasts the Agreement for its full period. Survival period 12: this obligation outlasts the Agreement for its full period. Survival period 13: this obligation outlasts the Agreement for its full period. Survival period 14: this obligation outlasts the Agreement for its full period. Survival period 15: this obligation outlasts the Agreement for its full period. Survival period 16: this obligation outlasts the Agreement for its full period. Survival period 17: this obligation outlasts the Agreement for its full period. Survival period 18: this obligation outlasts the Agreement for its full period. Survival period 19: this obligation outlasts the Agreement for its full period. Survival period 20: this obligation outlasts the Agreement for its full period. Survival period 21: this obligation outlasts the Agreement for its full period. Survival period 22: this obligation outlasts the Agreement for its full period. Survival period 23: this obligation outlasts the Agreement for its full period.",
+          "x_signed_by": "Legal Owner",
+          "x_signed_at": "2026-01-01T00:00:00+00:00",
+          "x_taxonomy_id": "survival"
+        },
+        {
+          "id": "no-ghost-clause",
+          "statement": "Nothing here about a clause the corpus never saw.",
+          "x_signed_by": "Legal Owner",
+          "x_signed_at": "2026-01-01T00:00:00+00:00",
+          "x_taxonomy_id": "ghost_clause"
+        }
+      ]
+    },
+    "corpus": {
+      "documents": [
+        {
+          "document_id": "deal-a",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null,
+          "version_files": [
+            {
+              "version": 1,
+              "sha256": "sha256:bcbf830feeb78b4329ed1e3606c7c2d017d0577047e88ad42aa6803372007444"
+            },
+            {
+              "version": 2,
+              "sha256": "sha256:c48bd56aa95546be050588c606d160a7a4695ab4eebd9678685ee7c463822af5"
+            },
+            {
+              "version": 3,
+              "sha256": "sha256:06d8307da0a465fe3bd1e6dab28026c4fe206ed1712373ec0b87247f66f2bf35"
+            }
+          ]
+        },
+        {
+          "document_id": "deal-b",
+          "provenance": "counterparty_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null,
+          "version_files": [
+            {
+              "version": 1,
+              "sha256": "sha256:7a5650d730df1228bfc2c2e92af98f8e2991122547f3e678ca8c3560da32d49a"
+            },
+            {
+              "version": 2,
+              "sha256": "sha256:953aafdaefebd1f3b3d9249a94976233d13cc308b97d7c13ffa58208884b00ed"
+            },
+            {
+              "version": 3,
+              "sha256": "sha256:06e001840c6a71dfa7cb6b180c626b2d0f7637285b506ec47fbcf10cfceb7516"
+            }
+          ]
+        },
+        {
+          "document_id": "deal-c",
+          "provenance": "counterparty_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2025-01-15",
+          "signed_on_basis": "document_text",
+          "version_files": [
+            {
+              "version": 1,
+              "sha256": "sha256:c7dddc9d7403a7394791c644bfb020d9a14234e24c0bf318e1c91e47f5b93f02"
+            },
+            {
+              "version": 2,
+              "sha256": "sha256:2d8fc97f0559cacc89521c472421381c6b5199c825b64a1dcd249f61f560801b"
+            },
+            {
+              "version": 3,
+              "sha256": "sha256:c05cd562ae640f96a5fb9271b3624e3fc40bcdc1befd4b4d0153377d991a5a76"
+            }
+          ]
+        },
+        {
+          "document_id": "deal-d",
+          "provenance": "counterparty_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2025-06-30",
+          "signed_on_basis": "document_text",
+          "version_files": [
+            {
+              "version": 1,
+              "sha256": "sha256:59bb89cc95f2fe01e724d8b661a09b9de7b0cf53a2aa0f04baa94b6b7e49184c"
+            },
+            {
+              "version": 2,
+              "sha256": "sha256:c8905948833e52fdf2239ecaf45205982615a013260f40e25933245115c21bee"
+            },
+            {
+              "version": 3,
+              "sha256": "sha256:9cc69262bba4d5aec35886d0f9b5cce3e6bb0aff9ca0992618ecf173316e65d2"
+            }
+          ]
+        },
+        {
+          "document_id": "deal-e",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null,
+          "version_files": [
+            {
+              "version": 1,
+              "sha256": "sha256:7c115f75a80c322fc7ed57df9d44087b29e045ab5c7717a092d6a2d589fc323f"
+            },
+            {
+              "version": 2,
+              "sha256": "sha256:a31833790417c9420fcb531ed6cf35de5b03e7ea0fc84a4547edcced3e252ae4"
+            },
+            {
+              "version": 3,
+              "sha256": "sha256:39cd71c09c05c6a393dbf5556239e356ba7dae8484e0af78200ca0f3e4912d63"
+            }
+          ]
+        },
+        {
+          "document_id": "deal-f",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2025-06-30",
+          "signed_on_basis": "document_text"
+        }
+      ],
+      "stats": {},
+      "snapshot": {
+        "manifest_hash": "sha256:2578a9fe16ee708a8b442dc778eecbd16c9c53a1dde0648d3f8a6f12d0458620"
+      }
+    },
+    "compiler": {
+      "name": "playbook-engine",
+      "version": "1.0.0",
+      "run_id": "conformance-fixture-run",
+      "generated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  "expected": {
+    "canonical": "{\"agreement_type\":{\"id\":\"conformance-fixture\",\"name\":\"Conformance Fixture Agreement\"},\"baseline\":{\"has_canonical_template\":true},\"compiler\":{\"name\":\"playbook-engine\",\"version\":\"1.0.0\"},\"corpus\":{\"documents\":[{\"document_id\":\"deal-a\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"version_files\":[{\"sha256\":\"sha256:bcbf830feeb78b4329ed1e3606c7c2d017d0577047e88ad42aa6803372007444\",\"version\":1},{\"sha256\":\"sha256:c48bd56aa95546be050588c606d160a7a4695ab4eebd9678685ee7c463822af5\",\"version\":2},{\"sha256\":\"sha256:06d8307da0a465fe3bd1e6dab28026c4fe206ed1712373ec0b87247f66f2bf35\",\"version\":3}],\"versions\":3},{\"document_id\":\"deal-b\",\"in_scope\":true,\"provenance\":\"counterparty_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"version_files\":[{\"sha256\":\"sha256:7a5650d730df1228bfc2c2e92af98f8e2991122547f3e678ca8c3560da32d49a\",\"version\":1},{\"sha256\":\"sha256:953aafdaefebd1f3b3d9249a94976233d13cc308b97d7c13ffa58208884b00ed\",\"version\":2},{\"sha256\":\"sha256:06e001840c6a71dfa7cb6b180c626b2d0f7637285b506ec47fbcf10cfceb7516\",\"version\":3}],\"versions\":3},{\"document_id\":\"deal-c\",\"in_scope\":true,\"provenance\":\"counterparty_paper\",\"signed_on\":\"2025-01-15\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"version_files\":[{\"sha256\":\"sha256:c7dddc9d7403a7394791c644bfb020d9a14234e24c0bf318e1c91e47f5b93f02\",\"version\":1},{\"sha256\":\"sha256:2d8fc97f0559cacc89521c472421381c6b5199c825b64a1dcd249f61f560801b\",\"version\":2},{\"sha256\":\"sha256:c05cd562ae640f96a5fb9271b3624e3fc40bcdc1befd4b4d0153377d991a5a76\",\"version\":3}],\"versions\":3},{\"document_id\":\"deal-d\",\"in_scope\":true,\"provenance\":\"counterparty_paper\",\"signed_on\":\"2025-06-30\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"version_files\":[{\"sha256\":\"sha256:59bb89cc95f2fe01e724d8b661a09b9de7b0cf53a2aa0f04baa94b6b7e49184c\",\"version\":1},{\"sha256\":\"sha256:c8905948833e52fdf2239ecaf45205982615a013260f40e25933245115c21bee\",\"version\":2},{\"sha256\":\"sha256:9cc69262bba4d5aec35886d0f9b5cce3e6bb0aff9ca0992618ecf173316e65d2\",\"version\":3}],\"versions\":3},{\"document_id\":\"deal-e\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"version_files\":[{\"sha256\":\"sha256:7c115f75a80c322fc7ed57df9d44087b29e045ab5c7717a092d6a2d589fc323f\",\"version\":1},{\"sha256\":\"sha256:a31833790417c9420fcb531ed6cf35de5b03e7ea0fc84a4547edcced3e252ae4\",\"version\":2},{\"sha256\":\"sha256:39cd71c09c05c6a393dbf5556239e356ba7dae8484e0af78200ca0f3e4912d63\",\"version\":3}],\"versions\":3},{\"document_id\":\"deal-f\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2025-06-30\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3}],\"snapshot\":{\"manifest_hash\":\"sha256:2578a9fe16ee708a8b442dc778eecbd16c9c53a1dde0648d3f8a6f12d0458620\"},\"stats\":{}},\"evidence\":{\"absence\":{\"guard\":0.1,\"records\":[{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-a\",\"id\":\"abs.b340746e4d46a6c7\",\"n_checked\":3,\"status\":\"absent_verified\",\"taxonomy_id\":\"survival\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-b\",\"id\":\"abs.b8066614965f14dc\",\"n_checked\":2,\"status\":\"absent_verified\",\"taxonomy_id\":\"survival\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-b\",\"id\":\"abs.972a0d6813f4d4aa\",\"n_checked\":2,\"status\":\"absent_verified\",\"taxonomy_id\":\"term\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-c\",\"id\":\"abs.5c66557d3d269912\",\"n_checked\":2,\"status\":\"absent_verified\",\"taxonomy_id\":\"survival\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-c\",\"id\":\"abs.99a40464c597a02a\",\"n_checked\":2,\"status\":\"absent_verified\",\"taxonomy_id\":\"term\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-d\",\"id\":\"abs.f3e1790e1b7ab487\",\"n_checked\":2,\"status\":\"absent_verified\",\"taxonomy_id\":\"survival\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-d\",\"id\":\"abs.b87ce0fcfdc56047\",\"n_checked\":2,\"status\":\"absent_verified\",\"taxonomy_id\":\"term\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-e\",\"id\":\"abs.95396f368c599e9e\",\"n_checked\":2,\"status\":\"absent_verified\",\"taxonomy_id\":\"assignment\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-e\",\"id\":\"abs.53fe659ae94e06c8\",\"n_checked\":2,\"status\":\"absent_verified\",\"taxonomy_id\":\"survival\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-f\",\"id\":\"abs.9395ee1a456d7f61\",\"n_checked\":2,\"status\":\"absent_verified\",\"taxonomy_id\":\"survival\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-f\",\"id\":\"abs.6c0bb3e068beef1a\",\"n_checked\":2,\"status\":\"absent_verified\",\"taxonomy_id\":\"term\"}]},\"clauses\":[{\"id\":\"clause.venue\",\"n_changed_openings\":1,\"n_deals\":6,\"n_kept_prior\":0,\"n_kept_standard\":2,\"n_moved_to_current\":0,\"n_opened_prior\":0,\"n_opened_standard\":3,\"n_refused\":2,\"n_signed_standard\":3,\"n_variants\":2,\"our_standard\":{\"parts\":[{\"order\":1,\"part_id\":\"68f94fdb\",\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"}],\"source_ref\":{\"clause_path\":\"15\",\"document_id\":\"template\",\"version\":\"template\"},\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"},\"prior_standards\":[],\"taxonomy_id\":\"venue\",\"title\":\"Venue\",\"why_changed\":null},{\"id\":\"clause.term\",\"n_changed_openings\":0,\"n_deals\":2,\"n_kept_prior\":0,\"n_kept_standard\":0,\"n_moved_to_current\":0,\"n_opened_prior\":0,\"n_opened_standard\":0,\"n_refused\":0,\"n_signed_standard\":0,\"n_variants\":2,\"our_standard\":null,\"prior_standards\":[],\"taxonomy_id\":\"term\",\"title\":\"Term\",\"why_changed\":null},{\"id\":\"clause.assignment\",\"n_changed_openings\":0,\"n_deals\":5,\"n_kept_prior\":0,\"n_kept_standard\":3,\"n_moved_to_current\":0,\"n_opened_prior\":0,\"n_opened_standard\":4,\"n_refused\":1,\"n_signed_standard\":3,\"n_variants\":1,\"our_standard\":{\"parts\":[{\"order\":1,\"part_id\":\"4af3568d\",\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"}],\"source_ref\":{\"clause_path\":\"12\",\"document_id\":\"template\",\"version\":\"template\"},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"prior_standards\":[],\"taxonomy_id\":\"assignment\",\"title\":\"Assignment\",\"why_changed\":null},{\"id\":\"clause.survival\",\"n_changed_openings\":0,\"n_deals\":0,\"n_kept_prior\":0,\"n_kept_standard\":0,\"n_moved_to_current\":0,\"n_opened_prior\":0,\"n_opened_standard\":0,\"n_refused\":0,\"n_signed_standard\":0,\"n_variants\":0,\"our_standard\":{\"parts\":[{\"order\":1,\"part_id\":\"8c43b4b0\",\"text\":\"Sections on confidentiality and payment survive the end of this Agreement.\"}],\"source_ref\":{\"clause_path\":\"20\",\"document_id\":\"template\",\"version\":\"template\"},\"text\":\"Sections on confidentiality and payment survive the end of this Agreement.\"},\"prior_standards\":[],\"taxonomy_id\":\"survival\",\"title\":\"Survival\",\"why_changed\":null}],\"precedent\":[{\"document_id\":\"deal-a\",\"id\":\"prec.dcd670d1fc2dfeae\",\"moved\":true,\"opened_with\":\"standard\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":1},\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"},\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":1,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":3},\"text\":\"The courts of the State of New York have exclusive jurisdiction.\"},\"standard\":false,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-b\",\"id\":\"prec.b1baa3b00b844b89\",\"moved\":false,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-b\",\"version\":3},\"text\":\"The courts of the State of Texas have exclusive jurisdiction.\"},\"standard\":false,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-c\",\"id\":\"prec.985b136ece155b0b\",\"moved\":false,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":\"2025-01-15\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-c\",\"version\":3},\"text\":\"The courts of the State of Texas have exclusive jurisdiction.\"},\"standard\":false,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-d\",\"id\":\"prec.9d7d9ff3e91b2a7b\",\"moved\":true,\"opened_with\":\"non_standard\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-d\",\"version\":1},\"text\":\"Disputes will be heard by the courts of the State of Oregon.\"},\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":1,\"signed\":true,\"signed_on\":\"2025-06-30\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-d\",\"version\":3},\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"},\"standard\":true,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-e\",\"id\":\"prec.08fa9082f948be5c\",\"moved\":true,\"opened_with\":\"standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-e\",\"version\":2},\"round\":1,\"text\":\"Each party waives its right to a trial by jury.\"}],\"rounds\":1,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-e\",\"version\":3},\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"},\"standard\":true,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-f\",\"id\":\"prec.ea2501d5471122b0\",\"moved\":true,\"opened_with\":\"standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-f\",\"version\":2},\"round\":1,\"text\":\"Venue lies exclusively in the courts of Mars.\"}],\"rounds\":1,\"signed\":true,\"signed_on\":\"2025-06-30\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-f\",\"version\":3},\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"},\"standard\":true,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-a\",\"id\":\"prec.935f0f00eba23b43\",\"moved\":false,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":3},\"text\":\"Section 0 of the term provisions binds each party for the full period. Section 1 of the term provisions binds each party for the full period. Section 2 of the term provisions binds each party for the full period. Section 3 of the term provisions binds each party for the full period. Section 4 of the term provisions binds each party for the full period. Section 5 of the term provisions binds each party for the full period. Section 6 of the term provisions binds each party for the full period. Section 7 of the term provisions binds each party for the full period. Section 8 of the term provisions binds each party for the full period. Section 9 of the term provisions binds each party for the full period. Section 10 of the term provisions binds each party for the full period. Section 11 of the term provisions binds each party for the full period. Section 12 of the term provisions binds each party for the full period. Section 13 of the term provisions binds each party for the full period. Section 14 of the term provisions binds each party for the full period. Section 15 of the term provisions binds each party for the full period. Section 16 of the term provisions binds each party for the full period. Section 17 of the term provisions binds each party for the full period. Section 18 of the term provisions binds each party for the full period. Section 19 of the term provisions binds each party for the full period. Section 20 of the term provisions binds each party for the full period. Section 21 of the term provisions binds each party for the full period. Section 22 of the term provisions binds each party for the full period. Section 23 of the term provisions binds each party for the full period. Section 24 of the term provisions binds each party for the full period. Section 25 of the term provisions binds each party for the full period. Section 26 of the term provisions binds each party for the full period. Section 27 of the term provisions binds each party for the full period. Section 28 of the term provisions binds each party for the full period. Section 29 of the term provisions binds each party for the full period. Section 30 of the term provisions binds each party for the full period. Section 31 of the term provisions binds each party for the full period. Section 32 of the term provisions binds each party for the full period. Section 33 of the term provisions binds each party for the full period. Section 34 of the term provisions binds each party for the full period. Section 35 of the term provisions binds each party for the full period. Section 36 of the term provisions binds each party for the full period. Section 37 of the term provisions binds each party for the full period. Section 38 of the term provisions binds each party for the full period. Section 39 of the term provisions binds each party for the full period. Section 40 of the term provisions binds each party for the full period. Section 41 of the term provisions binds each party for the full period. Section 42 of the term provisions binds each party for the full period. Section 43 of the term provisions binds each party for the full period. Section 44 of the term provisions binds each party for the full period. Section 45 of the term provisions binds each party for the full period. Section 46 of the term provisions binds each party for the full period. Section 47 of the term provisions binds each party for the full period. Section 48 of the term provisions binds each party for the full period. Section 49 of the term provisions binds each party for the full period. Section 50 of the term provisions binds each party for the full period. Section 51 of the term provisions binds each party for the full period. Section 52 of the term provisions binds each party for the full period. Section 53 of the term provisions binds each party for the full period. Section 54 of the term provisions binds each party for the full period. Section 55 of the term provisions binds each party for the full period. Section 56 of the term provisions binds each party for the full period. Section 57 of the term provisions binds each party for the full period. Section 58 of the term provisions binds each party for the full period. Section 59 of the term provisions binds each party for the full period. Section 60 of the term provisions binds each party for the full period. Section 61 of the term provisions binds each party for the full period. Section 62 of the term provisions binds each party for the full period. Section 63 of the term provisions binds each party for the full period. Section 64 of the term provisions binds each party for the full period. Section 65 of the term provisions binds each party for the full period. Section 66 of the term provisions binds each party for the full period. Section 67 of the term provisions binds each party for the full period. Section 68 of the term provisions binds each party for the full period. Section 69 of the term provisions binds each party for the full period. Section 70 of the term provisions binds each party for the full period. Section 71 of the term provisions binds each party for the full period. Section 72 of the term provisions binds each party for the full period. Section 73 of the term provisions binds each party for the full period. Section 74 of the term provisions binds each party for the full period. Section 75 of the term provisions binds each party for the full period. Section 76 of the term provisions binds each party for the full period. Section 77 of the term provisions binds each party for the full period. Section 78 of the term provisions binds each party for the full period. Section 79 of the term provisions binds each party for the full period.\"},\"standard\":false,\"taxonomy_id\":\"term\"},{\"document_id\":\"deal-e\",\"id\":\"prec.84aa5401e35ea65e\",\"moved\":false,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-e\",\"version\":3},\"text\":\"The term of this Agreement is three years.\"},\"standard\":false,\"taxonomy_id\":\"term\"},{\"document_id\":\"deal-a\",\"id\":\"prec.ca7de136d2fa7238\",\"moved\":false,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":3},\"text\":\"Either party may assign this Agreement to an affiliate without consent.\"},\"standard\":false,\"taxonomy_id\":\"assignment\"},{\"document_id\":\"deal-b\",\"id\":\"prec.d650cf4dd30a76d2\",\"moved\":true,\"opened_with\":\"standard\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-b\",\"version\":1},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":1,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-b\",\"version\":3},\"text\":\"Either party may assign this Agreement to an affiliate without consent.\"},\"standard\":false,\"taxonomy_id\":\"assignment\"},{\"document_id\":\"deal-c\",\"id\":\"prec.5d40b231f6837800\",\"moved\":true,\"opened_with\":\"standard\",\"opening_text\":null,\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-c\",\"version\":2},\"round\":1,\"text\":\"Either party may assign this Agreement freely without consent.\"}],\"rounds\":1,\"signed\":true,\"signed_on\":\"2025-01-15\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-c\",\"version\":3},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"standard\":true,\"taxonomy_id\":\"assignment\"},{\"document_id\":\"deal-d\",\"id\":\"prec.d3d90fbff1e62068\",\"moved\":true,\"opened_with\":\"standard\",\"opening_text\":null,\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-d\",\"version\":2},\"round\":1,\"text\":\"Either party may assign this Agreement freely without consent.\"}],\"rounds\":1,\"signed\":true,\"signed_on\":\"2025-06-30\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-d\",\"version\":3},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"standard\":true,\"taxonomy_id\":\"assignment\"},{\"document_id\":\"deal-f\",\"id\":\"prec.642e03effa3a5b0d\",\"moved\":true,\"opened_with\":\"standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-f\",\"version\":2},\"round\":1,\"text\":\"Either party may assign this Agreement freely without consent.\"}],\"rounds\":1,\"signed\":true,\"signed_on\":\"2025-06-30\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-f\",\"version\":3},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"standard\":true,\"taxonomy_id\":\"assignment\"}]},\"floor\":{\"invariants\":[{\"id\":\"venue-holds\",\"rationale\":\"Our litigation counsel sits in those two states.\",\"statement\":\"Venue must stay in Delaware or New York.\",\"x_condition\":{\"match\":\"any\",\"phrases\":[\"State of Delaware\",\"State of New York\"],\"type\":\"required_phrases\"},\"x_permissible_proof\":[\"a venue waiver signed by the General Counsel\"],\"x_required_presence\":true,\"x_signed_at\":\"2026-01-01T00:00:00+00:00\",\"x_signed_by\":\"Legal Owner\",\"x_taxonomy_id\":\"venue\"},{\"id\":\"venue-no-arbitration\",\"statement\":\"Do not agree to binding arbitration of venue disputes.\",\"x_signed_at\":\"2026-01-01T00:00:00+00:00\",\"x_signed_by\":\"Legal Owner\",\"x_taxonomy_id\":\"venue\"},{\"id\":\"term-cap\",\"statement\":\"The term must not exceed five years.\",\"x_condition\":{\"max\":5,\"pattern\":\"([0-9]+) years\",\"type\":\"numeric_bound\",\"unit\":\"years\"},\"x_signed_at\":\"2026-01-01T00:00:00+00:00\",\"x_signed_by\":\"Legal Owner\",\"x_taxonomy_id\":\"term\"},{\"id\":\"survival-reference\",\"statement\":\"Survival must refer back to the term clause.\",\"x_condition\":{\"clause_id\":\"clause.term\",\"type\":\"cross_reference\"},\"x_required_presence\":true,\"x_signed_at\":\"2026-01-01T00:00:00+00:00\",\"x_signed_by\":\"Legal Owner\",\"x_taxonomy_id\":\"survival\"},{\"id\":\"survival-scope\",\"statement\":\"Survival scope 0: this obligation outlasts the Agreement for its full period. Survival scope 1: this obligation outlasts the Agreement for its full period. Survival scope 2: this obligation outlasts the Agreement for its full period. Survival scope 3: this obligation outlasts the Agreement for its full period. Survival scope 4: this obligation outlasts the Agreement for its full period. Survival scope 5: this obligation outlasts the Agreement for its full period. Survival scope 6: this obligation outlasts the Agreement for its full period. Survival scope 7: this obligation outlasts the Agreement for its full period. Survival scope 8: this obligation outlasts the Agreement for its full period. Survival scope 9: this obligation outlasts the Agreement for its full period. Survival scope 10: this obligation outlasts the Agreement for its full period. Survival scope 11: this obligation outlasts the Agreement for its full period. Survival scope 12: this obligation outlasts the Agreement for its full period. Survival scope 13: this obligation outlasts the Agreement for its full period. Survival scope 14: this obligation outlasts the Agreement for its full period. Survival scope 15: this obligation outlasts the Agreement for its full period. Survival scope 16: this obligation outlasts the Agreement for its full period. Survival scope 17: this obligation outlasts the Agreement for its full period. Survival scope 18: this obligation outlasts the Agreement for its full period. Survival scope 19: this obligation outlasts the Agreement for its full period. Survival scope 20: this obligation outlasts the Agreement for its full period. Survival scope 21: this obligation outlasts the Agreement for its full period. Survival scope 22: this obligation outlasts the Agreement for its full period. Survival scope 23: this obligation outlasts the Agreement for its full period.\",\"x_signed_at\":\"2026-01-01T00:00:00+00:00\",\"x_signed_by\":\"Legal Owner\",\"x_taxonomy_id\":\"survival\"},{\"id\":\"survival-period\",\"statement\":\"Survival period 0: this obligation outlasts the Agreement for its full period. Survival period 1: this obligation outlasts the Agreement for its full period. Survival period 2: this obligation outlasts the Agreement for its full period. Survival period 3: this obligation outlasts the Agreement for its full period. Survival period 4: this obligation outlasts the Agreement for its full period. Survival period 5: this obligation outlasts the Agreement for its full period. Survival period 6: this obligation outlasts the Agreement for its full period. Survival period 7: this obligation outlasts the Agreement for its full period. Survival period 8: this obligation outlasts the Agreement for its full period. Survival period 9: this obligation outlasts the Agreement for its full period. Survival period 10: this obligation outlasts the Agreement for its full period. Survival period 11: this obligation outlasts the Agreement for its full period. Survival period 12: this obligation outlasts the Agreement for its full period. Survival period 13: this obligation outlasts the Agreement for its full period. Survival period 14: this obligation outlasts the Agreement for its full period. Survival period 15: this obligation outlasts the Agreement for its full period. Survival period 16: this obligation outlasts the Agreement for its full period. Survival period 17: this obligation outlasts the Agreement for its full period. Survival period 18: this obligation outlasts the Agreement for its full period. Survival period 19: this obligation outlasts the Agreement for its full period. Survival period 20: this obligation outlasts the Agreement for its full period. Survival period 21: this obligation outlasts the Agreement for its full period. Survival period 22: this obligation outlasts the Agreement for its full period. Survival period 23: this obligation outlasts the Agreement for its full period.\",\"x_signed_at\":\"2026-01-01T00:00:00+00:00\",\"x_signed_by\":\"Legal Owner\",\"x_taxonomy_id\":\"survival\"},{\"id\":\"no-ghost-clause\",\"statement\":\"Nothing here about a clause the corpus never saw.\",\"x_signed_at\":\"2026-01-01T00:00:00+00:00\",\"x_signed_by\":\"Legal Owner\",\"x_taxonomy_id\":\"ghost_clause\"}]},\"opf_version\":\"0.6\",\"perspective\":{\"counterparty_type\":\"Fixture Counterparty\",\"party\":\"Fixture Co\"},\"posture\":{},\"taxonomy\":{\"entries\":[],\"source\":\"custom\"}}",
+    "content_hash": "sha256:a6129bf3e4ab36a9ee1a3ef85cb1600765b80061fd644449e37082f8d480d52c",
+    "section_digests": {
+      "evidence": "sha256:7e003860acdd2540c9e5cd8d1b5e6efc54520608ed4111f6913dde6cd763728d",
+      "posture": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "floor": "sha256:6e2dd5438973f08136d8365ab188bc618be671a501beec725406878c8e107372"
+    },
+    "digest": {
+      "digest_version": "5",
+      "perspective": {
+        "party": "Fixture Co",
+        "counterparty_type": "Fixture Counterparty"
+      },
+      "agreement_type": {
+        "id": "conformance-fixture",
+        "name": "Conformance Fixture Agreement"
+      },
+      "corpus": {
+        "n_deals": 6,
+        "n_signed": 6,
+        "first_signed": "2025-01",
+        "last_signed": "2025-06"
+      },
+      "part_map_legend": {
+        "part_map": {
+          "=": "our part is present with the same legal effect",
+          "+": "our part is present but more protective for perspective.party",
+          "-": "our part is present but less protective for perspective.party",
+          "x+": "our part is omitted, which is more protective for perspective.party",
+          "x-": "our part is omitted, which is less protective for perspective.party",
+          "x0": "our part is omitted with no effect on perspective.party"
+        },
+        "additions": {
+          "+": "an addition no part covers, more protective for perspective.party",
+          "-": "an addition no part covers, less protective for perspective.party",
+          "0": "an addition no part covers, neutral for perspective.party"
+        },
+        "label_by": {
+          "parts": "the default, so a digest entry omits label_by: the label is derived from the part map and additions; reason is the judgment's most important difference",
+          "owner": "the owner set the label over the judged part map and additions, which may imply another label; reason is the owner's and wins"
+        },
+        "settled": {
+          "agreed": "an independent blind check reached the same label and parts as the judgment",
+          "adjudicated": "the blind check disagreed and a fresh agent decided: the judgment shown is that decision, so this label was contested and deserves more scrutiny",
+          "unchecked": "no completed blind check (none yet, or a disagreement still awaiting adjudication): weaker evidence than agreed or adjudicated",
+          "owner": "the owner set or corrected the judgment; it is never blind-checked"
+        }
+      },
+      "clauses": [
+        {
+          "id": "clause.venue",
+          "taxonomy_id": "venue",
+          "title": "Venue",
+          "our_standard": {
+            "parts": [
+              {
+                "part_id": "68f94fdb",
+                "text": "The courts of the State of Delaware have exclusive jurisdiction."
+              }
+            ],
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "15"
+            }
+          },
+          "n_deals": 6,
+          "first_signed": "2025-01",
+          "last_signed": "2025-06",
+          "n_signed_standard": 3,
+          "n_opened_standard": 3,
+          "n_kept_standard": 2,
+          "standard_history": {
+            "forms": [],
+            "why_changed": null
+          },
+          "positions": {
+            "standard": 3,
+            "equivalent": 0,
+            "more_protective": 0,
+            "less_protective": 0,
+            "mixed": 0,
+            "different_concept": 0,
+            "unjudged": 3
+          },
+          "signed_variants": [
+            {
+              "text": "The courts of the State of Texas have exclusive jurisdiction.",
+              "n_deals": 2,
+              "first_signed": "2025-01",
+              "last_signed": "2025-01",
+              "n_from_standard": 0,
+              "n_unchanged": 2,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-c",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.985b136ece155b0b",
+                "prec.b1baa3b00b844b89"
+              ]
+            },
+            {
+              "text": "The courts of the State of New York have exclusive jurisdiction.",
+              "n_deals": 1,
+              "first_signed": null,
+              "last_signed": null,
+              "n_from_standard": 1,
+              "n_unchanged": 0,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-a",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.dcd670d1fc2dfeae"
+              ]
+            }
+          ],
+          "refused_asks": [
+            {
+              "text": "Each party waives its right to a trial by jury.",
+              "n_deals": 1,
+              "first_signed": null,
+              "last_signed": null,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-e",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.08fa9082f948be5c"
+              ]
+            },
+            {
+              "text": "Venue lies exclusively in the courts of Mars.",
+              "n_deals": 1,
+              "first_signed": "2025-06",
+              "last_signed": "2025-06",
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-f",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.ea2501d5471122b0"
+              ]
+            }
+          ],
+          "changed_openings": [
+            {
+              "text": "Disputes will be heard by the courts of the State of Oregon.",
+              "n_deals": 1,
+              "n_to_standard": 1,
+              "n_struck": 0,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-d",
+                "version": 1,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.9d7d9ff3e91b2a7b"
+              ]
+            }
+          ],
+          "n_variants_total": 2,
+          "n_refused_total": 2,
+          "n_changed_openings_total": 1,
+          "n_signed_without_verified": 0,
+          "n_signed_without_possible": 0,
+          "verified_absent_deals": []
+        },
+        {
+          "id": "clause.term",
+          "taxonomy_id": "term",
+          "title": "Term",
+          "our_standard": null,
+          "n_deals": 2,
+          "first_signed": null,
+          "last_signed": null,
+          "n_signed_standard": 0,
+          "n_opened_standard": 0,
+          "n_kept_standard": 0,
+          "standard_history": {
+            "forms": [],
+            "why_changed": null
+          },
+          "positions": {
+            "standard": 0,
+            "equivalent": 0,
+            "more_protective": 0,
+            "less_protective": 0,
+            "mixed": 0,
+            "different_concept": 0,
+            "unjudged": 2
+          },
+          "signed_variants": [
+            {
+              "text": "Section 0 of the term provisions binds each party for the full period. Section 1 of the term provisions binds each party for the full period. Section 2 of the term provisions binds each party for the full period. Section 3 of the term provisions binds each party for the full period.",
+              "n_deals": 1,
+              "first_signed": null,
+              "last_signed": null,
+              "n_from_standard": 0,
+              "n_unchanged": 1,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-a",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.935f0f00eba23b43"
+              ]
+            },
+            {
+              "text": "The term of this Agreement is three years.",
+              "n_deals": 1,
+              "first_signed": null,
+              "last_signed": null,
+              "n_from_standard": 0,
+              "n_unchanged": 1,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-e",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.84aa5401e35ea65e"
+              ]
+            }
+          ],
+          "refused_asks": [],
+          "changed_openings": [],
+          "n_variants_total": 2,
+          "n_refused_total": 0,
+          "n_changed_openings_total": 0,
+          "n_signed_without_verified": 4,
+          "n_signed_without_possible": 0,
+          "verified_absent_deals": [
+            {
+              "document_id": "deal-d",
+              "signed_on": "2025-06-30",
+              "absence_id": "abs.b87ce0fcfdc56047"
+            },
+            {
+              "document_id": "deal-f",
+              "signed_on": "2025-06-30",
+              "absence_id": "abs.6c0bb3e068beef1a"
+            },
+            {
+              "document_id": "deal-c",
+              "signed_on": "2025-01-15",
+              "absence_id": "abs.99a40464c597a02a"
+            },
+            {
+              "document_id": "deal-b",
+              "signed_on": null,
+              "absence_id": "abs.972a0d6813f4d4aa"
+            }
+          ]
+        },
+        {
+          "id": "clause.assignment",
+          "taxonomy_id": "assignment",
+          "title": "Assignment",
+          "our_standard": {
+            "parts": [
+              {
+                "part_id": "4af3568d",
+                "text": "Neither party may assign this Agreement without the other party's prior written consent."
+              }
+            ],
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "12"
+            }
+          },
+          "n_deals": 5,
+          "first_signed": "2025-01",
+          "last_signed": "2025-06",
+          "n_signed_standard": 3,
+          "n_opened_standard": 4,
+          "n_kept_standard": 3,
+          "standard_history": {
+            "forms": [],
+            "why_changed": null
+          },
+          "positions": {
+            "standard": 3,
+            "equivalent": 0,
+            "more_protective": 0,
+            "less_protective": 0,
+            "mixed": 0,
+            "different_concept": 0,
+            "unjudged": 2
+          },
+          "signed_variants": [
+            {
+              "text": "Either party may assign this Agreement to an affiliate without consent.",
+              "n_deals": 2,
+              "first_signed": null,
+              "last_signed": null,
+              "n_from_standard": 1,
+              "n_unchanged": 1,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-a",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.ca7de136d2fa7238",
+                "prec.d650cf4dd30a76d2"
+              ]
+            }
+          ],
+          "refused_asks": [
+            {
+              "text": "Either party may assign this Agreement freely without consent.",
+              "n_deals": 3,
+              "first_signed": "2025-01",
+              "last_signed": "2025-06",
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-c",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.5d40b231f6837800",
+                "prec.642e03effa3a5b0d",
+                "prec.d3d90fbff1e62068"
+              ]
+            }
+          ],
+          "changed_openings": [],
+          "n_variants_total": 1,
+          "n_refused_total": 1,
+          "n_changed_openings_total": 0,
+          "n_signed_without_verified": 1,
+          "n_signed_without_possible": 0,
+          "verified_absent_deals": [
+            {
+              "document_id": "deal-e",
+              "signed_on": null,
+              "absence_id": "abs.95396f368c599e9e"
+            }
+          ]
+        },
+        {
+          "id": "clause.survival",
+          "taxonomy_id": "survival",
+          "title": "Survival",
+          "our_standard": {
+            "parts": [
+              {
+                "part_id": "8c43b4b0",
+                "text": "Sections on confidentiality and payment survive the end of this Agreement."
+              }
+            ],
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "20"
+            }
+          },
+          "n_deals": 0,
+          "first_signed": null,
+          "last_signed": null,
+          "n_signed_standard": 0,
+          "n_opened_standard": 0,
+          "n_kept_standard": 0,
+          "standard_history": {
+            "forms": [],
+            "why_changed": null
+          },
+          "positions": {
+            "standard": 0,
+            "equivalent": 0,
+            "more_protective": 0,
+            "less_protective": 0,
+            "mixed": 0,
+            "different_concept": 0,
+            "unjudged": 0
+          },
+          "signed_variants": [],
+          "refused_asks": [],
+          "changed_openings": [],
+          "n_variants_total": 0,
+          "n_refused_total": 0,
+          "n_changed_openings_total": 0,
+          "n_signed_without_verified": 6,
+          "n_signed_without_possible": 0,
+          "verified_absent_deals": [
+            {
+              "document_id": "deal-d",
+              "signed_on": "2025-06-30",
+              "absence_id": "abs.f3e1790e1b7ab487"
+            },
+            {
+              "document_id": "deal-f",
+              "signed_on": "2025-06-30",
+              "absence_id": "abs.9395ee1a456d7f61"
+            },
+            {
+              "document_id": "deal-c",
+              "signed_on": "2025-01-15",
+              "absence_id": "abs.5c66557d3d269912"
+            },
+            {
+              "document_id": "deal-a",
+              "signed_on": null,
+              "absence_id": "abs.b340746e4d46a6c7"
+            },
+            {
+              "document_id": "deal-b",
+              "signed_on": null,
+              "absence_id": "abs.b8066614965f14dc"
+            }
+          ]
+        }
+      ],
+      "uncovered_clause_types": []
+    },
+    "manifest": {
+      "hard_rules": [
+        {
+          "rule_id": "venue-holds",
+          "clause_id": "clause.venue",
+          "taxonomy_id": "venue",
+          "statement": "Venue must stay in Delaware or New York.",
+          "required_presence": true,
+          "condition": {
+            "type": "required_phrases",
+            "phrases": [
+              "State of Delaware",
+              "State of New York"
+            ],
+            "match": "any"
+          },
+          "permissible_proof": [
+            "a venue waiver signed by the General Counsel"
+          ],
+          "fallback_language": "The courts of the State of Delaware have exclusive jurisdiction."
+        },
+        {
+          "rule_id": "venue-no-arbitration",
+          "clause_id": "clause.venue",
+          "taxonomy_id": "venue",
+          "statement": "Do not agree to binding arbitration of venue disputes.",
+          "required_presence": false,
+          "condition": "judged",
+          "permissible_proof": [],
+          "fallback_language": "The courts of the State of Delaware have exclusive jurisdiction."
+        },
+        {
+          "rule_id": "term-cap",
+          "clause_id": "clause.term",
+          "taxonomy_id": "term",
+          "statement": "The term must not exceed five years.",
+          "required_presence": false,
+          "condition": {
+            "type": "numeric_bound",
+            "pattern": "([0-9]+) years",
+            "max": 5,
+            "unit": "years"
+          },
+          "permissible_proof": [],
+          "fallback_language": null
+        },
+        {
+          "rule_id": "survival-reference",
+          "clause_id": "clause.survival",
+          "taxonomy_id": "survival",
+          "statement": "Survival must refer back to the term clause.",
+          "required_presence": true,
+          "condition": {
+            "type": "cross_reference",
+            "clause_id": "clause.term"
+          },
+          "permissible_proof": [],
+          "fallback_language": "Sections on confidentiality and payment survive the end of this Agreement."
+        },
+        {
+          "rule_id": "survival-scope",
+          "clause_id": "clause.survival",
+          "taxonomy_id": "survival",
+          "statement": "Survival scope 0: this obligation outlasts the Agreement for its full period. Survival scope 1: this obligation outlasts the Agreement for its full period. Survival scope 2: this obligation outlasts the Agreement for its full period. Survival scope 3: this obligation outlasts the Agreement for its full period. Survival scope 4: this obligation outlasts the Agreement for its full period. Survival scope 5: this obligation outlasts the Agreement for its full period. Survival scope 6: this obligation outlasts the Agreement for its full period. Survival scope 7: this obligation outlasts the Agreement for its full period. Survival scope 8: this obligation outlasts the Agreement for its full period. Survival scope 9: this obligation outlasts the Agreement for its full period. Survival scope 10: this obligation outlasts the Agreement for its full period. Survival scope 11: this obligation outlasts the Agreement for its full period. Survival scope 12: this obligation outlasts the Agreement for its full period. Survival scope 13: this obligation outlasts the Agreement for its full period. Survival scope 14: this obligation outlasts the Agreement for its full period. Survival scope 15: this obligation outlasts the Agreement for its full period. Survival scope 16: this obligation outlasts the Agreement for its full period. Survival scope 17: this obligation outlasts the Agreement for its full period. Survival scope 18: this obligation outlasts the Agreement for its full period. Survival scope 19: this obligation outlasts the Agreement for its full period. Survival scope 20: this obligation outlasts the Agreement for its full period. Survival scope 21: this obligation outlasts the Agreement for its full period. Survival scope 22: this obligation outlasts the Agreement for its full period. Survival scope 23: this obligation outlasts the Agreement for its full period.",
+          "required_presence": false,
+          "condition": "judged",
+          "permissible_proof": [],
+          "fallback_language": "Sections on confidentiality and payment survive the end of this Agreement."
+        },
+        {
+          "rule_id": "survival-period",
+          "clause_id": "clause.survival",
+          "taxonomy_id": "survival",
+          "statement": "Survival period 0: this obligation outlasts the Agreement for its full period. Survival period 1: this obligation outlasts the Agreement for its full period. Survival period 2: this obligation outlasts the Agreement for its full period. Survival period 3: this obligation outlasts the Agreement for its full period. Survival period 4: this obligation outlasts the Agreement for its full period. Survival period 5: this obligation outlasts the Agreement for its full period. Survival period 6: this obligation outlasts the Agreement for its full period. Survival period 7: this obligation outlasts the Agreement for its full period. Survival period 8: this obligation outlasts the Agreement for its full period. Survival period 9: this obligation outlasts the Agreement for its full period. Survival period 10: this obligation outlasts the Agreement for its full period. Survival period 11: this obligation outlasts the Agreement for its full period. Survival period 12: this obligation outlasts the Agreement for its full period. Survival period 13: this obligation outlasts the Agreement for its full period. Survival period 14: this obligation outlasts the Agreement for its full period. Survival period 15: this obligation outlasts the Agreement for its full period. Survival period 16: this obligation outlasts the Agreement for its full period. Survival period 17: this obligation outlasts the Agreement for its full period. Survival period 18: this obligation outlasts the Agreement for its full period. Survival period 19: this obligation outlasts the Agreement for its full period. Survival period 20: this obligation outlasts the Agreement for its full period. Survival period 21: this obligation outlasts the Agreement for its full period. Survival period 22: this obligation outlasts the Agreement for its full period. Survival period 23: this obligation outlasts the Agreement for its full period.",
+          "required_presence": false,
+          "condition": "judged",
+          "permissible_proof": [],
+          "fallback_language": "Sections on confidentiality and payment survive the end of this Agreement."
+        },
+        {
+          "rule_id": "no-ghost-clause",
+          "clause_id": null,
+          "taxonomy_id": "ghost_clause",
+          "statement": "Nothing here about a clause the corpus never saw.",
+          "required_presence": false,
+          "condition": "judged",
+          "permissible_proof": [],
+          "fallback_language": null
+        }
+      ]
+    },
+    "dossiers": {
+      "clause.venue": {
+        "clause_id": "clause.venue",
+        "taxonomy_id": "venue",
+        "title": "Venue",
+        "our_standard": {
+          "parts": [
+            {
+              "part_id": "68f94fdb",
+              "text": "The courts of the State of Delaware have exclusive jurisdiction."
+            }
+          ]
+        },
+        "n_floor_rules": 2,
+        "floor_rules": [
+          {
+            "rule_id": "venue-holds",
+            "statement": "Venue must stay in Delaware or New York.",
+            "rationale": "Our litigation counsel sits in those two states."
+          },
+          {
+            "rule_id": "venue-no-arbitration",
+            "statement": "Do not agree to binding arbitration of venue disputes."
+          }
+        ],
+        "excerpts": [
+          {
+            "precedent_id": "prec.dcd670d1fc2dfeae",
+            "kind": "signed_variant",
+            "opening": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "signed": "The courts of the State of New York have exclusive jurisdiction.",
+            "outcome": "signed",
+            "vs_standard": null
+          },
+          {
+            "precedent_id": "prec.9d7d9ff3e91b2a7b",
+            "kind": "changed_opening",
+            "opening": "Disputes will be heard by the courts of the State of Oregon.",
+            "signed": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "outcome": "signed",
+            "vs_standard": null
+          }
+        ],
+        "n_omitted": 0,
+        "omitted_precedent_ids": []
+      },
+      "clause.term": {
+        "clause_id": "clause.term",
+        "taxonomy_id": "term",
+        "title": "Term",
+        "our_standard": null,
+        "n_floor_rules": 1,
+        "floor_rules": [],
+        "excerpts": [
+          {
+            "precedent_id": "prec.935f0f00eba23b43",
+            "kind": "signed_variant",
+            "opening": null,
+            "signed": "Section 0 of the term provisions binds each party for the full period. Section 1 of the term provisions binds each party for the full period. Section 2 of the term provisions binds each party for the full period. Section 3 of the term provisions binds each party for the full period. Section 4 of the term provisions binds each party for the full period. Section 5 of the term provisions binds each party for the full period. Section 6 of the term provisions binds each party for the full period. Section 7 of the term provisions binds each party for the full period. Section 8 of the term provisions binds each party for the full period. Section 9 of the term provisions binds each party for the full period. Section 10 of the term provisions binds each party for the full period. Section 11 of the term provisions binds each party for the full period. Section 12 of the term provisions binds each party for the full period. Section 13 of the term provisions binds each party for the full period. Section 14 of the term provisions binds each party for the full period. Section 15 of the term provisions binds each party for the full period. Section 16 of the term provisions binds each party for the full period. Section 17 of the term provisions binds each party for the full period. Section 18 of the term provisions binds each party for the full period. Section 19 of the term provisions binds each party for the full period. Section 20 of the term provisions binds each party for the full period. Section 21 of the term provisions binds each party for the full period. Section 22 of the term provisions binds each party for the full period. Section 23 of the term provisions binds each party for the full period. Section 24 of the term provisions binds each party for the full period. Section 25 of the term provisions binds each party for the full period. Section 26 of the term provisions binds each party for the full period. Section 27 of the term provisions binds each party for the full period. Section 28 of the term provisions binds each party for the full period. Section 29 of the term provisions binds each party for the full period. Section 30 of the term provisions binds each party for the full period. Section 31 of the term provisions binds each party for the full period. Section 32 of the term provisions binds each party for the full period. Section 33 of the term provisions binds each party for the full period. Section 34 of the term provisions binds each party for the full period. Section 35 of the term provisions binds each party for the full period. Section 36 of the term provisions binds each party for the full period. Section 37 of the term provisions binds each party for the full period. Section 38 of the term provisions binds each party for the full period. Section 39 of the term provisions binds each party for the full period. Section 40 of the term provisions binds each party for the full period. Section 41 of the term provisions binds each party for the full period. Section 42 of the term provisions binds each party for the full period. Section 43 of the term provisions binds each party for the full period. Section 44 of the term provisions binds each party for the full period. Section 45 of the term provisions binds each party for the full period. Section 46 of the term provisions binds each party for the full period. Section 47 of the term provisions binds each party for the full period. Section 48 of the term provisions binds each party for the full period. Section 49 of the term provisions binds each party for the full period. Section 50 of the term provisions binds each party for the full period. Section 51 of the term provisions binds each party for the full period. Section 52 of the term provisions binds each party for the full period. Section 53 of the term provisions binds each party for the full period. Section 54 of the term provisions binds each party for the full period. Section 55 of the term provisions binds each party for the full period. Section 56 of the term provisions binds each party for the full period. Section 57 of the term provisions binds each party for the full period. Section 58 of the term provisions binds each party for the full period. Section 59 of the term provisions binds each party for the full period. Section 60 of the term provisions binds each party for the full period. Section 61 of the term provisions binds each party for the full period. Section 62 of the term provisions binds each party for the full period. Section 63 of the term provisions binds each party for the full period. Section 64 of the term provisions binds each party for the full period. Section 65 of the term provisions binds each party for the full period. Section 66 of the term provisions binds each party for the full period. Section 67 of the term provisions binds each party for the full period. Section 68 of the term provisions binds each party for the full period. Section 69 of the term provisions binds each party for the full period. Section 70 of the term provisions binds each party for the full period. Section 71 of the term provisions binds each party for the full period. Section 72 of the term provisions binds each party for the full period. Section 73 of the term provisions binds each party for the full period. Section 74 of the term provisions binds each party for the full period. Section 75 of the term provisions binds each party for the full period. Section 76 of the term provisions binds each party for the full period. Section 77 of the term provisions binds each party for the full period. Section 78 of the term provisions binds each party for the full period. Section 79 of the term provisions binds each party for the full period.",
+            "outcome": "signed",
+            "vs_standard": null
+          }
+        ],
+        "n_omitted": 1,
+        "omitted_precedent_ids": [
+          "prec.84aa5401e35ea65e"
+        ]
+      },
+      "clause.assignment": {
+        "clause_id": "clause.assignment",
+        "taxonomy_id": "assignment",
+        "title": "Assignment",
+        "our_standard": {
+          "parts": [
+            {
+              "part_id": "4af3568d",
+              "text": "Neither party may assign this Agreement without the other party's prior written consent."
+            }
+          ]
+        },
+        "n_floor_rules": 0,
+        "floor_rules": [],
+        "excerpts": [
+          {
+            "precedent_id": "prec.d650cf4dd30a76d2",
+            "kind": "signed_variant",
+            "opening": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "signed": "Either party may assign this Agreement to an affiliate without consent.",
+            "outcome": "signed",
+            "vs_standard": null
+          },
+          {
+            "precedent_id": "prec.642e03effa3a5b0d",
+            "kind": "refused_ask",
+            "opening": "Either party may assign this Agreement freely without consent.",
+            "signed": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "outcome": "ask_refused",
+            "vs_standard": null
+          }
+        ],
+        "n_omitted": 0,
+        "omitted_precedent_ids": []
+      },
+      "clause.survival": {
+        "clause_id": "clause.survival",
+        "taxonomy_id": "survival",
+        "title": "Survival",
+        "our_standard": {
+          "parts": [
+            {
+              "part_id": "8c43b4b0",
+              "text": "Sections on confidentiality and payment survive the end of this Agreement."
+            }
+          ]
+        },
+        "n_floor_rules": 3,
+        "floor_rules": [
+          {
+            "rule_id": "survival-reference",
+            "statement": "Survival must refer back to the term clause."
+          },
+          {
+            "rule_id": "survival-scope",
+            "statement": "Survival scope 0: this obligation outlasts the Agreement for its full period. Survival scope 1: this obligation outlasts the Agreement for its full period. Survival scope 2: this obligation outlasts the Agreement for its full period. Survival scope 3: this obligation outlasts the Agreement for its full period. Survival scope 4: this obligation outlasts the Agreement for its full period. Survival scope 5: this obligation outlasts the Agreement for its full period. Survival scope 6: this obligation outlasts the Agreement for its full period. Survival scope 7: this obligation outlasts the Agreement for its full period. Survival scope 8: this obligation outlasts the Agreement for its full period. Survival scope 9: this obligation outlasts the Agreement for its full period. Survival scope 10: this obligation outlasts the Agreement for its full period. Survival scope 11: this obligation outlasts the Agreement for its full period. Survival scope 12: this obligation outlasts the Agreement for its full period. Survival scope 13: this obligation outlasts the Agreement for its full period. Survival scope 14: this obligation outlasts the Agreement for its full period. Survival scope 15: this obligation outlasts the Agreement for its full period. Survival scope 16: this obligation outlasts the Agreement for its full period. Survival scope 17: this obligation outlasts the Agreement for its full period. Survival scope 18: this obligation outlasts the Agreement for its full period. Survival scope 19: this obligation outlasts the Agreement for its full period. Survival scope 20: this obligation outlasts the Agreement for its full period. Survival scope 21: this obligation outlasts the Agreement for its full period. Survival scope 22: this obligation outlasts the Agreement for its full period. Survival scope 23: this obligation outlasts the Agreement for its full period."
+          }
+        ],
+        "excerpts": [],
+        "n_omitted": 0,
+        "omitted_precedent_ids": []
+      }
+    },
+    "provenance_index": {
+      "compiler": {
+        "name": "playbook-engine",
+        "version": "1.0.0"
+      },
+      "corpus_manifest_hash": "sha256:2578a9fe16ee708a8b442dc778eecbd16c9c53a1dde0648d3f8a6f12d0458620",
+      "documents": [
+        {
+          "document_id": "deal-a",
+          "signed_on": null,
+          "version_files": [
+            {
+              "version": 1,
+              "sha256": "sha256:bcbf830feeb78b4329ed1e3606c7c2d017d0577047e88ad42aa6803372007444"
+            },
+            {
+              "version": 2,
+              "sha256": "sha256:c48bd56aa95546be050588c606d160a7a4695ab4eebd9678685ee7c463822af5"
+            },
+            {
+              "version": 3,
+              "sha256": "sha256:06d8307da0a465fe3bd1e6dab28026c4fe206ed1712373ec0b87247f66f2bf35"
+            }
+          ]
+        },
+        {
+          "document_id": "deal-b",
+          "signed_on": null,
+          "version_files": [
+            {
+              "version": 1,
+              "sha256": "sha256:7a5650d730df1228bfc2c2e92af98f8e2991122547f3e678ca8c3560da32d49a"
+            },
+            {
+              "version": 2,
+              "sha256": "sha256:953aafdaefebd1f3b3d9249a94976233d13cc308b97d7c13ffa58208884b00ed"
+            },
+            {
+              "version": 3,
+              "sha256": "sha256:06e001840c6a71dfa7cb6b180c626b2d0f7637285b506ec47fbcf10cfceb7516"
+            }
+          ]
+        },
+        {
+          "document_id": "deal-d",
+          "signed_on": "2025-06-30",
+          "version_files": [
+            {
+              "version": 1,
+              "sha256": "sha256:59bb89cc95f2fe01e724d8b661a09b9de7b0cf53a2aa0f04baa94b6b7e49184c"
+            },
+            {
+              "version": 2,
+              "sha256": "sha256:c8905948833e52fdf2239ecaf45205982615a013260f40e25933245115c21bee"
+            },
+            {
+              "version": 3,
+              "sha256": "sha256:9cc69262bba4d5aec35886d0f9b5cce3e6bb0aff9ca0992618ecf173316e65d2"
+            }
+          ]
+        },
+        {
+          "document_id": "deal-e",
+          "signed_on": null,
+          "version_files": [
+            {
+              "version": 1,
+              "sha256": "sha256:7c115f75a80c322fc7ed57df9d44087b29e045ab5c7717a092d6a2d589fc323f"
+            },
+            {
+              "version": 2,
+              "sha256": "sha256:a31833790417c9420fcb531ed6cf35de5b03e7ea0fc84a4547edcced3e252ae4"
+            },
+            {
+              "version": 3,
+              "sha256": "sha256:39cd71c09c05c6a393dbf5556239e356ba7dae8484e0af78200ca0f3e4912d63"
+            }
+          ]
+        },
+        {
+          "document_id": "deal-f",
+          "signed_on": "2025-06-30",
+          "version_files": []
+        }
+      ],
+      "dossiers": {
+        "clause.venue": [
+          {
+            "precedent_id": "prec.dcd670d1fc2dfeae",
+            "document_id": "deal-a",
+            "kind": "signed_variant",
+            "omitted": false
+          },
+          {
+            "precedent_id": "prec.9d7d9ff3e91b2a7b",
+            "document_id": "deal-d",
+            "kind": "changed_opening",
+            "omitted": false
+          }
+        ],
+        "clause.term": [
+          {
+            "precedent_id": "prec.935f0f00eba23b43",
+            "document_id": "deal-a",
+            "kind": "signed_variant",
+            "omitted": false
+          },
+          {
+            "precedent_id": "prec.84aa5401e35ea65e",
+            "document_id": "deal-e",
+            "kind": "signed_variant",
+            "omitted": true
+          }
+        ],
+        "clause.assignment": [
+          {
+            "precedent_id": "prec.d650cf4dd30a76d2",
+            "document_id": "deal-b",
+            "kind": "signed_variant",
+            "omitted": false
+          },
+          {
+            "precedent_id": "prec.642e03effa3a5b0d",
+            "document_id": "deal-f",
+            "kind": "refused_ask",
+            "omitted": false
+          }
+        ],
+        "clause.survival": []
+      }
+    }
+  }
+}

@@ -1,0 +1,32 @@
+# Clause taxonomy — general-commercial supplemental categories.
+# Loadable as `taxonomy: builtin:general-commercial.yaml`.
+#
+# Curated playbook-engine additions for common contract headings the
+# upstream CUAD v1 taxonomy does not cover. cuad_origin is null on
+# every entry BY DESIGN: attributing these to CUAD would be false
+# provenance (2026-07 audit finding). The taxonomy inductor records
+# matches against this list with source playbook-engine-base.
+# Companion to the CUAD v1 derivation by CUAD v1 by The Atticus Project (CC-BY-4.0) — see NOTICE.
+# https://www.atticusprojectai.org/cuad
+source: playbook-engine-base
+entries:
+  - { id: indemnification, label: "Indemnification", status: active, cuad_origin: null }
+  - { id: termination_for_cause, label: "Termination for Cause", status: active, cuad_origin: null }
+  - { id: dispute_resolution, label: "Dispute Resolution", status: active, cuad_origin: null }
+  - { id: force_majeure, label: "Force Majeure", status: active, cuad_origin: null }
+  - { id: waiver_jury_trial, label: "Waiver of Jury Trial", status: active, cuad_origin: null }
+  - { id: amendment, label: "Amendment", status: active, cuad_origin: null }
+  - { id: severability, label: "Severability", status: active, cuad_origin: null }
+  - { id: entire_agreement, label: "Entire Agreement", status: active, cuad_origin: null }
+  - { id: notices, label: "Notices", status: active, cuad_origin: null }
+  - { id: confidentiality, label: "Confidentiality", status: active, cuad_origin: null }
+  - { id: limitation_of_liability, label: "Limitation of Liability", status: active, cuad_origin: null }
+  - { id: payment_terms, label: "Payment Terms", status: active, cuad_origin: null }
+  - { id: representations_warranties, label: "Representations and Warranties", status: active, cuad_origin: null }
+  - { id: non_discrimination, label: "Non-Discrimination", status: active, cuad_origin: null }
+  - { id: insurance_requirements, label: "Insurance Requirements", status: active, cuad_origin: null }
+  - { id: background_checks, label: "Background Checks", status: active, cuad_origin: null }
+  - { id: relationship_of_parties, label: "Relationship of Parties", status: active, cuad_origin: null }
+  # structural: true (issue #106) — pure execution mechanics (how many
+  # signature-page copies exist), never a negotiated legal position.
+  - { id: counterparts, label: "Counterparts", status: active, cuad_origin: null, structural: true }

@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://contract-opf.github.io/playbook-engine/spec/clause-tree.schema.json",
+  "title": "ClauseTree",
+  "description": "Normalized clause tree for one version of one document (intermediate artifact, not OPF).",
+  "type": "object",
+  "required": ["document_id", "version", "source_file", "nodes"],
+  "additionalProperties": false,
+  "properties": {
+    "document_id": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Corpus document identifier (corpus/<document_id>/)."
+    },
+    "version": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Version label within the document folder."
+    },
+    "source_file": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Original filename (basename) of the source document."
+    },
+    "nodes": {
+      "type": "array",
+      "description": "Top-level clause nodes in document order.",
+      "items": { "$ref": "#/$defs/ClauseNode" }
+    }
+  },
+  "$defs": {
+    "ClauseNode": {
+      "type": "object",
+      "required": ["clause_path", "text", "char_span"],
+      "additionalProperties": false,
+      "properties": {
+        "clause_path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Dotted section numbering, e.g. '1', '2.3', '10.1.2'."
+        },
+        "heading": {
+          "type": ["string", "null"],
+          "description": "Section title, or null if absent."
+        },
+        "text": {
+          "type": "string",
+          "description": "Body text of this node (not including children)."
+        },
+        "char_span": {
+          "type": "array",
+          "description": "Exclusive-end character span [start, end] in the document's full normalized text, covering the whole clause: from the start of its heading line through the end of its own body text (children excluded). OPF citations' char_span use this span.",
+          "items": { "type": "integer", "minimum": 0 },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "heading_span": {
+          "type": ["array", "null"],
+          "description": "Exclusive-end character span [start, end] of the heading line alone, in the same coordinate system as char_span. Absent or null when the node has no separate heading line (the synthetic pre-heading '0' node, sub-clauses promoted from body text, LLM/agent-grounded nodes). When present, heading_span[0] == char_span[0] and heading_span[1] <= char_span[1].",
+          "items": { "type": "integer", "minimum": 0 },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "page": {
+          "type": ["integer", "null"],
+          "minimum": 1,
+          "description": "1-based source page the clause begins on, or null when unpaginated or unknown."
+        },
+        "children": {
+          "type": "array",
+          "description": "Ordered child ClauseNode objects.",
+          "items": { "$ref": "#/$defs/ClauseNode" },
+          "default": []
+        },
+        "x_resegmented": {
+          "type": ["object", "null"],
+          "description": "Vendor key (issue #255). Present on a node the re-segmentation pass split out of, or joined from, other nodes: {split_from | joined_with, basis, origin_span / origin_spans, scores, to / at}. char_span of such a node lies inside the original node's span (or covers the two joined spans), so an OPF citation still resolves to the original bytes. A node split out of another is numbered '<clause_path>.r<k>' and is a child of the node it was cut from. A node the agent sub-split made (issue #257) records {subsplit_from, basis: 'agent', origin_span, span, of, key}; its later spans are numbered '<clause_path>.s<k>'."
+        },
+        "x_non_clause": {
+          "type": ["string", "null"],
+          "description": "Vendor key (issue #255). Present on an unclassified node that is not a clause (numbering_only, signature_block, heading_or_placeholder, header_footer, fragment, lead_in, ocr_junk, email). The node is kept so citations resolve; it is left out of classification, precedent and absence counts."
+        }
+      }
+    }
+  }
+}

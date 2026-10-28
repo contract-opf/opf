@@ -4,8 +4,8 @@
 knowledge a legal team already has, made portable, auditable, and safe to hand
 to an LLM.**
 
-> **Version 0.3** · Apache-2.0 (schemas & code) + CC-BY-4.0 (spec text) ·
-> pre-1.0, breaking changes possible until 1.0
+> **OPF 1.0 (stable)** · document shape `opf_version` **0.6** · `digest_version` **5** ·
+> Apache-2.0 (schemas & code) + CC-BY-4.0 (spec text)
 
 Every legal team already knows what it will accept. That knowledge lives in the
 one place nobody can query: years of redlines, tracked changes, and signed PDFs.
@@ -36,7 +36,7 @@ authored by a different owner and each binding differently at review time:
 
 | Section | What it carries | Author | Binding at review time |
 |---|---|---|---|
-| **Evidence** | What the corpus *shows*: accepted variants, concessions, rejections, per-round negotiation trails — each cited to the document that proves it. *Descriptive, not prescriptive.* | Auto-derived by the compiler | **Advisory** — the model reasons over it |
+| **Evidence** | What the corpus *shows*, as one verdict-free precedent record per (deal, clause): what the deal opened with, what it signed, whether that is our standard language, the asks refused before signing, and when it was signed — each cited to the document that proves it. *Descriptive, not prescriptive.* | Auto-derived by the compiler | **Advisory** — the model reasons over it |
 | **Posture** | Negotiation *intent* as a system-prompt-style prose block: how many rounds, leverage, risk appetite, what's sacred vs. flexible, who reads the output. | Compiler drafts from a short interview; counsel edits & approves | **Soft** — shapes judgment, never a gate |
 | **Floor** | The red lines that must **never** slip, as judge-checkable natural-language invariants ("never accept uncapped liability"). | Legal owner authors & signs (compiler may *propose* candidates) | **Hard** — a violation forces the outcome; the model and the Posture cannot override it |
 
@@ -50,7 +50,9 @@ give.**
 ## Why it's built this way
 
 - **Descriptive, not prescriptive.** Evidence tells the model *what the corpus
-  shows* ("we've consistently held the liability cap"), never *what it must do*.
+  shows* ("9 of 12 signed deals kept our liability cap; 3 signed this variant"),
+  never *what it must do*. Since 0.4 the evidence carries no stance, band, risk
+  or deviation verdict at all — only facts and counts.
   What to actually do on a live clause is decided from Evidence + Posture + the
   deal in front of the model — except where a Floor invariant applies, which is
   non-negotiable. This keeps the useful signal and removes the rigidity that a
@@ -89,9 +91,10 @@ OPF isn't a paper standard. There's a working, end-to-end ecosystem around it:
           └───────────────────────────── all speak OPF ─────────────────────────────┘
 ```
 
-- **The spec** *(this repo)* — OPF 0.3: the JSON schemas ([`schema/`](schema/)),
-  the normative specification ([`OPF-SPEC.md`](OPF-SPEC.md)), and the
-  [changelog](CHANGELOG.md).
+- **The spec** *(this repo)* — OPF 0.6: the JSON schema ([`schema/`](schema/)),
+  the normative specification ([`OPF-SPEC.md`](OPF-SPEC.md)), the
+  [conformance vectors](conformance/), the shipped [taxonomies](taxonomy/), and
+  the [changelog](CHANGELOG.md).
 
 - **[`playbook-engine`](https://github.com/contract-opf/playbook-engine)** — the
   reference **compiler**. Point it at a folder of negotiated agreements (the
@@ -106,10 +109,12 @@ OPF isn't a paper standard. There's a working, end-to-end ecosystem around it:
   tracked-changes redline with footnoted rationale.
 
 - **[`playbooks`](https://github.com/contract-opf/playbooks)**
-  — a real, browsable playbook, compiled from **44 negotiated
-  educational-affiliation agreements (161 versions)** and published pseudonymized
-  as a pedagogical example. Every position cites real observations.
+  — a real, browsable playbook compiled from negotiated
+  educational-affiliation agreements and published pseudonymized as a
+  pedagogical example. Every position cites real observations.
   **[See it rendered →](https://contract-opf.github.io/playbooks/)**
+  *(The published example is still the OPF 0.3 compile; a 0.6 refresh is
+  pending sign-off under that repo's publication policy.)*
 
 ---
 
@@ -117,52 +122,71 @@ OPF isn't a paper standard. There's a working, end-to-end ecosystem around it:
 
 ```jsonc
 {
-  "opf_version": "0.3",
+  "opf_version": "0.6",
   "agreement_type": { "id": "educational-affiliation",
                       "name": "Educational Affiliation Agreement", "aliases": ["eiaa"] },
   "perspective":    { "party": "…", "counterparty_type": "Educational Institution" },
+  "baseline":       { /* our template + any prior_templates (our former forms) */ },
 
-  "evidence": {                       // DESCRIPTIVE · advisory — every claim cited
-    "clauses": [                      //   template-anchored, per clause:
-      { "our_standard": { "...": "..." },
-        "observed_positions": [ /* variant + deviation + risk_delta + provenance + outcome */ ],
-        "negotiation_trail": [ /* round-by-round ask → landing, each citing the post-move state */ ],
-        "summary": { "historical_stance": "usually_held",   // descriptive, NOT an instruction
-                     "acceptable_if": [ /* cited tolerance conditions */ ],
-                     "fallbacks": [ ], "rejected": [ ] } }
+  "evidence": {                       // DESCRIPTIVE · advisory — facts only, every text cited
+    "clauses": [                      //   per clause type: our standard (as parts) + deal counts
+      { "taxonomy_id": "assignment", "our_standard": { "text": "…", "parts": [ /* … */ ] },
+        "n_deals": 12, "n_signed_standard": 9, "n_variants": 2, "n_refused": 1,
+        "n_opened_standard": 10, "n_kept_standard": 8, "prior_standards": [ /* … */ ] }
     ],
-    "clause_library": [ /* concept-indexed positions from counterparty paper */ ]
+    "precedent": [                    //   one verdict-free record per (deal, clause type)
+      { "document_id": "…", "paper": "ours", "signed": true, "signed_on": "2025-01-10",
+        "opened_with": "standard", "opening_text": null,
+        "signed_text": { "text": "…", "ref": { /* document, version, clause_path, char_span */ },
+                         "vs_standard": { "label": "less_protective", "parts": [ /* … */ ] } },
+        "standard": false, "moved": true, "rounds": 2, "refused_asks": [ /* cited */ ] }
+    ],
+    "absence": { "guard": 0.1, "records": [ /* absent_verified | possibly_present, cited */ ] }
   },
 
   "posture": { "system_prompt": "…how to negotiate this agreement type…", "version": 1 },  // SOFT
   "floor":   { "invariants": [ { "statement": "Never accept uncapped liability." } ] },     // HARD
 
-  "digest":   { /* compact model-facing projection of evidence (0.3) — designed to BE the prompt */ },
-  "corpus":   { /* per-document provenance, content addresses, snapshot hash — out-of-scope docs retained */ },
+  "digest":   { "digest_version": "5", /* compact model-facing projection — designed to BE the prompt */ },
+  "manifest": { /* the Floor as a hard-rule list */ }, "dossiers": [ /* per-clause critic briefs */ ],
+  "corpus":   { /* per-document provenance, signing dates, content addresses, snapshot hash */ },
   "identity": { "content_hash": "sha256:…", "section_digests": { "evidence": "sha256:…", "...": "..." } }
 }
 ```
 
 A few things worth calling out:
 
-- **`historical_stance`** (`consistently_held` / `usually_held` / `mixed` /
-  `usually_conceded` / `no_signal`) answers *"what has the corpus shown we do
-  here?"* — never *"what must you do?"*. A consumer treats it as evidence, not a
-  directive.
+- **Verdict-free precedent.** Each `evidence.precedent[]` record states facts —
+  what the deal opened with (`opened_with`: `standard` / `prior_standard` /
+  `non_standard` / `absent`), what it signed, whether that is our standard
+  (`standard`), whether the clause `moved`, the `refused_asks`, and `signed_on`.
+  It never says "held" or "conceded"; a consumer or the digest derives those.
+- **`vs_standard`** is the one judged field outside `x_judgments`: each distinct
+  non-standard text is compared to our standard *part by part*, blind-checked
+  by an independent model, and its `settled` state (`agreed` / `adjudicated` /
+  `unchecked` / `owner`) travels with it.
+- **Absence is verified, not assumed.** A deal with no record for a clause may
+  just be a missed classification, so `evidence.absence` scores the deal's
+  unclassified text against the clause and records `absent_verified` or
+  `possibly_present` with cited candidates.
+- **Our former forms** (`baseline.prior_templates`, `prior_standards`) keep our
+  own older wording from reading as a counterparty concession.
+- **`digest`** (`digest_version` 5) is the compact projection of `evidence`
+  designed to *be* the system-prompt payload of a review app, with
+  `example_ref` / `precedent_ids` that drill back into the full document.
+  `manifest`, `dossiers` and `provenance_index` give a reviewer the Floor as
+  rules and a budgeted, cited brief per clause.
 - **The provenance rule.** Only *our-paper* drafting may define an opening
-  position; a clause that survived only in the counterparty's template informs
-  tolerance bounds but MUST NOT set our standard. Survivorship is not
-  endorsement.
-- **`digest`** (new in 0.3) is the compact projection of `evidence` designed to
-  *be* the system-prompt payload of a review app — capped to a token budget,
-  with `example_ref` citations that drill back into the full document.
+  position; a clause that survived only in the counterparty's template MUST NOT
+  set our standard. Survivorship is not endorsement.
 - **`x_*` vendor extensions** are reserved at designated levels; conformant
   consumers ignore unknown ones, and a playbook stripped of every `x_*` field
   must mean the same thing.
 
-The full normative detail — citations (§4), the determinism boundary (§5),
+The full normative detail — the precedent record (§3.5.4–§3.5.8), the digest
+(§3.12), citations (§4), the determinism boundary (§5),
 producer/author/consumer responsibilities (§6), the Posture interview (§7),
-governance & lineage (§8), conformance (§10) — is in
+governance & lineage (§8), conformance (§10), versioning (§11) — is in
 **[`OPF-SPEC.md`](OPF-SPEC.md)**.
 
 ---
@@ -171,33 +195,55 @@ governance & lineage (§8), conformance (§10) — is in
 
 ```
 opf/
-├── README.md                      # this file
-├── OPF-SPEC.md                    # the normative specification (CC-BY-4.0)
-├── CHANGELOG.md                   # spec changelog
-├── LICENSE                        # Apache-2.0
-└── schema/
-    ├── playbook.schema-0.3.json   # current — OPF 0.3 (frozen at digest_version 2)
-    ├── playbook.schema-0.2.json   # OPF 0.2 (three-section model)
-    └── playbook.schema.json       # OPF 0.1 (initial draft)
+├── README.md                        # this file
+├── OPF-SPEC.md                      # the normative specification (CC-BY-4.0)
+├── CHANGELOG.md                     # spec changelog, with the current sha256 pins
+├── LICENSE                          # Apache-2.0
+├── schema/
+│   ├── playbook.schema-0.6.json     # current — OPF 0.6 / digest_version 5
+│   ├── clause-tree.schema.json      # the compiler's intermediate clause tree (not OPF)
+│   └── retired/                     # OPF 0.1–0.3, retired 2026-10-07 (kept for history)
+├── conformance/
+│   ├── README.md                    # what the vectors define and how to use them
+│   └── 0.6/                         # manifest.json + 14 {input, expected} vectors
+└── taxonomy/                        # the clause taxonomies the reference compiler ships
 ```
 
-Validators dispatch on the document's `opf_version` — one validator, three
-schemas. The schema files are byte-vendored from the reference implementation,
-where their canonical `$id`s resolve; see [`schema/README.md`](schema/README.md).
+Every file except this README and [`schema/README.md`](schema/README.md) is
+**byte-vendored** from the reference implementation's `spec/` and
+`docs/OPF-SPEC.md`, where the canonical `$id`s resolve. Paths inside the
+vendored text (`playbook_engine/…`, `tests/…`, `docs/…`) refer to
+[`playbook-engine`](https://github.com/contract-opf/playbook-engine).
+
+| File | sha256 |
+|---|---|
+| `schema/playbook.schema-0.6.json` | `b2a925811fd661c5d7c11eaa768444fa63764b479c34fff9a50187c580668bf2` |
+| `conformance/0.6/` (manifest.json + vectors/*.json, concatenated) | `c5e3828e7d59c961aca2d633b390b3ea536902e7818efe0dd778a0916cf8be96` |
+
+These match the **Current pins** in [`CHANGELOG.md`](CHANGELOG.md).
 
 ---
 
 ## Status & roadmap
 
-OPF is **0.3**, frozen at `digest_version` 2 and additive over 0.2 (a 0.2
-document is a valid 0.3 document once its version is bumped). It's **pre-1.0**:
-minor versions may still break compatibility.
+The spec text is **OPF 1.0 (stable)**: a stability commitment, not a shape
+change. The one current document shape is **`opf_version` 0.6** with
+**`digest_version` 5**; the reference engine reads and writes exactly that.
 
+- **Retirement (2026-10-07).** With no installed consumer to stay compatible
+  with, the owner retired OPF 0.1–0.3 and `digest_version` 2 (issue #238);
+  0.5 then replaced 0.4 in place, and 0.6 replaced 0.5 in place (issues #233,
+  #247), so **0.1–0.5 are all retired** and a conformant validator rejects them
+  as unsupported. Retirement never edits a format: the 0.1–0.3 schemas this repo
+  published are kept unchanged under [`schema/retired/`](schema/retired/); 0.4
+  and 0.5 never left the reference engine and live in its git history. A
+  document in a retired format is not converted — re-compile it.
+- **Stability policy.** Within 1.x, a release may add an OPTIONAL field or an
+  `x_*` extension, never a REQUIRED field, a removal, a retype or a changed
+  meaning; such an additive change still ships as a new `opf_version`. Any new
+  or changed MUST is recorded under `### Normative rule changes`.
 - **Immutability rule.** Once a consumer exists, a published `opf_version` is
-  immutable — shape or *semantic* changes get a new version, never an in-place
-  edit. Spec-affecting changes are pinned by hash and CI-enforced.
-- **Stable:** the three-section model, the risk-delta/provenance model,
-  citations, `identity`/content-hashing, the conformance rules.
+  immutable. Spec-affecting changes are pinned by hash and CI-enforced.
 - **Open questions** (see the spec's Appendix A): the concrete *interface* a
   composed clause-intelligence module exposes (the governance contract is fixed;
   the wiring is deferred), and pressure-testing Floor minimality on a mature
@@ -211,7 +257,10 @@ We're building an open community around evidence-derived, governable
 negotiation playbooks — and we'd love implementers, reviewers, and critics.
 
 - **Read** the spec ([`OPF-SPEC.md`](OPF-SPEC.md)) and the
-  [schema](schema/playbook.schema-0.3.json).
+  [schema](schema/playbook.schema-0.6.json).
+- **Implement** it in another language: reproduce every `expected.*` value in
+  [`conformance/0.6/vectors/`](conformance/0.6/) from its `input` and your
+  canonicalization and digest are conformant — no Python or engine dependency.
 - **Try** the reference compiler's one-minute quickstart in
   [`playbook-engine`](https://github.com/contract-opf/playbook-engine) — no API
   key needed.

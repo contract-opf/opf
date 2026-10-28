@@ -1,0 +1,67 @@
+# Derived from CUAD v1 by The Atticus Project (CC-BY-4.0) — see NOTICE.
+# https://www.atticusprojectai.org/cuad
+#
+# Clause taxonomy — CUAD-base (type-neutral starting point).
+# Loadable as `taxonomy: builtin:cuad-base.yaml`.
+#
+# The GENUINE CUAD v1 category list: exactly 41 entries, nothing
+# added — headings that merely resemble common contract sections
+# (Indemnification, Confidentiality, Force Majeure, ...) are NOT
+# CUAD categories and live in general-commercial.yaml instead, so
+# CUAD provenance is never claimed falsely (2026-07 audit finding).
+# This file is also the taxonomy inductor's reference list — the
+# single source of truth (issue #167).
+#
+# All entries ship status: active; adopters prune by setting
+# status: inactive per agreement type (never delete).
+source: CUAD-v1
+entries:
+  # structural: true (issue #106) — the document's caption/title, never a
+  # negotiated legal position; a reversal here is segmentation/title-page
+  # churn, not a hard line.
+  - { id: document_name, label: "Document Name", status: active, cuad_origin: "Document Name", structural: true }
+  # structural: true (issue #106) — who the parties are, not what they
+  # agreed to; measured on a real 43-document corpus, this framing alone
+  # produced 54 of the noisiest reversal citations. Reviewer gate: in an
+  # NDA, mutual-vs-one-way framing on this same clause CAN be substantive —
+  # re-litigate this marking per agreement type before trusting it blindly.
+  - { id: parties, label: "Parties", status: active, cuad_origin: "Parties", structural: true }
+  - { id: agreement_date, label: "Agreement Date", status: active, cuad_origin: "Agreement Date" }
+  - { id: effective_date, label: "Effective Date", status: active, cuad_origin: "Effective Date" }
+  - { id: expiration_date, label: "Expiration Date", status: active, cuad_origin: "Expiration Date" }
+  - { id: renewal_term, label: "Renewal Term", status: active, cuad_origin: "Renewal Term" }
+  - { id: notice_period_terminate_renewal, label: "Notice Period to Terminate Renewal", status: active, cuad_origin: "Notice Period to Terminate Renewal" }
+  - { id: governing_law, label: "Governing Law", status: active, cuad_origin: "Governing Law" }
+  - { id: most_favored_nation, label: "Most Favored Nation", status: active, cuad_origin: "Most Favored Nation" }
+  - { id: non_compete, label: "Non-Compete", status: active, cuad_origin: "Non-Compete" }
+  - { id: exclusivity, label: "Exclusivity", status: active, cuad_origin: "Exclusivity" }
+  - { id: no_solicit_customers, label: "No-Solicit of Customers", status: active, cuad_origin: "No-Solicit of Customers" }
+  - { id: competitive_restriction_exception, label: "Competitive Restriction Exception", status: active, cuad_origin: "Competitive Restriction Exception" }
+  - { id: no_solicit_employees, label: "No-Solicit of Employees", status: active, cuad_origin: "No-Solicit of Employees" }
+  - { id: non_disparagement, label: "Non-Disparagement", status: active, cuad_origin: "Non-Disparagement" }
+  - { id: termination_for_convenience, label: "Termination for Convenience", status: active, cuad_origin: "Termination for Convenience" }
+  - { id: rofr_rofo_rofn, label: "ROFR/ROFO/ROFN", status: active, cuad_origin: "ROFR/ROFO/ROFN" }
+  - { id: change_of_control, label: "Change of Control", status: active, cuad_origin: "Change of Control" }
+  - { id: anti_assignment, label: "Anti-Assignment", status: active, cuad_origin: "Anti-Assignment" }
+  - { id: revenue_profit_sharing, label: "Revenue/Profit Sharing", status: active, cuad_origin: "Revenue/Profit Sharing" }
+  - { id: price_restrictions, label: "Price Restrictions", status: active, cuad_origin: "Price Restrictions" }
+  - { id: minimum_commitment, label: "Minimum Commitment", status: active, cuad_origin: "Minimum Commitment" }
+  - { id: volume_restriction, label: "Volume Restriction", status: active, cuad_origin: "Volume Restriction" }
+  - { id: ip_ownership_assignment, label: "IP Ownership Assignment", status: active, cuad_origin: "IP Ownership Assignment" }
+  - { id: joint_ip_ownership, label: "Joint IP Ownership", status: active, cuad_origin: "Joint IP Ownership" }
+  - { id: license_grant, label: "License Grant", status: active, cuad_origin: "License Grant" }
+  - { id: non_transferable_license, label: "Non-Transferable License", status: active, cuad_origin: "Non-Transferable License" }
+  - { id: affiliate_license_licensor, label: "Affiliate License-Licensor", status: active, cuad_origin: "Affiliate License-Licensor" }
+  - { id: affiliate_license_licensee, label: "Affiliate License-Licensee", status: active, cuad_origin: "Affiliate License-Licensee" }
+  - { id: unlimited_all_you_can_eat_license, label: "Unlimited/All-You-Can-Eat License", status: active, cuad_origin: "Unlimited/All-You-Can-Eat License" }
+  - { id: irrevocable_perpetual_license, label: "Irrevocable or Perpetual License", status: active, cuad_origin: "Irrevocable or Perpetual License" }
+  - { id: source_code_escrow, label: "Source Code Escrow", status: active, cuad_origin: "Source Code Escrow" }
+  - { id: post_termination_services, label: "Post-Termination Services", status: active, cuad_origin: "Post-Termination Services" }
+  - { id: audit_rights, label: "Audit Rights", status: active, cuad_origin: "Audit Rights" }
+  - { id: uncapped_liability, label: "Uncapped Liability", status: active, cuad_origin: "Uncapped Liability" }
+  - { id: cap_on_liability, label: "Cap on Liability", status: active, cuad_origin: "Cap on Liability" }
+  - { id: liquidated_damages, label: "Liquidated Damages", status: active, cuad_origin: "Liquidated Damages" }
+  - { id: warranty_duration, label: "Warranty Duration", status: active, cuad_origin: "Warranty Duration" }
+  - { id: insurance, label: "Insurance", status: active, cuad_origin: "Insurance" }
+  - { id: covenant_not_to_sue, label: "Covenant Not to Sue", status: active, cuad_origin: "Covenant Not to Sue" }
+  - { id: third_party_beneficiary, label: "Third-Party Beneficiary", status: active, cuad_origin: "Third-Party Beneficiary" }
