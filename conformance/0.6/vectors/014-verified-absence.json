@@ -1,0 +1,763 @@
+{
+  "name": "verified-absence",
+  "description": "Verified absence counts (OPF-SPEC §3.5.8, §3.12.2, issue #251): evidence.absence has one record for every signed deal and clause type with no signed text, split into absent_verified and possibly_present, and the digest counts them per clause (n_signed_without_verified, n_signed_without_possible) and lists the verified deals (verified_absent_deals, latest signed_on first, undated last). The records are the output of the reference scorer over the deals' signed-text nodes: every node of a signed copy not filed under the clause is counted in n_checked, and a node filed under the clause that is too short to be precedent scores 1.0. Two clauses (assignment, governing law), eight deals. deal-a signed both clauses and is counted by neither; deal-g has no executed copy and is in no count. Assignment: deal-b (one node examined, its governing law clause, nothing close), deal-c (seven unclassified passages, none close), deal-f (opened with our standard and struck it before signing: it still signed without the clause; one node examined, its governing law clause) and deal-h (three nodes) are verified absent (n_signed_without_verified 4); deal-d has an unclassified passage scoring 0.308 against the clause and a passage the classifier filed under a third clause type (subcontracting) scoring 0.133 (a missed classification, so possibly present, candidates best first, each saying what the classifier filed it under, filed_under) and deal-e's executed copy yielded no nodes at all (basis unverifiable, possibly present, nothing checked): n_signed_without_possible 2. Governing law: deal-c and deal-d (whose five nodes score below the guard for this clause) are verified absent, ordered latest signed_on first (deal-d's month-only 2025-04 is after deal-c's 2025-03-10); deal-e is unverifiable and deal-h has a node the classifier assigned to the clause that was too short to be precedent (score 1.0, filed_under the clause itself), so possibly present. A node filed under the clause that is long enough to be precedent gives its deal a signed text and no absence record, so no record here cites one. The guard (0.1) is carried in evidence.absence.guard; a candidate scores at least that, and a scored record is absent_verified exactly when it has no candidate.",
+  "opf_version": "0.6",
+  "engine_version": "1.0.0",
+  "digest_version": "5",
+  "input": {
+    "opf_version": "0.6",
+    "agreement_type": {
+      "id": "conformance-fixture",
+      "name": "Conformance Fixture Agreement"
+    },
+    "baseline": {
+      "has_canonical_template": true
+    },
+    "taxonomy": {
+      "source": "custom",
+      "entries": []
+    },
+    "perspective": {
+      "party": "Fixture Co",
+      "counterparty_type": "Fixture Counterparty"
+    },
+    "evidence": {
+      "clauses": [
+        {
+          "id": "clause.assignment",
+          "taxonomy_id": "assignment",
+          "title": "Assignment",
+          "our_standard": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "9"
+            },
+            "parts": [
+              {
+                "part_id": "4af3568d",
+                "order": 1,
+                "text": "Neither party may assign this Agreement without the other party's prior written consent."
+              }
+            ]
+          },
+          "prior_standards": [],
+          "why_changed": null,
+          "n_deals": 3,
+          "n_signed_standard": 1,
+          "n_variants": 0,
+          "n_refused": 0,
+          "n_opened_standard": 2,
+          "n_kept_standard": 1,
+          "n_opened_prior": 0,
+          "n_kept_prior": 0,
+          "n_moved_to_current": 0,
+          "n_changed_openings": 0
+        },
+        {
+          "id": "clause.governing_law",
+          "taxonomy_id": "governing_law",
+          "title": "Governing Law",
+          "our_standard": {
+            "text": "This Agreement is governed by the laws of the State of New York.",
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "10"
+            },
+            "parts": [
+              {
+                "part_id": "3c174323",
+                "order": 1,
+                "text": "This Agreement is governed by the laws of the State of New York."
+              }
+            ]
+          },
+          "prior_standards": [],
+          "why_changed": null,
+          "n_deals": 3,
+          "n_signed_standard": 2,
+          "n_variants": 1,
+          "n_refused": 0,
+          "n_opened_standard": 2,
+          "n_kept_standard": 2,
+          "n_opened_prior": 0,
+          "n_kept_prior": 0,
+          "n_moved_to_current": 0,
+          "n_changed_openings": 0
+        }
+      ],
+      "precedent": [
+        {
+          "id": "prec.f6b62baad5d33580",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-a",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-01-10",
+          "rounds": 0,
+          "signed_text": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "ref": {
+              "document_id": "deal-a",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": null,
+          "standard": true,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.f288cd49668e1409",
+          "taxonomy_id": "governing_law",
+          "document_id": "deal-a",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-01-10",
+          "rounds": 0,
+          "signed_text": {
+            "text": "This Agreement is governed by the laws of the State of New York.",
+            "ref": {
+              "document_id": "deal-a",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": null,
+          "standard": true,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.b603e975e838016c",
+          "taxonomy_id": "governing_law",
+          "document_id": "deal-b",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-02-10",
+          "rounds": 0,
+          "signed_text": {
+            "text": "This Agreement is governed by the laws of the State of Delaware.",
+            "ref": {
+              "document_id": "deal-b",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.0c341190622c2f9a",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-f",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-06-20",
+          "rounds": 0,
+          "signed_text": null,
+          "opened_with": "standard",
+          "opening_text": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "ref": {
+              "document_id": "deal-f",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": false,
+          "moved": true,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.6f513c05047ed1ee",
+          "taxonomy_id": "governing_law",
+          "document_id": "deal-f",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2025-06-20",
+          "rounds": 0,
+          "signed_text": {
+            "text": "This Agreement is governed by the laws of the State of New York.",
+            "ref": {
+              "document_id": "deal-f",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": null,
+          "standard": true,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.4eba7f545de929ae",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-g",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": false,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "ref": {
+              "document_id": "deal-g",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": null,
+          "opening_text": null,
+          "standard": true,
+          "moved": false,
+          "refused_asks": []
+        }
+      ],
+      "absence": {
+        "guard": 0.1,
+        "records": [
+          {
+            "id": "abs.22f6d82f590e81bc",
+            "taxonomy_id": "assignment",
+            "document_id": "deal-b",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 1,
+            "candidates": []
+          },
+          {
+            "id": "abs.7e108f0711ddbb97",
+            "taxonomy_id": "assignment",
+            "document_id": "deal-c",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 7,
+            "candidates": []
+          },
+          {
+            "id": "abs.590e7cbb47fd10ec",
+            "taxonomy_id": "governing_law",
+            "document_id": "deal-c",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 7,
+            "candidates": []
+          },
+          {
+            "id": "abs.bf1328b9633f043b",
+            "taxonomy_id": "assignment",
+            "document_id": "deal-d",
+            "status": "possibly_present",
+            "basis": "scored",
+            "n_checked": 5,
+            "candidates": [
+              {
+                "ref": {
+                  "document_id": "deal-d",
+                  "version": 3,
+                  "clause_path": "7",
+                  "char_span": [
+                    0,
+                    105
+                  ]
+                },
+                "score": 0.308,
+                "filed_under": null
+              },
+              {
+                "ref": {
+                  "document_id": "deal-d",
+                  "version": 3,
+                  "clause_path": "12",
+                  "char_span": [
+                    0,
+                    98
+                  ]
+                },
+                "score": 0.133,
+                "filed_under": "subcontracting"
+              }
+            ]
+          },
+          {
+            "id": "abs.c8860506952897ee",
+            "taxonomy_id": "governing_law",
+            "document_id": "deal-d",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 5,
+            "candidates": []
+          },
+          {
+            "id": "abs.95396f368c599e9e",
+            "taxonomy_id": "assignment",
+            "document_id": "deal-e",
+            "status": "possibly_present",
+            "basis": "unverifiable",
+            "n_checked": 0,
+            "candidates": []
+          },
+          {
+            "id": "abs.7cbba99f3b1bed59",
+            "taxonomy_id": "governing_law",
+            "document_id": "deal-e",
+            "status": "possibly_present",
+            "basis": "unverifiable",
+            "n_checked": 0,
+            "candidates": []
+          },
+          {
+            "id": "abs.8ea65616f093049c",
+            "taxonomy_id": "assignment",
+            "document_id": "deal-f",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 1,
+            "candidates": []
+          },
+          {
+            "id": "abs.c237a2a8a28af3e7",
+            "taxonomy_id": "assignment",
+            "document_id": "deal-h",
+            "status": "absent_verified",
+            "basis": "scored",
+            "n_checked": 3,
+            "candidates": []
+          },
+          {
+            "id": "abs.880f11fb6844cc4b",
+            "taxonomy_id": "governing_law",
+            "document_id": "deal-h",
+            "status": "possibly_present",
+            "basis": "scored",
+            "n_checked": 3,
+            "candidates": [
+              {
+                "ref": {
+                  "document_id": "deal-h",
+                  "version": 3,
+                  "clause_path": "2",
+                  "char_span": [
+                    0,
+                    24
+                  ]
+                },
+                "score": 1.0,
+                "filed_under": "governing_law"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "posture": {},
+    "floor": {},
+    "corpus": {
+      "documents": [
+        {
+          "document_id": "deal-a",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2025-01-10",
+          "signed_on_basis": "document_text"
+        },
+        {
+          "document_id": "deal-b",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2025-02-10",
+          "signed_on_basis": "document_text"
+        },
+        {
+          "document_id": "deal-c",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2025-03-10",
+          "signed_on_basis": "document_text"
+        },
+        {
+          "document_id": "deal-d",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2025-04",
+          "signed_on_basis": "document_text"
+        },
+        {
+          "document_id": "deal-e",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-f",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2025-06-20",
+          "signed_on_basis": "document_text"
+        },
+        {
+          "document_id": "deal-g",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": null,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-h",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2025-08-01",
+          "signed_on_basis": "document_text"
+        }
+      ],
+      "stats": {}
+    },
+    "compiler": {
+      "name": "playbook-engine",
+      "version": "1.0.0",
+      "run_id": "conformance-fixture-run",
+      "generated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  "expected": {
+    "canonical": "{\"agreement_type\":{\"id\":\"conformance-fixture\",\"name\":\"Conformance Fixture Agreement\"},\"baseline\":{\"has_canonical_template\":true},\"compiler\":{\"name\":\"playbook-engine\",\"version\":\"1.0.0\"},\"corpus\":{\"documents\":[{\"document_id\":\"deal-a\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2025-01-10\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-b\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2025-02-10\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-c\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2025-03-10\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-d\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2025-04\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-e\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-f\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2025-06-20\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-g\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":null,\"versions\":3},{\"document_id\":\"deal-h\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2025-08-01\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3}],\"stats\":{}},\"evidence\":{\"absence\":{\"guard\":0.1,\"records\":[{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-b\",\"id\":\"abs.22f6d82f590e81bc\",\"n_checked\":1,\"status\":\"absent_verified\",\"taxonomy_id\":\"assignment\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-c\",\"id\":\"abs.7e108f0711ddbb97\",\"n_checked\":7,\"status\":\"absent_verified\",\"taxonomy_id\":\"assignment\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-c\",\"id\":\"abs.590e7cbb47fd10ec\",\"n_checked\":7,\"status\":\"absent_verified\",\"taxonomy_id\":\"governing_law\"},{\"basis\":\"scored\",\"candidates\":[{\"filed_under\":null,\"ref\":{\"char_span\":[0,105],\"clause_path\":\"7\",\"document_id\":\"deal-d\",\"version\":3},\"score\":0.308},{\"filed_under\":\"subcontracting\",\"ref\":{\"char_span\":[0,98],\"clause_path\":\"12\",\"document_id\":\"deal-d\",\"version\":3},\"score\":0.133}],\"document_id\":\"deal-d\",\"id\":\"abs.bf1328b9633f043b\",\"n_checked\":5,\"status\":\"possibly_present\",\"taxonomy_id\":\"assignment\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-d\",\"id\":\"abs.c8860506952897ee\",\"n_checked\":5,\"status\":\"absent_verified\",\"taxonomy_id\":\"governing_law\"},{\"basis\":\"unverifiable\",\"candidates\":[],\"document_id\":\"deal-e\",\"id\":\"abs.95396f368c599e9e\",\"n_checked\":0,\"status\":\"possibly_present\",\"taxonomy_id\":\"assignment\"},{\"basis\":\"unverifiable\",\"candidates\":[],\"document_id\":\"deal-e\",\"id\":\"abs.7cbba99f3b1bed59\",\"n_checked\":0,\"status\":\"possibly_present\",\"taxonomy_id\":\"governing_law\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-f\",\"id\":\"abs.8ea65616f093049c\",\"n_checked\":1,\"status\":\"absent_verified\",\"taxonomy_id\":\"assignment\"},{\"basis\":\"scored\",\"candidates\":[],\"document_id\":\"deal-h\",\"id\":\"abs.c237a2a8a28af3e7\",\"n_checked\":3,\"status\":\"absent_verified\",\"taxonomy_id\":\"assignment\"},{\"basis\":\"scored\",\"candidates\":[{\"filed_under\":\"governing_law\",\"ref\":{\"char_span\":[0,24],\"clause_path\":\"2\",\"document_id\":\"deal-h\",\"version\":3},\"score\":1.0}],\"document_id\":\"deal-h\",\"id\":\"abs.880f11fb6844cc4b\",\"n_checked\":3,\"status\":\"possibly_present\",\"taxonomy_id\":\"governing_law\"}]},\"clauses\":[{\"id\":\"clause.assignment\",\"n_changed_openings\":0,\"n_deals\":3,\"n_kept_prior\":0,\"n_kept_standard\":1,\"n_moved_to_current\":0,\"n_opened_prior\":0,\"n_opened_standard\":2,\"n_refused\":0,\"n_signed_standard\":1,\"n_variants\":0,\"our_standard\":{\"parts\":[{\"order\":1,\"part_id\":\"4af3568d\",\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"}],\"source_ref\":{\"clause_path\":\"9\",\"document_id\":\"template\",\"version\":\"template\"},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"prior_standards\":[],\"taxonomy_id\":\"assignment\",\"title\":\"Assignment\",\"why_changed\":null},{\"id\":\"clause.governing_law\",\"n_changed_openings\":0,\"n_deals\":3,\"n_kept_prior\":0,\"n_kept_standard\":2,\"n_moved_to_current\":0,\"n_opened_prior\":0,\"n_opened_standard\":2,\"n_refused\":0,\"n_signed_standard\":2,\"n_variants\":1,\"our_standard\":{\"parts\":[{\"order\":1,\"part_id\":\"3c174323\",\"text\":\"This Agreement is governed by the laws of the State of New York.\"}],\"source_ref\":{\"clause_path\":\"10\",\"document_id\":\"template\",\"version\":\"template\"},\"text\":\"This Agreement is governed by the laws of the State of New York.\"},\"prior_standards\":[],\"taxonomy_id\":\"governing_law\",\"title\":\"Governing Law\",\"why_changed\":null}],\"precedent\":[{\"document_id\":\"deal-a\",\"id\":\"prec.f6b62baad5d33580\",\"moved\":false,\"opened_with\":\"standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":\"2025-01-10\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":3},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"standard\":true,\"taxonomy_id\":\"assignment\"},{\"document_id\":\"deal-a\",\"id\":\"prec.f288cd49668e1409\",\"moved\":false,\"opened_with\":\"standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":\"2025-01-10\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":3},\"text\":\"This Agreement is governed by the laws of the State of New York.\"},\"standard\":true,\"taxonomy_id\":\"governing_law\"},{\"document_id\":\"deal-b\",\"id\":\"prec.b603e975e838016c\",\"moved\":false,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":\"2025-02-10\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-b\",\"version\":3},\"text\":\"This Agreement is governed by the laws of the State of Delaware.\"},\"standard\":false,\"taxonomy_id\":\"governing_law\"},{\"document_id\":\"deal-f\",\"id\":\"prec.0c341190622c2f9a\",\"moved\":true,\"opened_with\":\"standard\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-f\",\"version\":1},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":\"2025-06-20\",\"signed_text\":null,\"standard\":false,\"taxonomy_id\":\"assignment\"},{\"document_id\":\"deal-f\",\"id\":\"prec.6f513c05047ed1ee\",\"moved\":false,\"opened_with\":\"standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":\"2025-06-20\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-f\",\"version\":3},\"text\":\"This Agreement is governed by the laws of the State of New York.\"},\"standard\":true,\"taxonomy_id\":\"governing_law\"},{\"document_id\":\"deal-g\",\"id\":\"prec.4eba7f545de929ae\",\"moved\":false,\"opened_with\":null,\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":false,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-g\",\"version\":3},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"standard\":true,\"taxonomy_id\":\"assignment\"}]},\"floor\":{},\"opf_version\":\"0.6\",\"perspective\":{\"counterparty_type\":\"Fixture Counterparty\",\"party\":\"Fixture Co\"},\"posture\":{},\"taxonomy\":{\"entries\":[],\"source\":\"custom\"}}",
+    "content_hash": "sha256:48a220ff51c33b83e5144c45163befd40024f3bd16eb109ab726901187249a61",
+    "section_digests": {
+      "evidence": "sha256:acdc669bf81112b55892cab1bea76073ea180f3f8e2cd57d16f20e8c235b26b1",
+      "posture": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "floor": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "digest": {
+      "digest_version": "5",
+      "perspective": {
+        "party": "Fixture Co",
+        "counterparty_type": "Fixture Counterparty"
+      },
+      "agreement_type": {
+        "id": "conformance-fixture",
+        "name": "Conformance Fixture Agreement"
+      },
+      "corpus": {
+        "n_deals": 8,
+        "n_signed": 7,
+        "first_signed": "2025-01",
+        "last_signed": "2025-06"
+      },
+      "part_map_legend": {
+        "part_map": {
+          "=": "our part is present with the same legal effect",
+          "+": "our part is present but more protective for perspective.party",
+          "-": "our part is present but less protective for perspective.party",
+          "x+": "our part is omitted, which is more protective for perspective.party",
+          "x-": "our part is omitted, which is less protective for perspective.party",
+          "x0": "our part is omitted with no effect on perspective.party"
+        },
+        "additions": {
+          "+": "an addition no part covers, more protective for perspective.party",
+          "-": "an addition no part covers, less protective for perspective.party",
+          "0": "an addition no part covers, neutral for perspective.party"
+        },
+        "label_by": {
+          "parts": "the default, so a digest entry omits label_by: the label is derived from the part map and additions; reason is the judgment's most important difference",
+          "owner": "the owner set the label over the judged part map and additions, which may imply another label; reason is the owner's and wins"
+        },
+        "settled": {
+          "agreed": "an independent blind check reached the same label and parts as the judgment",
+          "adjudicated": "the blind check disagreed and a fresh agent decided: the judgment shown is that decision, so this label was contested and deserves more scrutiny",
+          "unchecked": "no completed blind check (none yet, or a disagreement still awaiting adjudication): weaker evidence than agreed or adjudicated",
+          "owner": "the owner set or corrected the judgment; it is never blind-checked"
+        }
+      },
+      "clauses": [
+        {
+          "id": "clause.assignment",
+          "taxonomy_id": "assignment",
+          "title": "Assignment",
+          "our_standard": {
+            "parts": [
+              {
+                "part_id": "4af3568d",
+                "text": "Neither party may assign this Agreement without the other party's prior written consent."
+              }
+            ],
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "9"
+            }
+          },
+          "n_deals": 3,
+          "first_signed": "2025-01",
+          "last_signed": "2025-06",
+          "n_signed_standard": 1,
+          "n_opened_standard": 2,
+          "n_kept_standard": 1,
+          "standard_history": {
+            "forms": [],
+            "why_changed": null
+          },
+          "positions": {
+            "standard": 1,
+            "equivalent": 0,
+            "more_protective": 0,
+            "less_protective": 0,
+            "mixed": 0,
+            "different_concept": 0,
+            "unjudged": 0
+          },
+          "signed_variants": [],
+          "refused_asks": [],
+          "changed_openings": [],
+          "n_variants_total": 0,
+          "n_refused_total": 0,
+          "n_changed_openings_total": 0,
+          "n_signed_without_verified": 4,
+          "n_signed_without_possible": 2,
+          "verified_absent_deals": [
+            {
+              "document_id": "deal-h",
+              "signed_on": "2025-08-01",
+              "absence_id": "abs.c237a2a8a28af3e7"
+            },
+            {
+              "document_id": "deal-f",
+              "signed_on": "2025-06-20",
+              "absence_id": "abs.8ea65616f093049c"
+            },
+            {
+              "document_id": "deal-c",
+              "signed_on": "2025-03-10",
+              "absence_id": "abs.7e108f0711ddbb97"
+            },
+            {
+              "document_id": "deal-b",
+              "signed_on": "2025-02-10",
+              "absence_id": "abs.22f6d82f590e81bc"
+            }
+          ]
+        },
+        {
+          "id": "clause.governing_law",
+          "taxonomy_id": "governing_law",
+          "title": "Governing Law",
+          "our_standard": {
+            "parts": [
+              {
+                "part_id": "3c174323",
+                "text": "This Agreement is governed by the laws of the State of New York."
+              }
+            ],
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "10"
+            }
+          },
+          "n_deals": 3,
+          "first_signed": "2025-01",
+          "last_signed": "2025-06",
+          "n_signed_standard": 2,
+          "n_opened_standard": 2,
+          "n_kept_standard": 2,
+          "standard_history": {
+            "forms": [],
+            "why_changed": null
+          },
+          "positions": {
+            "standard": 2,
+            "equivalent": 0,
+            "more_protective": 0,
+            "less_protective": 0,
+            "mixed": 0,
+            "different_concept": 0,
+            "unjudged": 1
+          },
+          "signed_variants": [
+            {
+              "text": "This Agreement is governed by the laws of the State of Delaware.",
+              "n_deals": 1,
+              "first_signed": "2025-02",
+              "last_signed": "2025-02",
+              "n_from_standard": 0,
+              "n_unchanged": 1,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-b",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.b603e975e838016c"
+              ]
+            }
+          ],
+          "refused_asks": [],
+          "changed_openings": [],
+          "n_variants_total": 1,
+          "n_refused_total": 0,
+          "n_changed_openings_total": 0,
+          "n_signed_without_verified": 2,
+          "n_signed_without_possible": 2,
+          "verified_absent_deals": [
+            {
+              "document_id": "deal-d",
+              "signed_on": "2025-04",
+              "absence_id": "abs.c8860506952897ee"
+            },
+            {
+              "document_id": "deal-c",
+              "signed_on": "2025-03-10",
+              "absence_id": "abs.590e7cbb47fd10ec"
+            }
+          ]
+        }
+      ],
+      "uncovered_clause_types": []
+    },
+    "manifest": {
+      "hard_rules": []
+    },
+    "dossiers": {
+      "clause.assignment": {
+        "clause_id": "clause.assignment",
+        "taxonomy_id": "assignment",
+        "title": "Assignment",
+        "our_standard": {
+          "parts": [
+            {
+              "part_id": "4af3568d",
+              "text": "Neither party may assign this Agreement without the other party's prior written consent."
+            }
+          ]
+        },
+        "n_floor_rules": 0,
+        "floor_rules": [],
+        "excerpts": [],
+        "n_omitted": 0,
+        "omitted_precedent_ids": []
+      },
+      "clause.governing_law": {
+        "clause_id": "clause.governing_law",
+        "taxonomy_id": "governing_law",
+        "title": "Governing Law",
+        "our_standard": {
+          "parts": [
+            {
+              "part_id": "3c174323",
+              "text": "This Agreement is governed by the laws of the State of New York."
+            }
+          ]
+        },
+        "n_floor_rules": 0,
+        "floor_rules": [],
+        "excerpts": [
+          {
+            "precedent_id": "prec.b603e975e838016c",
+            "kind": "signed_variant",
+            "opening": null,
+            "signed": "This Agreement is governed by the laws of the State of Delaware.",
+            "outcome": "signed",
+            "vs_standard": null
+          }
+        ],
+        "n_omitted": 0,
+        "omitted_precedent_ids": []
+      }
+    },
+    "provenance_index": {
+      "compiler": {
+        "name": "playbook-engine",
+        "version": "1.0.0"
+      },
+      "corpus_manifest_hash": null,
+      "documents": [
+        {
+          "document_id": "deal-b",
+          "signed_on": "2025-02-10",
+          "version_files": []
+        }
+      ],
+      "dossiers": {
+        "clause.assignment": [],
+        "clause.governing_law": [
+          {
+            "precedent_id": "prec.b603e975e838016c",
+            "document_id": "deal-b",
+            "kind": "signed_variant",
+            "omitted": false
+          }
+        ]
+      }
+    }
+  }
+}

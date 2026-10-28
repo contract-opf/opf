@@ -1,0 +1,93 @@
+# Clause taxonomy — Mutual Non-Disclosure Agreement (NDA)
+# Loadable as `taxonomy: builtin:nda.yaml`.
+#
+# Bootstrapped from `builtin:cuad-base.yaml` (the genuine CUAD v1 41-category
+# list), then curated for this agreement type.
+#
+# WHY SO MANY `status: custom` ENTRIES: CUAD v1 has no "Confidentiality"
+# category at all — confidentiality is a heading CUAD never enumerated (see
+# the note at the top of cuad-base.yaml). An NDA taxonomy is therefore mostly
+# custom clauses hung on a thin CUAD spine: of the entries below, only the
+# ones carrying a non-null `cuad_origin` are CUAD-derived. Marking the rest
+# `custom` (which the loader requires to have `cuad_origin: null`) keeps CUAD
+# provenance from being claimed falsely — the same 2026-07 audit rule that
+# produced general-commercial.yaml.
+#
+# Curation rule: prune by setting status: inactive (never delete), so a future
+# CUAD upgrade can be merged without losing these choices.
+#
+# TWO POSITIONS BAKED INTO THE DESCRIPTIONS BELOW, recorded here because they
+# are legal judgments and not obvious from the ids alone:
+#
+# 1. THE FOUR CARVE-OUTS ARE MANDATORY. `exclusions_from_confidential` names
+#    all four (already known / independently developed / publicly available /
+#    legally compelled) because dropping any one of them is the quiet way a
+#    confidentiality definition becomes a trap — an "independently developed
+#    without reference to the other party's information" carve-out in
+#    particular is what keeps ordinary R&D from becoming a breach.
+#
+# 2. NOTHING IS PERPETUAL; TRADE SECRETS ARE CONDITION-BOUNDED. The general
+#    confidentiality duty runs for a fixed period (`survival_period`). Trade
+#    secrets run longer, but the carve-out is drafted against a CONDITION —
+#    "for so long as such information remains a trade secret under applicable
+#    law" — not against perpetuity. The distinction is not cosmetic: an
+#    obligation with no end state is unbounded, while one that ends when the
+#    information stops qualifying is bounded by law rather than by a clock.
+#    This keeps `trade_secret_carve_out` from colliding with the
+#    bounded-survival position, which would otherwise read as its opposite.
+#
+# Attribution: category names/descriptions carrying a `cuad_origin` are derived
+# from CUAD v1, created by The Atticus Project
+# (https://www.atticusprojectai.org/cuad), licensed under CC-BY-4.0
+# (https://creativecommons.org/licenses/by/4.0/). See NOTICE.
+source: CUAD-v1
+
+entries:
+  # --- CUAD spine: categories that genuinely appear in an NDA ---
+  - { id: parties_and_recitals,          label: "Parties & Recitals",              status: active, cuad_origin: "Parties",                  description: "Who is bound; mutual vs one-way framing; Discloser/Recipient defined terms." }
+  - { id: term,                          label: "Term",                            status: active, cuad_origin: "Expiration Date",          description: "Effective date and the period during which disclosures may be made. Distinct from how long the confidentiality duty survives." }
+  - { id: non_solicitation_employees,    label: "Non-Solicitation of Employees",   status: active, cuad_origin: "No-Solicit of Employees",  description: "No-hire/no-solicit of personnel met through the evaluation; general-advertising and unsolicited-applicant carve-outs." }
+  - { id: no_license_ip_ownership,       label: "No License / IP Ownership",       status: active, cuad_origin: "IP Ownership Assignment",  description: "Disclosure conveys no licence and no ownership; each party retains its own IP." }
+  - { id: limitation_of_liability,       label: "Limitation of Liability",         status: active, cuad_origin: "Cap on Liability",         description: "Usually ABSENT from a mutual NDA — flag loudly if a counterparty introduces one, since capping breach-of-confidence damages guts the agreement's only real remedy." }
+  - { id: governing_law,                 label: "Governing Law",                   status: active, cuad_origin: "Governing Law",            description: "Which jurisdiction's law governs." }
+  - { id: assignment,                    label: "Assignment",                      status: active, cuad_origin: "Anti-Assignment",          description: "Consent to assign; affiliate and change-of-control carve-outs." }
+
+  # --- Custom: the confidentiality machinery CUAD does not enumerate ---
+  - { id: purpose_permitted_use,         label: "Purpose & Permitted Use",         status: custom, cuad_origin: null, description: "The defined Purpose, and the covenant not to use Confidential Information for anything else. Breadth of Purpose is the quietest high-stakes term in an NDA." }
+  - { id: definition_confidential_info,  label: "Definition of Confidential Information", status: custom, cuad_origin: null, description: "What counts as Confidential Information; whether marking is required, and whether oral disclosures must be reduced to writing within N days." }
+  - { id: exclusions_from_confidential,  label: "Exclusions from Confidential Information", status: custom, cuad_origin: null, description: "The four standard carve-outs — already known to the recipient without a duty of confidence, independently developed without reference to the other party's information, publicly available through no fault of the recipient, and rightfully received from a third party — plus which party bears the burden of proving them. Removing any of the four is a substantive narrowing, not housekeeping." }
+  - { id: permitted_disclosure_reps,     label: "Permitted Disclosure to Representatives", status: custom, cuad_origin: null, description: "The need-to-know circle (affiliates, employees, advisors); whether Recipient stays liable for its Representatives' breach." }
+  - { id: standard_of_care,              label: "Standard of Care",                status: custom, cuad_origin: null, description: "Degree of care owed — reasonable care, or same-as-own-but-no-less-than-reasonable." }
+  - { id: compelled_disclosure,          label: "Compelled Disclosure",            status: custom, cuad_origin: null, description: "Subpoena / legal-process carve-out; prior-notice and cooperation duties, and whether notice is excused where legally prohibited." }
+  - { id: survival_period,               label: "Survival of Confidentiality Obligations", status: custom, cuad_origin: null, description: "How long the confidentiality duty runs past the term. The single most-negotiated number in an NDA. A DEFINED, BOUNDED period is required — an obligation with no end date is an unbounded liability, not a stronger protection." }
+  - { id: trade_secret_carve_out,        label: "Trade Secret Carve-Out",          status: custom, cuad_origin: null, description: "Whether trade secrets remain protected past the general survival period, drafted against a condition ('for so long as such information remains a trade secret under applicable law') rather than against perpetuity. See note 2 in the header." }
+  - { id: return_or_destruction,         label: "Return or Destruction of Materials", status: custom, cuad_origin: null, description: "Return/destroy on demand; carve-outs for automatic backups, archival copies and legal-hold retention." }
+  - { id: residuals,                     label: "Residuals",                       status: custom, cuad_origin: null, description: "Whether unaided-memory residual knowledge may be freely used. A residuals clause substantially undercuts the confidentiality duty; frequently proposed by the receiving side." }
+  - { id: no_warranty_as_is,             label: "No Warranty / AS IS",             status: custom, cuad_origin: null, description: "Confidential Information provided AS IS; no warranty of accuracy or completeness." }
+  - { id: confidentiality_of_discussions, label: "Confidentiality of the Discussions", status: custom, cuad_origin: null, description: "Whether the existence, terms or status of the discussions themselves are confidential — distinct from protecting the information exchanged. Genuinely negotiated: parties with disclosure obligations of their own resist an unqualified version." }
+  - { id: notice_of_unauthorized_disclosure, label: "Notice of Unauthorized Disclosure", status: custom, cuad_origin: null, description: "Duty to notify the disclosing party promptly on discovering unauthorized use, disclosure or loss, and to cooperate in mitigation." }
+  - { id: data_protection_personal_data, label: "Data Protection / Personal Data", status: custom, cuad_origin: null, description: "Where Confidential Information includes personal data: applicable privacy-law obligations and whether a separate data-processing agreement is required." }
+  - { id: export_control,                label: "Export Control",                  status: custom, cuad_origin: null, description: "Export-control and sanctions compliance for disclosed technical data. Near-universal boilerplate; rarely negotiated." }
+  - { id: no_obligation_to_proceed,      label: "No Obligation to Proceed",        status: custom, cuad_origin: null, description: "No binding transaction, no exclusivity, either party may terminate discussions." }
+  - { id: injunctive_relief,             label: "Injunctive Relief",               status: custom, cuad_origin: null, description: "Equitable remedies acknowledged; whether bond and proof of actual damages are waived." }
+  - { id: dispute_resolution_venue,      label: "Dispute Resolution & Venue",      status: custom, cuad_origin: null, description: "Forum and exclusive jurisdiction; arbitration; jury-trial waiver." }
+  - { id: notices,                       label: "Notices",                         status: custom, cuad_origin: null, description: "Notice addresses and method — the channel a return-or-destroy demand travels down." }
+  - { id: entire_agreement_amendment,    label: "Entire Agreement & Amendment",    status: custom, cuad_origin: null, description: "Integration clause and the writing-signed-by-both amendment requirement." }
+  - { id: severability,                  label: "Severability",                    status: custom, cuad_origin: null, description: "Invalid-provision survival; blue-pencilling an overbroad restriction." }
+  - { id: counterparts,                  label: "Counterparts",                    status: custom, cuad_origin: null, description: "Execution in counterparts; electronic signatures." }
+
+  # --- Inactive: CUAD categories not material to an NDA (kept for upgrades) ---
+  - { id: most_favored_nation,           label: "Most Favored Nation",             status: inactive, cuad_origin: "Most Favored Nation",     description: "No pricing in an NDA." }
+  - { id: non_compete,                   label: "Non-Compete",                     status: inactive, cuad_origin: "Non-Compete",             description: "A true non-compete does not belong in an NDA; activate and escalate if one appears." }
+  - { id: exclusivity,                   label: "Exclusivity",                     status: inactive, cuad_origin: "Exclusivity",             description: "NDAs are expressly non-exclusive — see no_obligation_to_proceed." }
+  - { id: no_solicit_customers,          label: "No-Solicit of Customers",         status: inactive, cuad_origin: "No-Solicit of Customers", description: "Occasionally smuggled in; activate and escalate if one appears." }
+  - { id: license_grant,                 label: "License Grant",                   status: inactive, cuad_origin: "License Grant",           description: "An NDA grants no licence by design; the express no-licence statement classifies under no_license_ip_ownership." }
+  - { id: minimum_commitment,            label: "Minimum Commitment",              status: inactive, cuad_origin: "Minimum Commitment",       description: "Nothing is committed — evaluation only." }
+  - { id: price_restrictions,            label: "Price Restrictions",              status: inactive, cuad_origin: "Price Restrictions",       description: "No pricing terms." }
+  - { id: revenue_profit_sharing,        label: "Revenue/Profit Sharing",          status: inactive, cuad_origin: "Revenue/Profit Sharing",   description: "No commercial terms." }
+  - { id: audit_rights,                  label: "Audit Rights",                    status: inactive, cuad_origin: "Audit Rights",            description: "A right to inspect Recipient's systems is an overreach in an NDA; activate and escalate if one appears." }
+  - { id: insurance,                     label: "Insurance",                       status: inactive, cuad_origin: "Insurance",               description: "Not applicable." }
+  - { id: warranty_duration,             label: "Warranty Duration",               status: inactive, cuad_origin: "Warranty Duration",        description: "Not applicable — see no_warranty_as_is." }
+  - { id: change_of_control,             label: "Change of Control",               status: inactive, cuad_origin: "Change of Control",        description: "Handled as a carve-out inside assignment." }
+  - { id: third_party_beneficiary,       label: "Third-Party Beneficiary",         status: inactive, cuad_origin: "Third-Party Beneficiary",  description: "NDAs disclaim third-party beneficiaries; not separately tracked." }
+  - { id: post_termination_services,     label: "Post-Termination Services",       status: inactive, cuad_origin: "Post-Termination Services", description: "No services are provided under an NDA." }

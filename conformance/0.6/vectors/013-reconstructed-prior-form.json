@@ -1,0 +1,568 @@
+{
+  "name": "reconstructed-prior-form",
+  "description": "A former form of ours rebuilt from the corpus when none was supplied (OPF-SPEC §3.5.7, issue #250). baseline.prior_templates holds one entry with basis reconstructed, n_deals 3 and the signing-month span of the deals that opened on it (first_signed 2020-02, last_signed 2021-03); it has no sha256 and no owner dates because it has no file. Three of four deals' clauses opened on it (opened_with prior_standard, opened_with_form the label): deal-a and deal-c signed it as it stood (kept), deal-b moved to today's standard; deal-d opened with today's standard. The prior standard's source_ref is the ordinary citation of the dominant wording in a corpus document (deal-a, version 3), never prior_template. The digest's standard_history form carries basis reconstructed and in-use dates inferred from the deals' signing months (in_use_basis deal_dates).",
+  "opf_version": "0.6",
+  "engine_version": "1.0.0",
+  "digest_version": "5",
+  "input": {
+    "opf_version": "0.6",
+    "agreement_type": {
+      "id": "conformance-fixture",
+      "name": "Conformance Fixture Agreement"
+    },
+    "baseline": {
+      "has_canonical_template": true,
+      "prior_templates": [
+        {
+          "label": "reconstructed 2020-02 to 2021-03",
+          "basis": "reconstructed",
+          "n_deals": 3,
+          "first_signed": "2020-02",
+          "last_signed": "2021-03"
+        }
+      ]
+    },
+    "taxonomy": {
+      "source": "custom",
+      "entries": []
+    },
+    "perspective": {
+      "party": "Fixture Co",
+      "counterparty_type": "Fixture Counterparty"
+    },
+    "evidence": {
+      "clauses": [
+        {
+          "id": "clause.assignment",
+          "taxonomy_id": "assignment",
+          "title": "Assignment",
+          "our_standard": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "9"
+            },
+            "parts": [
+              {
+                "part_id": "4af3568d",
+                "order": 1,
+                "text": "Neither party may assign this Agreement without the other party's prior written consent."
+              }
+            ]
+          },
+          "prior_standards": [
+            {
+              "form_label": "reconstructed 2020-02 to 2021-03",
+              "text": "Either party may assign this Agreement to an affiliate without consent.",
+              "parts": [
+                {
+                  "part_id": "b2632e75",
+                  "order": 1,
+                  "text": "Either party may assign this Agreement to an affiliate without consent."
+                }
+              ],
+              "source_ref": {
+                "document_id": "deal-a",
+                "version": 3,
+                "clause_path": "9"
+              },
+              "vs_standard": {
+                "label": "different_concept",
+                "reason": "Synthetic fixture reason: a free affiliate assignment instead of consent.",
+                "parts": [
+                  {
+                    "part_id": "4af3568d",
+                    "status": "omitted",
+                    "effect": "less_protective",
+                    "reason": "Synthetic fixture: no consent requirement."
+                  }
+                ],
+                "additions": [
+                  {
+                    "summary": "Synthetic fixture: free affiliate assignment.",
+                    "effect": "neutral"
+                  }
+                ],
+                "basis": "agent",
+                "check": null
+              }
+            }
+          ],
+          "why_changed": null,
+          "n_deals": 4,
+          "n_signed_standard": 2,
+          "n_variants": 1,
+          "n_refused": 0,
+          "n_opened_standard": 1,
+          "n_kept_standard": 1,
+          "n_opened_prior": 3,
+          "n_kept_prior": 2,
+          "n_moved_to_current": 1,
+          "n_changed_openings": 0
+        }
+      ],
+      "precedent": [
+        {
+          "id": "prec.ca7de136d2fa7238",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-a",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2020-02",
+          "rounds": 0,
+          "signed_text": {
+            "text": "Either party may assign this Agreement to an affiliate without consent.",
+            "ref": {
+              "document_id": "deal-a",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            },
+            "vs_standard": {
+              "label": "different_concept",
+              "reason": "Synthetic fixture reason: a free affiliate assignment instead of consent.",
+              "parts": [
+                {
+                  "part_id": "4af3568d",
+                  "status": "omitted",
+                  "effect": "less_protective",
+                  "reason": "Synthetic fixture: no consent requirement."
+                }
+              ],
+              "additions": [
+                {
+                  "summary": "Synthetic fixture: free affiliate assignment.",
+                  "effect": "neutral"
+                }
+              ],
+              "basis": "agent",
+              "check": null
+            }
+          },
+          "opened_with": "prior_standard",
+          "opened_with_form": "reconstructed 2020-02 to 2021-03",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.5fa9069e8beae839",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-b",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2020-09",
+          "rounds": 1,
+          "signed_text": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "ref": {
+              "document_id": "deal-b",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "prior_standard",
+          "opened_with_form": "reconstructed 2020-02 to 2021-03",
+          "opening_text": {
+            "text": "Either party may assign this Agreement to an affiliate without consent.",
+            "ref": {
+              "document_id": "deal-b",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": true,
+          "moved": true,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.0e78ee359f88afa8",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-c",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2021-03",
+          "rounds": 0,
+          "signed_text": {
+            "text": "Either party may assign this Agreement to an affiliate without consent.",
+            "ref": {
+              "document_id": "deal-c",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            },
+            "vs_standard": {
+              "label": "different_concept",
+              "reason": "Synthetic fixture reason: a free affiliate assignment instead of consent.",
+              "parts": [
+                {
+                  "part_id": "4af3568d",
+                  "status": "omitted",
+                  "effect": "less_protective",
+                  "reason": "Synthetic fixture: no consent requirement."
+                }
+              ],
+              "additions": [
+                {
+                  "summary": "Synthetic fixture: free affiliate assignment.",
+                  "effect": "neutral"
+                }
+              ],
+              "basis": "agent",
+              "check": null
+            }
+          },
+          "opened_with": "prior_standard",
+          "opened_with_form": "reconstructed 2020-02 to 2021-03",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.d3d90fbff1e62068",
+          "taxonomy_id": "assignment",
+          "document_id": "deal-d",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": "2023-01",
+          "rounds": 0,
+          "signed_text": {
+            "text": "Neither party may assign this Agreement without the other party's prior written consent.",
+            "ref": {
+              "document_id": "deal-d",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": null,
+          "standard": true,
+          "moved": false,
+          "refused_asks": []
+        }
+      ],
+      "absence": {
+        "guard": 0.1,
+        "records": []
+      }
+    },
+    "posture": {},
+    "floor": {},
+    "corpus": {
+      "documents": [
+        {
+          "document_id": "deal-a",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2020-02",
+          "signed_on_basis": "document_text"
+        },
+        {
+          "document_id": "deal-b",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2020-09",
+          "signed_on_basis": "document_text"
+        },
+        {
+          "document_id": "deal-c",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2021-03",
+          "signed_on_basis": "document_text"
+        },
+        {
+          "document_id": "deal-d",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": "2023-01",
+          "signed_on_basis": "document_text"
+        }
+      ],
+      "stats": {}
+    },
+    "compiler": {
+      "name": "playbook-engine",
+      "version": "1.0.0",
+      "run_id": "conformance-fixture-run",
+      "generated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  "expected": {
+    "canonical": "{\"agreement_type\":{\"id\":\"conformance-fixture\",\"name\":\"Conformance Fixture Agreement\"},\"baseline\":{\"has_canonical_template\":true,\"prior_templates\":[{\"basis\":\"reconstructed\",\"first_signed\":\"2020-02\",\"label\":\"reconstructed 2020-02 to 2021-03\",\"last_signed\":\"2021-03\",\"n_deals\":3}]},\"compiler\":{\"name\":\"playbook-engine\",\"version\":\"1.0.0\"},\"corpus\":{\"documents\":[{\"document_id\":\"deal-a\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2020-02\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-b\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2020-09\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-c\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2021-03\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-d\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":\"2023-01\",\"signed_on_basis\":\"document_text\",\"signed_version\":3,\"versions\":3}],\"stats\":{}},\"evidence\":{\"absence\":{\"guard\":0.1,\"records\":[]},\"clauses\":[{\"id\":\"clause.assignment\",\"n_changed_openings\":0,\"n_deals\":4,\"n_kept_prior\":2,\"n_kept_standard\":1,\"n_moved_to_current\":1,\"n_opened_prior\":3,\"n_opened_standard\":1,\"n_refused\":0,\"n_signed_standard\":2,\"n_variants\":1,\"our_standard\":{\"parts\":[{\"order\":1,\"part_id\":\"4af3568d\",\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"}],\"source_ref\":{\"clause_path\":\"9\",\"document_id\":\"template\",\"version\":\"template\"},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"prior_standards\":[{\"form_label\":\"reconstructed 2020-02 to 2021-03\",\"parts\":[{\"order\":1,\"part_id\":\"b2632e75\",\"text\":\"Either party may assign this Agreement to an affiliate without consent.\"}],\"source_ref\":{\"clause_path\":\"9\",\"document_id\":\"deal-a\",\"version\":3},\"text\":\"Either party may assign this Agreement to an affiliate without consent.\",\"vs_standard\":{\"additions\":[{\"effect\":\"neutral\",\"summary\":\"Synthetic fixture: free affiliate assignment.\"}],\"basis\":\"agent\",\"check\":null,\"label\":\"different_concept\",\"parts\":[{\"effect\":\"less_protective\",\"part_id\":\"4af3568d\",\"reason\":\"Synthetic fixture: no consent requirement.\",\"status\":\"omitted\"}],\"reason\":\"Synthetic fixture reason: a free affiliate assignment instead of consent.\"}}],\"taxonomy_id\":\"assignment\",\"title\":\"Assignment\",\"why_changed\":null}],\"precedent\":[{\"document_id\":\"deal-a\",\"id\":\"prec.ca7de136d2fa7238\",\"moved\":false,\"opened_with\":\"prior_standard\",\"opened_with_form\":\"reconstructed 2020-02 to 2021-03\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":\"2020-02\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":3},\"text\":\"Either party may assign this Agreement to an affiliate without consent.\",\"vs_standard\":{\"additions\":[{\"effect\":\"neutral\",\"summary\":\"Synthetic fixture: free affiliate assignment.\"}],\"basis\":\"agent\",\"check\":null,\"label\":\"different_concept\",\"parts\":[{\"effect\":\"less_protective\",\"part_id\":\"4af3568d\",\"reason\":\"Synthetic fixture: no consent requirement.\",\"status\":\"omitted\"}],\"reason\":\"Synthetic fixture reason: a free affiliate assignment instead of consent.\"}},\"standard\":false,\"taxonomy_id\":\"assignment\"},{\"document_id\":\"deal-b\",\"id\":\"prec.5fa9069e8beae839\",\"moved\":true,\"opened_with\":\"prior_standard\",\"opened_with_form\":\"reconstructed 2020-02 to 2021-03\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-b\",\"version\":1},\"text\":\"Either party may assign this Agreement to an affiliate without consent.\"},\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":1,\"signed\":true,\"signed_on\":\"2020-09\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-b\",\"version\":3},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"standard\":true,\"taxonomy_id\":\"assignment\"},{\"document_id\":\"deal-c\",\"id\":\"prec.0e78ee359f88afa8\",\"moved\":false,\"opened_with\":\"prior_standard\",\"opened_with_form\":\"reconstructed 2020-02 to 2021-03\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":\"2021-03\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-c\",\"version\":3},\"text\":\"Either party may assign this Agreement to an affiliate without consent.\",\"vs_standard\":{\"additions\":[{\"effect\":\"neutral\",\"summary\":\"Synthetic fixture: free affiliate assignment.\"}],\"basis\":\"agent\",\"check\":null,\"label\":\"different_concept\",\"parts\":[{\"effect\":\"less_protective\",\"part_id\":\"4af3568d\",\"reason\":\"Synthetic fixture: no consent requirement.\",\"status\":\"omitted\"}],\"reason\":\"Synthetic fixture reason: a free affiliate assignment instead of consent.\"}},\"standard\":false,\"taxonomy_id\":\"assignment\"},{\"document_id\":\"deal-d\",\"id\":\"prec.d3d90fbff1e62068\",\"moved\":false,\"opened_with\":\"standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":\"2023-01\",\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-d\",\"version\":3},\"text\":\"Neither party may assign this Agreement without the other party's prior written consent.\"},\"standard\":true,\"taxonomy_id\":\"assignment\"}]},\"floor\":{},\"opf_version\":\"0.6\",\"perspective\":{\"counterparty_type\":\"Fixture Counterparty\",\"party\":\"Fixture Co\"},\"posture\":{},\"taxonomy\":{\"entries\":[],\"source\":\"custom\"}}",
+    "content_hash": "sha256:be4ec7903f4d0793498d76674078ce727b35cd007fc40ca9562a650c85f986ea",
+    "section_digests": {
+      "evidence": "sha256:a1f8a4f24109dbbfefe316fff13ca7bb3e8745f9ab0fe5119366a04e8a64c396",
+      "posture": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "floor": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "digest": {
+      "digest_version": "5",
+      "perspective": {
+        "party": "Fixture Co",
+        "counterparty_type": "Fixture Counterparty"
+      },
+      "agreement_type": {
+        "id": "conformance-fixture",
+        "name": "Conformance Fixture Agreement"
+      },
+      "corpus": {
+        "n_deals": 4,
+        "n_signed": 4,
+        "first_signed": "2020-02",
+        "last_signed": "2023-01"
+      },
+      "part_map_legend": {
+        "part_map": {
+          "=": "our part is present with the same legal effect",
+          "+": "our part is present but more protective for perspective.party",
+          "-": "our part is present but less protective for perspective.party",
+          "x+": "our part is omitted, which is more protective for perspective.party",
+          "x-": "our part is omitted, which is less protective for perspective.party",
+          "x0": "our part is omitted with no effect on perspective.party"
+        },
+        "additions": {
+          "+": "an addition no part covers, more protective for perspective.party",
+          "-": "an addition no part covers, less protective for perspective.party",
+          "0": "an addition no part covers, neutral for perspective.party"
+        },
+        "label_by": {
+          "parts": "the default, so a digest entry omits label_by: the label is derived from the part map and additions; reason is the judgment's most important difference",
+          "owner": "the owner set the label over the judged part map and additions, which may imply another label; reason is the owner's and wins"
+        },
+        "settled": {
+          "agreed": "an independent blind check reached the same label and parts as the judgment",
+          "adjudicated": "the blind check disagreed and a fresh agent decided: the judgment shown is that decision, so this label was contested and deserves more scrutiny",
+          "unchecked": "no completed blind check (none yet, or a disagreement still awaiting adjudication): weaker evidence than agreed or adjudicated",
+          "owner": "the owner set or corrected the judgment; it is never blind-checked"
+        }
+      },
+      "clauses": [
+        {
+          "id": "clause.assignment",
+          "taxonomy_id": "assignment",
+          "title": "Assignment",
+          "our_standard": {
+            "parts": [
+              {
+                "part_id": "4af3568d",
+                "text": "Neither party may assign this Agreement without the other party's prior written consent."
+              }
+            ],
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "9"
+            }
+          },
+          "n_deals": 4,
+          "first_signed": "2020-02",
+          "last_signed": "2023-01",
+          "n_signed_standard": 2,
+          "n_opened_standard": 1,
+          "n_kept_standard": 1,
+          "standard_history": {
+            "forms": [
+              {
+                "form": "reconstructed 2020-02 to 2021-03",
+                "basis": "reconstructed",
+                "in_use_from": "2020-02",
+                "in_use_until": "2021-03",
+                "in_use_basis": "deal_dates",
+                "n_opened": 3,
+                "n_kept": 2,
+                "n_conceded": 1,
+                "n_moved_to_current": 1,
+                "unchanged": false,
+                "label": "different_concept",
+                "part_map": [
+                  "x-"
+                ],
+                "additions": [
+                  "0"
+                ],
+                "reason": "Synthetic fixture reason: a free affiliate assignment instead of consent.",
+                "settled": "unchecked",
+                "parts": [
+                  {
+                    "part_id": "b2632e75",
+                    "text": "Either party may assign this Agreement to an affiliate without consent."
+                  }
+                ],
+                "ref": {
+                  "document_id": "deal-a",
+                  "version": 3,
+                  "clause_path": "9"
+                }
+              }
+            ],
+            "why_changed": null
+          },
+          "positions": {
+            "standard": 2,
+            "equivalent": 0,
+            "more_protective": 0,
+            "less_protective": 0,
+            "mixed": 0,
+            "different_concept": 2,
+            "unjudged": 0
+          },
+          "signed_variants": [
+            {
+              "text": "Either party may assign this Agreement to an affiliate without consent.",
+              "n_deals": 2,
+              "first_signed": "2020-02",
+              "last_signed": "2021-03",
+              "n_from_standard": 0,
+              "n_unchanged": 0,
+              "label": "different_concept",
+              "part_map": [
+                "x-"
+              ],
+              "additions": [
+                "0"
+              ],
+              "reason": "Synthetic fixture reason: a free affiliate assignment instead of consent.",
+              "settled": "unchecked",
+              "ref": {
+                "document_id": "deal-c",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.0e78ee359f88afa8",
+                "prec.ca7de136d2fa7238"
+              ]
+            }
+          ],
+          "refused_asks": [],
+          "changed_openings": [],
+          "n_variants_total": 1,
+          "n_refused_total": 0,
+          "n_changed_openings_total": 0,
+          "n_signed_without_verified": 0,
+          "n_signed_without_possible": 0,
+          "verified_absent_deals": []
+        }
+      ],
+      "uncovered_clause_types": []
+    },
+    "manifest": {
+      "hard_rules": []
+    },
+    "dossiers": {
+      "clause.assignment": {
+        "clause_id": "clause.assignment",
+        "taxonomy_id": "assignment",
+        "title": "Assignment",
+        "our_standard": {
+          "parts": [
+            {
+              "part_id": "4af3568d",
+              "text": "Neither party may assign this Agreement without the other party's prior written consent."
+            }
+          ]
+        },
+        "n_floor_rules": 0,
+        "floor_rules": [],
+        "excerpts": [
+          {
+            "precedent_id": "prec.0e78ee359f88afa8",
+            "kind": "signed_variant",
+            "opening": null,
+            "signed": "Either party may assign this Agreement to an affiliate without consent.",
+            "outcome": "signed",
+            "vs_standard": {
+              "label": "different_concept",
+              "label_by": "parts",
+              "reason": "Synthetic fixture reason: a free affiliate assignment instead of consent.",
+              "settled": "unchecked",
+              "part_map": [
+                "x-"
+              ],
+              "part_reasons": [
+                {
+                  "part_id": "4af3568d",
+                  "reason": "Synthetic fixture: no consent requirement."
+                }
+              ],
+              "additions": [
+                {
+                  "effect": "0",
+                  "summary": "Synthetic fixture: free affiliate assignment."
+                }
+              ]
+            }
+          }
+        ],
+        "n_omitted": 0,
+        "omitted_precedent_ids": []
+      }
+    },
+    "provenance_index": {
+      "compiler": {
+        "name": "playbook-engine",
+        "version": "1.0.0"
+      },
+      "corpus_manifest_hash": null,
+      "documents": [
+        {
+          "document_id": "deal-c",
+          "signed_on": "2021-03",
+          "version_files": []
+        }
+      ],
+      "dossiers": {
+        "clause.assignment": [
+          {
+            "precedent_id": "prec.0e78ee359f88afa8",
+            "document_id": "deal-c",
+            "kind": "signed_variant",
+            "omitted": false
+          }
+        ]
+      }
+    }
+  }
+}

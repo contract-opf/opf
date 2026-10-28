@@ -1,0 +1,849 @@
+{
+  "name": "opening-rules",
+  "description": "The digest 5 opening rules (OPF-SPEC §3.12.2) on one clause with ten deals. n_opened_standard counts signed deals whose opened_with is standard (deal-a's edited standard, deal-b's struck standard, deal-i's kept one) and n_kept_standard those that signed our standard (deal-i only). Variants carry n_from_standard (deal-a conceded the New York variant from our standard) and n_unchanged (deal-d signed its non-standard opening as proposed); deal-g's 'absent' clause counts in neither. changed_openings: deal-c's non-standard opening that ended at our standard and deal-j's respelling of it are ONE entry (n_deals 2, n_to_standard 1); deal-f's struck opening with no refused ask is included (n_struck 1); deal-e's struck opening is also one of its own refused asks, so it is shown as a refused ask only; deal-h is unsigned and ignored.",
+  "opf_version": "0.6",
+  "engine_version": "1.0.0",
+  "digest_version": "5",
+  "input": {
+    "opf_version": "0.6",
+    "agreement_type": {
+      "id": "conformance-fixture",
+      "name": "Conformance Fixture Agreement"
+    },
+    "baseline": {
+      "has_canonical_template": true
+    },
+    "taxonomy": {
+      "source": "custom",
+      "entries": []
+    },
+    "perspective": {
+      "party": "Fixture Co",
+      "counterparty_type": "Fixture Counterparty"
+    },
+    "evidence": {
+      "clauses": [
+        {
+          "id": "clause.venue",
+          "taxonomy_id": "venue",
+          "title": "Venue",
+          "our_standard": {
+            "text": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "15"
+            },
+            "parts": [
+              {
+                "part_id": "68f94fdb",
+                "order": 1,
+                "text": "The courts of the State of Delaware have exclusive jurisdiction."
+              }
+            ]
+          },
+          "prior_standards": [],
+          "why_changed": null,
+          "n_deals": 10,
+          "n_signed_standard": 2,
+          "n_variants": 3,
+          "n_refused": 1,
+          "n_opened_standard": 3,
+          "n_kept_standard": 1,
+          "n_opened_prior": 0,
+          "n_kept_prior": 0,
+          "n_moved_to_current": 0,
+          "n_changed_openings": 2
+        }
+      ],
+      "precedent": [
+        {
+          "id": "prec.dcd670d1fc2dfeae",
+          "taxonomy_id": "venue",
+          "document_id": "deal-a",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 1,
+          "signed_text": {
+            "text": "The courts of the State of New York have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-a",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": {
+            "text": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-a",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": false,
+          "moved": true,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.f7863412960d4e7b",
+          "taxonomy_id": "venue",
+          "document_id": "deal-b",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": null,
+          "opened_with": "standard",
+          "opening_text": {
+            "text": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-b",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": false,
+          "moved": true,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.ca89e737a6b8351e",
+          "taxonomy_id": "venue",
+          "document_id": "deal-c",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 1,
+          "signed_text": {
+            "text": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-c",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": {
+            "text": "Disputes will be heard by the courts of the State of Oregon.",
+            "ref": {
+              "document_id": "deal-c",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": true,
+          "moved": true,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.ec0bbe13c4fbb94e",
+          "taxonomy_id": "venue",
+          "document_id": "deal-d",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": {
+            "text": "The courts of the State of Texas have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-d",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.fae1676872abcd69",
+          "taxonomy_id": "venue",
+          "document_id": "deal-e",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": null,
+          "opened_with": "non_standard",
+          "opening_text": {
+            "text": "Disputes will be heard by the courts of the State of Nevada.",
+            "ref": {
+              "document_id": "deal-e",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": false,
+          "moved": true,
+          "refused_asks": [
+            {
+              "text": "DISPUTES WILL BE HEARD BY THE COURTS OF THE STATE OF NEVADA.",
+              "round": 1,
+              "ref": {
+                "document_id": "deal-e",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "id": "prec.b2fafd59de220e48",
+          "taxonomy_id": "venue",
+          "document_id": "deal-f",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": null,
+          "opened_with": "non_standard",
+          "opening_text": {
+            "text": "Disputes will be heard by the courts of the State of Ohio.",
+            "ref": {
+              "document_id": "deal-f",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": false,
+          "moved": true,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.f5f1aefc96418ddb",
+          "taxonomy_id": "venue",
+          "document_id": "deal-g",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 1,
+          "signed_text": {
+            "text": "The courts of the State of New York have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-g",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "absent",
+          "opening_text": null,
+          "standard": false,
+          "moved": true,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.1f746a92b5956a12",
+          "taxonomy_id": "venue",
+          "document_id": "deal-h",
+          "paper": "unknown",
+          "paper_basis": "ambiguous_detection",
+          "paper_confidence": null,
+          "signed": false,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": {
+            "text": "The parties will arbitrate every dispute in London.",
+            "ref": {
+              "document_id": "deal-h",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": null,
+          "opening_text": null,
+          "standard": false,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.25c4186525c754e0",
+          "taxonomy_id": "venue",
+          "document_id": "deal-i",
+          "paper": "ours",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 0,
+          "signed_text": {
+            "text": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "ref": {
+              "document_id": "deal-i",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "standard",
+          "opening_text": null,
+          "standard": true,
+          "moved": false,
+          "refused_asks": []
+        },
+        {
+          "id": "prec.1721b46be3ed0551",
+          "taxonomy_id": "venue",
+          "document_id": "deal-j",
+          "paper": "theirs",
+          "paper_basis": "provenance_detection",
+          "paper_confidence": 0.9,
+          "signed": true,
+          "signed_on": null,
+          "rounds": 1,
+          "signed_text": {
+            "text": "The parties will arbitrate every dispute in London.",
+            "ref": {
+              "document_id": "deal-j",
+              "version": 3,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "opened_with": "non_standard",
+          "opening_text": {
+            "text": "DISPUTES WILL BE HEARD BY THE COURTS OF THE STATE OF OREGON.",
+            "ref": {
+              "document_id": "deal-j",
+              "version": 1,
+              "clause_path": "1",
+              "char_span": [
+                0,
+                40
+              ]
+            }
+          },
+          "standard": false,
+          "moved": true,
+          "refused_asks": []
+        }
+      ],
+      "absence": {
+        "guard": 0.1,
+        "records": [
+          {
+            "id": "abs.20e5f52a6bb4582b",
+            "taxonomy_id": "venue",
+            "document_id": "deal-b",
+            "status": "possibly_present",
+            "basis": "unverifiable",
+            "n_checked": 0,
+            "candidates": []
+          },
+          {
+            "id": "abs.87c982423a8b64eb",
+            "taxonomy_id": "venue",
+            "document_id": "deal-e",
+            "status": "possibly_present",
+            "basis": "unverifiable",
+            "n_checked": 0,
+            "candidates": []
+          },
+          {
+            "id": "abs.39254d75afbcf259",
+            "taxonomy_id": "venue",
+            "document_id": "deal-f",
+            "status": "possibly_present",
+            "basis": "unverifiable",
+            "n_checked": 0,
+            "candidates": []
+          }
+        ]
+      }
+    },
+    "posture": {},
+    "floor": {},
+    "corpus": {
+      "documents": [
+        {
+          "document_id": "deal-a",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-b",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-c",
+          "provenance": "counterparty_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-d",
+          "provenance": "counterparty_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-e",
+          "provenance": "counterparty_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-f",
+          "provenance": "counterparty_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-g",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-h",
+          "provenance": "counterparty_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": null,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-i",
+          "provenance": "our_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        },
+        {
+          "document_id": "deal-j",
+          "provenance": "counterparty_paper",
+          "in_scope": true,
+          "versions": 3,
+          "signed_version": 3,
+          "signed_on": null,
+          "signed_on_basis": null
+        }
+      ],
+      "stats": {}
+    },
+    "compiler": {
+      "name": "playbook-engine",
+      "version": "1.0.0",
+      "run_id": "conformance-fixture-run",
+      "generated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  "expected": {
+    "canonical": "{\"agreement_type\":{\"id\":\"conformance-fixture\",\"name\":\"Conformance Fixture Agreement\"},\"baseline\":{\"has_canonical_template\":true},\"compiler\":{\"name\":\"playbook-engine\",\"version\":\"1.0.0\"},\"corpus\":{\"documents\":[{\"document_id\":\"deal-a\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-b\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-c\",\"in_scope\":true,\"provenance\":\"counterparty_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-d\",\"in_scope\":true,\"provenance\":\"counterparty_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-e\",\"in_scope\":true,\"provenance\":\"counterparty_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-f\",\"in_scope\":true,\"provenance\":\"counterparty_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-g\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-h\",\"in_scope\":true,\"provenance\":\"counterparty_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":null,\"versions\":3},{\"document_id\":\"deal-i\",\"in_scope\":true,\"provenance\":\"our_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3},{\"document_id\":\"deal-j\",\"in_scope\":true,\"provenance\":\"counterparty_paper\",\"signed_on\":null,\"signed_on_basis\":null,\"signed_version\":3,\"versions\":3}],\"stats\":{}},\"evidence\":{\"absence\":{\"guard\":0.1,\"records\":[{\"basis\":\"unverifiable\",\"candidates\":[],\"document_id\":\"deal-b\",\"id\":\"abs.20e5f52a6bb4582b\",\"n_checked\":0,\"status\":\"possibly_present\",\"taxonomy_id\":\"venue\"},{\"basis\":\"unverifiable\",\"candidates\":[],\"document_id\":\"deal-e\",\"id\":\"abs.87c982423a8b64eb\",\"n_checked\":0,\"status\":\"possibly_present\",\"taxonomy_id\":\"venue\"},{\"basis\":\"unverifiable\",\"candidates\":[],\"document_id\":\"deal-f\",\"id\":\"abs.39254d75afbcf259\",\"n_checked\":0,\"status\":\"possibly_present\",\"taxonomy_id\":\"venue\"}]},\"clauses\":[{\"id\":\"clause.venue\",\"n_changed_openings\":2,\"n_deals\":10,\"n_kept_prior\":0,\"n_kept_standard\":1,\"n_moved_to_current\":0,\"n_opened_prior\":0,\"n_opened_standard\":3,\"n_refused\":1,\"n_signed_standard\":2,\"n_variants\":3,\"our_standard\":{\"parts\":[{\"order\":1,\"part_id\":\"68f94fdb\",\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"}],\"source_ref\":{\"clause_path\":\"15\",\"document_id\":\"template\",\"version\":\"template\"},\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"},\"prior_standards\":[],\"taxonomy_id\":\"venue\",\"title\":\"Venue\",\"why_changed\":null}],\"precedent\":[{\"document_id\":\"deal-a\",\"id\":\"prec.dcd670d1fc2dfeae\",\"moved\":true,\"opened_with\":\"standard\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":1},\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"},\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":1,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-a\",\"version\":3},\"text\":\"The courts of the State of New York have exclusive jurisdiction.\"},\"standard\":false,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-b\",\"id\":\"prec.f7863412960d4e7b\",\"moved\":true,\"opened_with\":\"standard\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-b\",\"version\":1},\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"},\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":null,\"standard\":false,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-c\",\"id\":\"prec.ca89e737a6b8351e\",\"moved\":true,\"opened_with\":\"non_standard\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-c\",\"version\":1},\"text\":\"Disputes will be heard by the courts of the State of Oregon.\"},\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":1,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-c\",\"version\":3},\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"},\"standard\":true,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-d\",\"id\":\"prec.ec0bbe13c4fbb94e\",\"moved\":false,\"opened_with\":\"non_standard\",\"opening_text\":null,\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-d\",\"version\":3},\"text\":\"The courts of the State of Texas have exclusive jurisdiction.\"},\"standard\":false,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-e\",\"id\":\"prec.fae1676872abcd69\",\"moved\":true,\"opened_with\":\"non_standard\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-e\",\"version\":1},\"text\":\"Disputes will be heard by the courts of the State of Nevada.\"},\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-e\",\"version\":2},\"round\":1,\"text\":\"DISPUTES WILL BE HEARD BY THE COURTS OF THE STATE OF NEVADA.\"}],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":null,\"standard\":false,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-f\",\"id\":\"prec.b2fafd59de220e48\",\"moved\":true,\"opened_with\":\"non_standard\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-f\",\"version\":1},\"text\":\"Disputes will be heard by the courts of the State of Ohio.\"},\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":null,\"standard\":false,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-g\",\"id\":\"prec.f5f1aefc96418ddb\",\"moved\":true,\"opened_with\":\"absent\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":1,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-g\",\"version\":3},\"text\":\"The courts of the State of New York have exclusive jurisdiction.\"},\"standard\":false,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-h\",\"id\":\"prec.1f746a92b5956a12\",\"moved\":false,\"opened_with\":null,\"opening_text\":null,\"paper\":\"unknown\",\"paper_basis\":\"ambiguous_detection\",\"paper_confidence\":null,\"refused_asks\":[],\"rounds\":0,\"signed\":false,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-h\",\"version\":3},\"text\":\"The parties will arbitrate every dispute in London.\"},\"standard\":false,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-i\",\"id\":\"prec.25c4186525c754e0\",\"moved\":false,\"opened_with\":\"standard\",\"opening_text\":null,\"paper\":\"ours\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":0,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-i\",\"version\":3},\"text\":\"The courts of the State of Delaware have exclusive jurisdiction.\"},\"standard\":true,\"taxonomy_id\":\"venue\"},{\"document_id\":\"deal-j\",\"id\":\"prec.1721b46be3ed0551\",\"moved\":true,\"opened_with\":\"non_standard\",\"opening_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-j\",\"version\":1},\"text\":\"DISPUTES WILL BE HEARD BY THE COURTS OF THE STATE OF OREGON.\"},\"paper\":\"theirs\",\"paper_basis\":\"provenance_detection\",\"paper_confidence\":0.9,\"refused_asks\":[],\"rounds\":1,\"signed\":true,\"signed_on\":null,\"signed_text\":{\"ref\":{\"char_span\":[0,40],\"clause_path\":\"1\",\"document_id\":\"deal-j\",\"version\":3},\"text\":\"The parties will arbitrate every dispute in London.\"},\"standard\":false,\"taxonomy_id\":\"venue\"}]},\"floor\":{},\"opf_version\":\"0.6\",\"perspective\":{\"counterparty_type\":\"Fixture Counterparty\",\"party\":\"Fixture Co\"},\"posture\":{},\"taxonomy\":{\"entries\":[],\"source\":\"custom\"}}",
+    "content_hash": "sha256:2226d600b6bf219acc76721754cfd793418ef87e0cf2b50af2988f7326d5059d",
+    "section_digests": {
+      "evidence": "sha256:ebb8d39088c9010e4e49de1f75a3929fa695e60c7f58579b78c3012dc9fed656",
+      "posture": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "floor": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "digest": {
+      "digest_version": "5",
+      "perspective": {
+        "party": "Fixture Co",
+        "counterparty_type": "Fixture Counterparty"
+      },
+      "agreement_type": {
+        "id": "conformance-fixture",
+        "name": "Conformance Fixture Agreement"
+      },
+      "corpus": {
+        "n_deals": 10,
+        "n_signed": 9,
+        "first_signed": null,
+        "last_signed": null
+      },
+      "part_map_legend": {
+        "part_map": {
+          "=": "our part is present with the same legal effect",
+          "+": "our part is present but more protective for perspective.party",
+          "-": "our part is present but less protective for perspective.party",
+          "x+": "our part is omitted, which is more protective for perspective.party",
+          "x-": "our part is omitted, which is less protective for perspective.party",
+          "x0": "our part is omitted with no effect on perspective.party"
+        },
+        "additions": {
+          "+": "an addition no part covers, more protective for perspective.party",
+          "-": "an addition no part covers, less protective for perspective.party",
+          "0": "an addition no part covers, neutral for perspective.party"
+        },
+        "label_by": {
+          "parts": "the default, so a digest entry omits label_by: the label is derived from the part map and additions; reason is the judgment's most important difference",
+          "owner": "the owner set the label over the judged part map and additions, which may imply another label; reason is the owner's and wins"
+        },
+        "settled": {
+          "agreed": "an independent blind check reached the same label and parts as the judgment",
+          "adjudicated": "the blind check disagreed and a fresh agent decided: the judgment shown is that decision, so this label was contested and deserves more scrutiny",
+          "unchecked": "no completed blind check (none yet, or a disagreement still awaiting adjudication): weaker evidence than agreed or adjudicated",
+          "owner": "the owner set or corrected the judgment; it is never blind-checked"
+        }
+      },
+      "clauses": [
+        {
+          "id": "clause.venue",
+          "taxonomy_id": "venue",
+          "title": "Venue",
+          "our_standard": {
+            "parts": [
+              {
+                "part_id": "68f94fdb",
+                "text": "The courts of the State of Delaware have exclusive jurisdiction."
+              }
+            ],
+            "source_ref": {
+              "document_id": "template",
+              "version": "template",
+              "clause_path": "15"
+            }
+          },
+          "n_deals": 10,
+          "first_signed": null,
+          "last_signed": null,
+          "n_signed_standard": 2,
+          "n_opened_standard": 3,
+          "n_kept_standard": 1,
+          "standard_history": {
+            "forms": [],
+            "why_changed": null
+          },
+          "positions": {
+            "standard": 2,
+            "equivalent": 0,
+            "more_protective": 0,
+            "less_protective": 0,
+            "mixed": 0,
+            "different_concept": 0,
+            "unjudged": 4
+          },
+          "signed_variants": [
+            {
+              "text": "The courts of the State of New York have exclusive jurisdiction.",
+              "n_deals": 2,
+              "first_signed": null,
+              "last_signed": null,
+              "n_from_standard": 1,
+              "n_unchanged": 0,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-a",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.dcd670d1fc2dfeae",
+                "prec.f5f1aefc96418ddb"
+              ]
+            },
+            {
+              "text": "The courts of the State of Texas have exclusive jurisdiction.",
+              "n_deals": 1,
+              "first_signed": null,
+              "last_signed": null,
+              "n_from_standard": 0,
+              "n_unchanged": 1,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-d",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.ec0bbe13c4fbb94e"
+              ]
+            },
+            {
+              "text": "The parties will arbitrate every dispute in London.",
+              "n_deals": 1,
+              "first_signed": null,
+              "last_signed": null,
+              "n_from_standard": 0,
+              "n_unchanged": 0,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-j",
+                "version": 3,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.1721b46be3ed0551"
+              ]
+            }
+          ],
+          "refused_asks": [
+            {
+              "text": "DISPUTES WILL BE HEARD BY THE COURTS OF THE STATE OF NEVADA.",
+              "n_deals": 1,
+              "first_signed": null,
+              "last_signed": null,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-e",
+                "version": 2,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.fae1676872abcd69"
+              ]
+            }
+          ],
+          "changed_openings": [
+            {
+              "text": "Disputes will be heard by the courts of the State of Oregon.",
+              "n_deals": 2,
+              "n_to_standard": 1,
+              "n_struck": 0,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-c",
+                "version": 1,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.1721b46be3ed0551",
+                "prec.ca89e737a6b8351e"
+              ]
+            },
+            {
+              "text": "Disputes will be heard by the courts of the State of Ohio.",
+              "n_deals": 1,
+              "n_to_standard": 0,
+              "n_struck": 1,
+              "label": null,
+              "part_map": null,
+              "additions": null,
+              "reason": null,
+              "settled": null,
+              "ref": {
+                "document_id": "deal-f",
+                "version": 1,
+                "clause_path": "1",
+                "char_span": [
+                  0,
+                  40
+                ]
+              },
+              "precedent_ids": [
+                "prec.b2fafd59de220e48"
+              ]
+            }
+          ],
+          "n_variants_total": 3,
+          "n_refused_total": 1,
+          "n_changed_openings_total": 2,
+          "n_signed_without_verified": 0,
+          "n_signed_without_possible": 3,
+          "verified_absent_deals": []
+        }
+      ],
+      "uncovered_clause_types": []
+    },
+    "manifest": {
+      "hard_rules": []
+    },
+    "dossiers": {
+      "clause.venue": {
+        "clause_id": "clause.venue",
+        "taxonomy_id": "venue",
+        "title": "Venue",
+        "our_standard": {
+          "parts": [
+            {
+              "part_id": "68f94fdb",
+              "text": "The courts of the State of Delaware have exclusive jurisdiction."
+            }
+          ]
+        },
+        "n_floor_rules": 0,
+        "floor_rules": [],
+        "excerpts": [
+          {
+            "precedent_id": "prec.dcd670d1fc2dfeae",
+            "kind": "signed_variant",
+            "opening": "The courts of the State of Delaware have exclusive jurisdiction.",
+            "signed": "The courts of the State of New York have exclusive jurisdiction.",
+            "outcome": "signed",
+            "vs_standard": null
+          },
+          {
+            "precedent_id": "prec.1721b46be3ed0551",
+            "kind": "changed_opening",
+            "opening": "DISPUTES WILL BE HEARD BY THE COURTS OF THE STATE OF OREGON.",
+            "signed": "The parties will arbitrate every dispute in London.",
+            "outcome": "signed",
+            "vs_standard": null
+          }
+        ],
+        "n_omitted": 0,
+        "omitted_precedent_ids": []
+      }
+    },
+    "provenance_index": {
+      "compiler": {
+        "name": "playbook-engine",
+        "version": "1.0.0"
+      },
+      "corpus_manifest_hash": null,
+      "documents": [
+        {
+          "document_id": "deal-a",
+          "signed_on": null,
+          "version_files": []
+        },
+        {
+          "document_id": "deal-j",
+          "signed_on": null,
+          "version_files": []
+        }
+      ],
+      "dossiers": {
+        "clause.venue": [
+          {
+            "precedent_id": "prec.dcd670d1fc2dfeae",
+            "document_id": "deal-a",
+            "kind": "signed_variant",
+            "omitted": false
+          },
+          {
+            "precedent_id": "prec.1721b46be3ed0551",
+            "document_id": "deal-j",
+            "kind": "changed_opening",
+            "omitted": false
+          }
+        ]
+      }
+    }
+  }
+}
