@@ -1,0 +1,114 @@
+{
+  "name": "number-and-key-rules",
+  "description": "The canonical-form rules a verifier on a standard non-Python JSON parser must reproduce (OPF-SPEC §3.10). corpus.stats (a free-form object) holds a whole number written as an integer (3, never 3.0: a standard parser cannot tell 3 from 3.0, so producers write a whole number as an integer), decimals that need no exponent (0.5, 0.0001, -0.25, 1234567.5; a number below 1e-4 or from 1e16 up is never emitted, because Python and JavaScript spell its exponent differently), and keys that pin the sort order: object keys sort by Unicode code point, so U+FFFF sorts BEFORE U+1F600 (a UTF-16 code unit sort puts the astral key first), and the NFC and NFD spellings of the same word stay two distinct keys' values, hashed as written, never normalized. Non-ASCII is emitted literally as UTF-8.",
+  "opf_version": "0.6",
+  "engine_version": "1.0.0",
+  "digest_version": "5",
+  "input": {
+    "opf_version": "0.6",
+    "agreement_type": {
+      "id": "conformance-fixture",
+      "name": "Conformance Fixture Agreement"
+    },
+    "baseline": {
+      "has_canonical_template": true
+    },
+    "taxonomy": {
+      "source": "custom",
+      "entries": []
+    },
+    "evidence": {
+      "clauses": [],
+      "precedent": [],
+      "absence": {
+        "guard": 0.1,
+        "records": []
+      }
+    },
+    "posture": {},
+    "floor": {},
+    "corpus": {
+      "documents": [],
+      "stats": {
+        "whole_number": 3,
+        "fraction": 0.5,
+        "small_decimal": 0.0001,
+        "negative": -0.25,
+        "large_decimal": 1234567.5,
+        "￿": "last BMP code point",
+        "😀": "astral code point",
+        "nfc": "café",
+        "nfd": "café"
+      }
+    },
+    "compiler": {
+      "name": "playbook-engine",
+      "version": "1.0.0",
+      "run_id": "conformance-fixture-run",
+      "generated_at": "2026-01-01T00:00:00Z"
+    }
+  },
+  "expected": {
+    "canonical": "{\"agreement_type\":{\"id\":\"conformance-fixture\",\"name\":\"Conformance Fixture Agreement\"},\"baseline\":{\"has_canonical_template\":true},\"compiler\":{\"name\":\"playbook-engine\",\"version\":\"1.0.0\"},\"corpus\":{\"documents\":[],\"stats\":{\"fraction\":0.5,\"large_decimal\":1234567.5,\"negative\":-0.25,\"nfc\":\"café\",\"nfd\":\"café\",\"small_decimal\":0.0001,\"whole_number\":3,\"￿\":\"last BMP code point\",\"😀\":\"astral code point\"}},\"evidence\":{\"absence\":{\"guard\":0.1,\"records\":[]},\"clauses\":[],\"precedent\":[]},\"floor\":{},\"opf_version\":\"0.6\",\"posture\":{},\"taxonomy\":{\"entries\":[],\"source\":\"custom\"}}",
+    "content_hash": "sha256:2c6025813afbe4af28fdcfb9c6fea0e43844eb49c4043e85ba3a2b1c7259bb1a",
+    "section_digests": {
+      "evidence": "sha256:0ae53fb5e5f5bb0eb1d095a9cc284d09e07749b9417dd052283fd14f58538d00",
+      "posture": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "floor": "sha256:44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    "digest": {
+      "digest_version": "5",
+      "perspective": null,
+      "agreement_type": {
+        "id": "conformance-fixture",
+        "name": "Conformance Fixture Agreement"
+      },
+      "corpus": {
+        "n_deals": 0,
+        "n_signed": 0,
+        "first_signed": null,
+        "last_signed": null
+      },
+      "part_map_legend": {
+        "part_map": {
+          "=": "our part is present with the same legal effect",
+          "+": "our part is present but more protective for perspective.party",
+          "-": "our part is present but less protective for perspective.party",
+          "x+": "our part is omitted, which is more protective for perspective.party",
+          "x-": "our part is omitted, which is less protective for perspective.party",
+          "x0": "our part is omitted with no effect on perspective.party"
+        },
+        "additions": {
+          "+": "an addition no part covers, more protective for perspective.party",
+          "-": "an addition no part covers, less protective for perspective.party",
+          "0": "an addition no part covers, neutral for perspective.party"
+        },
+        "label_by": {
+          "parts": "the default, so a digest entry omits label_by: the label is derived from the part map and additions; reason is the judgment's most important difference",
+          "owner": "the owner set the label over the judged part map and additions, which may imply another label; reason is the owner's and wins"
+        },
+        "settled": {
+          "agreed": "an independent blind check reached the same label and parts as the judgment",
+          "adjudicated": "the blind check disagreed and a fresh agent decided: the judgment shown is that decision, so this label was contested and deserves more scrutiny",
+          "unchecked": "no completed blind check (none yet, or a disagreement still awaiting adjudication): weaker evidence than agreed or adjudicated",
+          "owner": "the owner set or corrected the judgment; it is never blind-checked"
+        }
+      },
+      "clauses": [],
+      "uncovered_clause_types": []
+    },
+    "manifest": {
+      "hard_rules": []
+    },
+    "dossiers": {},
+    "provenance_index": {
+      "compiler": {
+        "name": "playbook-engine",
+        "version": "1.0.0"
+      },
+      "corpus_manifest_hash": null,
+      "documents": [],
+      "dossiers": {}
+    }
+  }
+}

@@ -1,14 +1,16 @@
 # Open Playbook Format (OPF) — Specification
 
-**Version:** 1.0
+**Version:** 2.0
 **Status:** Stable — the first non-beta release. 1.0 is a stability commitment, not a shape change. Format changes from here are governed by the stability policy in §11 (a breaking shape or normative-rule change requires 2.0). The reference compiler emits and validates exactly one document shape, `opf_version` "0.6" (the verdict-free per-deal precedent record, §3.5.4, with the opening evidence of §3.5.5 and a `digest_version` "5" digest, §3.12.2). The 0.1–0.4 shapes and digest 2 were retired (owner decision 2026-10-06: no installed consumer needs them); their schemas and text stay in git history and in contract-opf/opf.
-**Serialization:** JSON (canonical). YAML permitted for authoring; tools MUST accept both and treat them as equivalent.
+**Serialization:** JSON is the distributed form and the only form a consumer is required to read; the canonical form and every hash are defined over the JSON value (§3.10). YAML MAY be used for authoring (the reference tools read both and treat them as the same value); a producer converts to JSON before distributing, and a consumer MUST NOT be assumed to read YAML.
 **Issue references:** #NNN citations throughout are design provenance from the project's original development tracker.
 **License:** This file is specification text and is additionally licensed under the Creative Commons Attribution 4.0 International License (CC-BY-4.0), per the repository `LICENSE` — alongside the Apache-2.0 license covering this repository.
 
 ---
 
-## 0. What changed in 0.2, and why
+## 0. History: what changed in 0.2, and why
+
+> **Historical rationale, not a definition.** This section and the retired concepts it names (`rollup.position`, `historical_stance`, per-clause postures) describe the 0.1 → 0.2 reframe. The document shape has changed twice since (0.4 and 0.6 replaced the evidence shape; see §3.5 and Appendix B). What is normative today is §3 onward and §5; the three-section model below is still the structure.
 
 v0.1 modeled a playbook as a set of **clause positions with a frozen, operative posture per clause** (`rollup.position ∈ {standard, acceptable_variants_exist, negotiable, hold_firm}`). That made sense when the consumer was a less-capable reviewer that needed the answer pre-computed. The consuming review engine is now a SOTA model. Pre-freezing a posture per clause is no longer the right interface: it is rigid where the model is flexible, and it hides the negotiation intent that actually drives a decision.
 
@@ -24,7 +26,7 @@ A playbook is now **one document with three sections**, authored at different ti
 
 Plus one new top-level concern: **composition** (§3.4) — an OPF may declare *composed* external clause-intelligence modules (e.g. a privacy/DPA module) rather than re-encoding that knowledge itself: a pinned, validated dependency recorded for lineage under a fixed governance contract. (Behavior wiring is deferred — see §3.4's open note; today `composes` is declared and verified, not yet executed.)
 
-Everything that made v0.1 trustworthy is retained and, in the Floor and citation rules, sharpened: every asserted text still cites precedent (§4); the provenance rule still holds (§2.3); out-of-scope documents are still retained (§3.8). The change is *not* "less governance because the model is smarter" — it is *more* model freedom in the soft middle, bounded by a hard floor it can never cross and a citation it must always give.
+Everything that made v0.1 trustworthy is retained and, in the Floor and citation rules, sharpened: every asserted text still cites precedent (§4); the provenance rule still holds (§2.3, restated for 0.6); out-of-scope documents are still retained (§3.8). The change is *not* "less governance because the model is smarter" — it is *more* model freedom in the soft middle, bounded by a hard floor it can never cross and a citation it must always give.
 
 This section summarizes the reframe.
 
@@ -61,37 +63,31 @@ OPF describes **what the playbook knows and intends**, not the review engine's i
 | **Posture** | Forward-looking negotiation intent, as system-prompt-style prose. (§3.6) |
 | **Floor** | The deterministic hard lines that must never slip. (§3.7) |
 | **Composition** | A pinned dependency on an external clause-intelligence module. (§3.4) |
-| **Observation** | A single occurrence of a clause variant in the corpus, with its outcome and provenance. |
-| **Deviation** | How much an observed clause differs from our standard: `none` / `reworded_equivalent` / `substantive`. |
-| **Risk delta** | The risk change relative to our standard: a `direction` (`better`/`neutral`/`worse`) and a `magnitude` (`none`/`minor`/`material`). |
-| **Outcome** | What happened to an observed variant: `signed` or `proposed_then_reversed` (an explicit rejection). |
-| **Provenance** | `our_paper` or `counterparty_paper`. |
-| **Historical stance** | A *descriptive* summary of what the corpus shows we have done on a clause (§2.2). Replaces v0.1's prescriptive `rollup.position`. |
+| **Precedent record** | One deal's record for one clause type: what it opened with, what was refused, what was signed, and (judged) how the signed text compares to our standard. Verdict-free about risk. (§3.5.4) |
+| **Refused ask** | A text one side proposed that did not survive to signature (`precedent[].refused_asks[]`). |
+| **Provenance** | Whose paper a document is on: `our_paper` or `counterparty_paper` (`corpus.documents[].provenance`, §3.8); a precedent record carries `paper` `ours` / `theirs` / `unknown`. |
 
-### 2.1 The risk-delta model (unchanged from v0.1)
+### 2.1 Retired concepts (0.1–0.3 only — no normative force in 0.6)
 
-OPF does not carry flat `acceptable_variant` / `concession` labels. An observation carries orthogonal attributes — `deviation`, `risk_delta`, `provenance`, `outcome` — and the human-facing distinction is **derived**:
+Earlier shapes carried per-observation `deviation`, `risk_delta` and `outcome` (`proposed_then_reversed`) attributes, a per-clause `historical_stance` (`consistently_held` … `no_signal`, replacing v0.1's `rollup.position`), `fallbacks` / `acceptable_if` and a `clause_library`. A 0.6 document carries none of them and the schema rejects them; this specification imposes no rule on them, and a consumer does not receive or need to honour them. Their text is in git history and in contract-opf/opf. The 0.6 equivalents are:
 
-- *Acceptable variant* = signed observation with `risk_delta.direction = neutral`.
-- *Concession* = signed observation with `risk_delta.direction = worse` (magnitude tells you how reluctant).
-- *Rejected ask* = observation with `outcome = proposed_then_reversed`.
+| Retired | 0.6 |
+|---|---|
+| `outcome: proposed_then_reversed` | a `refused_asks[]` entry of a precedent record (§3.5.4) |
+| `deviation`, `risk_delta` | `vs_standard`, the judged comparison of a signed text to our standard, with no risk direction (§3.5.6) |
+| `historical_stance` | per-clause deal counts (`n_signed_standard` of `n_deals`, §3.5.4); the consumer reads the counts, never a stance |
+| `fallbacks`, `acceptable_if`, `clause_library` | the signed variants themselves (`signed_text` of each precedent record, grouped in the digest, §3.12.2) |
 
-This keeps the format auditable (you can always see *why* something is a concession) and general across agreement types.
+Evidence of every kind is **advisory**: a consumer MUST treat it as cited material to reason over, never as a directive (§5). What to do on a live clause is decided by the model from Evidence + Posture + the deal in front of it, except where a Floor rule applies, which is non-negotiable (§3.7, §5).
 
-### 2.2 Historical stance is descriptive, not an instruction (the key 0.2 change)
+### 2.2 (removed)
 
-v0.1's `rollup.position` enum tried to be the operative instruction ("hold firm here"). v0.2 replaces it with **`historical_stance`** — a purely *descriptive* summary of the corpus:
+The 0.2 "historical stance is descriptive, not an instruction" rule is subsumed by the advisory binding of Evidence in §5 and by §2.1 above. Section number 2.2 is left unassigned so the numbering of §2.3 is stable.
 
-> `historical_stance ∈ { consistently_held, usually_held, mixed, usually_conceded, no_signal }`
+### 2.3 The provenance rule (normative)
 
-It answers "**what has the corpus shown we do here?**", never "what must you do here?". A consumer MUST treat `historical_stance` as evidence, not as a directive. What to actually *do* on a live clause is decided by the model from Evidence + Posture + the specifics of the deal in front of it — except where a Floor rule applies, which is non-negotiable (§3.7, §5).
-
-Rationale: the descriptive signal ("we have consistently held the liability cap") is genuinely useful and worth compiling; the *prescription* baked into v0.1's enum is what made it rigid. Splitting description from prescription keeps the signal and removes the rigidity.
-
-### 2.3 The provenance rule (normative — unchanged)
-
-> Only **our-paper** drafting (the canonical template and our-paper deals) MAY define an *opening position* (`our_standard`, and any `historical_stance` stronger than `mixed`).
-> **Counterparty-paper** observations MAY only inform tolerance bounds (`fallbacks`, `acceptable_if`) and populate the `clause_library`. A counterparty-paper-only clause MUST NOT set `our_standard`.
+> Only **our-paper** drafting (the canonical template, its prior forms, and the openings of deals on our paper) MAY define an *opening position*: `our_standard` and `prior_standards`.
+> **Counterparty-paper** documents inform only what was *tolerated*: their signed texts are precedent (`signed_text`), never `our_standard`. A clause type found only on counterparty paper MUST NOT set `our_standard`.
 
 Rationale: a clause surviving in the counterparty's template means we failed to strike it, not that we'd propose it. Survivorship is not endorsement.
 
@@ -127,7 +123,7 @@ A playbook is a single JSON object:
 ### 3.1 Top-level fields
 - `opf_version` (string, required) — `"0.6"`, the one supported version.
 - `agreement_type` (object, required) — `id` (slug), `name`, `description`, `aliases[]`.
-- `perspective` (object, OPTIONAL) — whose side this playbook is reviewed *as*: `party` (our legal entity/party name) and `counterparty_type` (what the other side typically is, e.g. `"Educational Institution"`). An open-standard OPF instance must say who "us" is — negotiation knowledge is meaningless without it. Owned by OPF (see `OPF-BUNDLE-BOUNDARY.md`).
+- `perspective` (object; schema-optional, normatively REQUIRED of a producer) — a producer MUST emit it: the schema leaves it optional only because the 1.x stability policy forbids adding a required field, `playbook validate` reports its absence as a warning, and the reference consumer (contract-toaster) refuses an instance without it. It says whose side this playbook is reviewed *as*: `party` (our legal entity/party name) and `counterparty_type` (what the other side typically is, e.g. `"Educational Institution"`). An open-standard OPF instance must say who "us" is — negotiation knowledge is meaningless without it. Owned by OPF (see `OPF-BUNDLE-BOUNDARY.md`).
 - `de_minimis` (array of strings, OPTIONAL) — categories of change accepted even when technically novel (e.g. `"typo fixes"`, `"renumbering with no substantive change"`). This is negotiation knowledge, not a runtime policy, so it lives in OPF rather than the consumer's bundle.
 
   `agreement_type` is the shared cross-tool key for "which contract type is this" — a
@@ -154,7 +150,7 @@ A playbook is a single JSON object:
 ```jsonc
 {
   "has_canonical_template": true,
-  "template_ref": { "document_id": "...", "title": "...", "source": "path or URI" },
+  "template_ref": { "document_id": "...", "title": "...", "source": "file name", "sha256": "sha256:…" },
   "prior_templates": [                       // OPF 0.6, issues #249, #250; absent when there is no former form
     { "label": "2019 form", "in_use_from": "2019" | "2019-03" | "2019-03-14",
       "in_use_until": "2021-06", "sha256": "sha256:…" },   // SUPPLIED: dates and sha256 OPTIONAL
@@ -177,7 +173,9 @@ owner dates, and carries `n_deals` and the `first_signed` / `last_signed` span
 (`YYYY-MM`, absent when no deal is dated) of the deals that opened on it. A
 supplied form always wins: the two kinds never appear together.
 
-If `has_canonical_template` is `false`, the playbook is *emergent*. The provenance rule still applies; with no template, `our_standard` is set only from our-paper deals, and most stances will be `mixed`/`no_signal`.
+`template_ref.source` is the template's file name only, never a host path: it participates in `identity.content_hash` (§3.10), so a path would make the hash machine-dependent and publish a home directory. The template is identified by `sha256`.
+
+If `has_canonical_template` is `false`, the playbook is *emergent*. The provenance rule still applies; with no template, `our_standard` is set only from our-paper deals, and most clauses will show few `n_signed_standard` of `n_deals`.
 
 ### 3.3 `taxonomy`
 A curated clause taxonomy (unchanged from v0.1). Entries may be inactive so curation survives upstream taxonomy upgrades. A compiler MUST only classify clauses into `active` or `custom` entries.
@@ -302,7 +300,8 @@ Field semantics:
   whose `part_id` or `order` is not the one so computed.
 - `signed_text` — the deal's terminal text for the clause: the executed copy
   when `signed` is true, the last draft when it is false. `null` when the
-  clause was struck before signing.
+  clause was struck before signing. A terminal text joined from several nodes
+  of the clause type cites every one of them (§4 list form).
 - `opened_with`, `opening_text` — what the clause opened with, a fact about
   the deal's first draft, whatever its origin and whatever paper the deal is
   on. Defined in §3.5.5. Never fabricated.
@@ -422,7 +421,8 @@ Definitions (normative):
   aligned row of that `taxonomy_id` — removed rows, and rows whose text still
   occurs in the signed copy, included — joined with a newline in the order of
   the nodes' `char_span` (path order when spans are absent). Its `ref` cites
-  the first of those nodes. The row's `taxonomy_id` is the alignment's, the
+  every one of those nodes (§4 list form: their paths in joined order, no
+  `char_span`); a first draft of a single node cites that node and its span. The row's `taxonomy_id` is the alignment's, the
   same one the terminal record uses.
 - **`opened_with`**, required, one of:
   - `"standard"` — the first-draft text is our standard language. This is the
@@ -879,13 +879,13 @@ A Floor entry is a **natural-language invariant**: one checkable statement a jud
 }
 ```
 
-An invariant MAY carry vendor-namespace keys (§10.1) that feed the hard-rule manifest (§3.12.3): `x_taxonomy_id` (the clause type it is about), `x_required_presence` (boolean), `x_condition` (a predicate spec or `"judged"`) and `x_permissible_proof` (list of strings). A validator rejects a malformed one. `playbook floor sign --clause ... --requires-presence --condition ... --proof ...` writes them.
+An invariant MAY carry the **reserved extension keys** of §10.1, which this specification defines and which are therefore normative, not vendor-defined: `x_taxonomy_id` (the clause type it is about), `x_required_presence` (boolean), `x_condition` (a predicate spec or `"judged"`) and `x_permissible_proof` (list of strings) feed the hard-rule manifest (§3.12.3), and `x_signed_by` / `x_signed_at` record who signed the invariant and when, with `x_signed_hash` binding that sign-off to the signed fields: `sha256:` over the canonical form (§3.10) of the invariant's `id`, `statement`, `rationale`, `x_taxonomy_id`, `x_direction`, `x_required_presence`, `x_condition`, `x_permissible_proof`, `x_signed_by` and `x_signed_at`, those present. An invariant whose `x_signed_hash` does not match MUST NOT be presented as signed; one signed before the key existed has none and is reported as unbound, not rejected. `x_direction` (`"hold"` or `"refuse"`) says which way the statement runs: keep this clause, or never accept this term. A retired invariant leaves `invariants` and is recorded under `floor.x_retired` (`id`, `statement`, `x_retired_by`, `x_retired_at`); a retired line binds nothing (the Floor's attribution; a Floor invariant without it draws a validator warning). A validator rejects a malformed one. `playbook floor sign --clause ... --requires-presence --condition ... --proof ...` writes them. An editor or converter MUST preserve these keys: dropping them silently weakens a signed hard line (a deterministic presence or predicate rule becomes a judged one, and the signature is lost).
 
 **Normative rules:**
 1. **Evaluation is judgment; coverage and consequence are deterministic.** A dedicated Floor judge — separate from the model doing the review — evaluates each invariant against the clause under review and returns `clear`, `violation`, or `needs_review`. The consumer's deterministic obligations are the **coverage gate** (every invariant present MUST be evaluated and logged on every review; an unevaluated invariant fails the run, fail-closed) and the **consequence rule** (a `violation` verdict forces the negotiation-unacceptable outcome; `needs_review` forces human escalation; the model under review and the Posture can override neither).
 2. One Floor, both paper contexts: the same invariants are judged whether reviewing our paper's diff or the counterparty paper's extracted clauses — not two modes.
 3. The invariants are OPTIONAL as a section (a corpus-only compile ships zero invariants) but never fabricated: the engine MUST NOT derive active invariants without sign-off.
-4. The compiler MAY **propose** Floor candidates (every `outcome: proposed_then_reversed` in the Evidence is a candidate hard line). The legal owner finalizes and signs. A compiler MUST NOT auto-promote a candidate to an active invariant without sign-off. This bars promoting a *compiler-derived* candidate — a machine inference read off the Evidence — without an explicit accept decision; it does not bar recording a *human-authored* statement (e.g. the Posture interview's `sacred_clauses` answer, OPF §7) as an active invariant directly, since the human act of writing it is itself the sign-off, not an auto-promotion of a machine inference.
+4. The compiler MAY **propose** Floor candidates (every refused ask in the Evidence, §3.5.4, is a candidate hard line). The legal owner finalizes and signs. A compiler MUST NOT auto-promote a candidate to an active invariant without sign-off. This bars promoting a *compiler-derived* candidate — a machine inference read off the Evidence — without an explicit accept decision; it does not bar recording a *human-authored* statement (e.g. the Posture interview's `sacred_clauses` answer, OPF §7) as an active invariant directly, since the human act of writing it is itself the sign-off, not an auto-promotion of a machine inference.
 
 #### 3.7.1 Floor admission test (keep the Floor minimal)
 
@@ -944,6 +944,31 @@ Out-of-scope documents MUST be retained here with `in_scope: false` and a `scope
   (the staged input, pre-extraction), keyed by the same inferred ordinal
   citations use. One entry per mined version; failed-ingest versions stay
   visible in the producer's ingest record instead.
+- Other `corpus.documents[]` fields (all OPTIONAL; the schema is the closed
+  list):
+  - `provenance_confidence` (number, 0–1) and `provenance_is_ambiguous`
+    (boolean) — how sure the producer is of `provenance`, and `true` when it
+    could not tell (the document is then written as `counterparty_paper`, the
+    safe direction of §2.3). A consumer MUST NOT read an ambiguous
+    `our_paper` as established.
+  - `versions` — the number of versions mined and cited; `versions_found` —
+    the number of version files found; `versions_mined` — the number that
+    ingested successfully. `versions` and `versions_mined` are equal for a
+    document the producer mined; they differ from `versions_found` when a
+    version failed to ingest.
+  - `version_ingest[]` — per version `{version, status, error?, extractor?}`
+    with `status` one of `ok`, `failed`, `unknown`; `extractor` names the
+    text extractor used (a document whose successful versions came from
+    different extractors is marked by the vendor key `x_mixed_extractors`,
+    §10.1). `error` is a message built from gate names, offsets and lengths,
+    never a slice of source content.
+- `corpus.stats` is a producer-defined object with no required keys. The
+  reference compiler writes `documents_total`, `documents_in_scope`,
+  `versions_total`; `unclassified` (`count`, `by_document`, up to five
+  `example_citations`: nodes the classifier could not file under any clause
+  type, so a clause is never dropped silently); and `dropped_observations`
+  (`count`, `by_reason`, `by_document`: net-diff rows that produced no
+  observation). A consumer MUST NOT depend on a stats key being present.
 - **Publication rule:** hashes of confidential files leak nothing, so
   `version_files` (and `snapshot`) are publication-safe. `source_uri` — a
   path/URI into someone's DMS — is NOT, so a producer preparing a
@@ -954,8 +979,21 @@ Out-of-scope documents MUST be retained here with `in_scope: false` and a `scope
 
 ### 3.9 `compiler`
 ```jsonc
-{ "name": "playbook-engine", "version": "x.y.z", "run_id": "…", "generated_at": "ISO-8601 (supplied by caller)" }
+{ "name": "playbook-engine", "version": "x.y.z", "run_id": "…", "generated_at": "ISO-8601 (supplied by caller)",
+  "stub_basis_present": false }
 ```
+
+`name`, `version` and `generated_at` are required. `run_id` and
+`generated_at` are run metadata and are excluded from `identity.content_hash`
+(§3.10); `name` and `version` are content.
+
+`stub_basis_present` (boolean, OPTIONAL; the reference compiler always writes
+it) is a **watermark**: `true` means at least one document's scope gate ran on
+the no-LLM stub default, so some clauses were never semantically assessed and
+the playbook is *semantically blank* for them. A consumer SHOULD refuse to
+run reviews against a playbook carrying `true` unless a human has reviewed it
+(the reference consumer refuses by default), and a renderer SHOULD display
+it. Absent means `false`.
 
 ### 3.10 `identity` (NEW) — content hash + section digests
 
@@ -973,10 +1011,35 @@ Gives the playbook artifact identity: a canonical serialization, a content
 hash, and per-section digests, so a consumer can record which exact playbook
 governed which document and lineage is reconstructible end to end (§8).
 
-- **Canonical form** (normative): the JSON value with object keys sorted
-  recursively, no insignificant whitespace, UTF-8. Array order is untouched
-  (semantic). See `playbook_engine/canonicalize.py` for the reference
-  implementation.
+- **Canonical form** (normative): the JSON value serialized as follows, so that
+  an implementation in any language reproduces the same bytes.
+  - Object keys are sorted recursively **by Unicode code point** (not by UTF-16
+    code unit: they differ for a key containing a character above U+FFFF,
+    which a JavaScript default sort orders first). No insignificant
+    whitespace: separators are `,` and `:` only. Array order is untouched
+    (semantic).
+  - Strings are emitted as UTF-8 with the minimal JSON escapes (`"`, `\\`, and
+    control characters below U+0020); every other character, non-ASCII
+    included, is written literally. Unicode is never normalized: the NFC and
+    NFD spellings of a word hash differently.
+  - **Numbers.** A number is written in its shortest round-trip decimal form
+    (the form Python's `json.dumps` and JavaScript's `JSON.stringify` agree on
+    for the range below). A document MUST be such that this form is the same
+    in every implementation, so a producer:
+    - MUST write a whole number as an integer (`1`, never `1.0`). A standard
+      JSON parser cannot tell `1.0` from `1`, so a document carrying `1.0`
+      hashes differently in a verifier that parses it with one;
+    - MUST NOT emit a number that needs exponent notation: a non-zero number
+      with an absolute value below `1e-4` or at or above `1e16` (Python writes
+      `1e-05`, JavaScript `0.00001`), nor `NaN` or an infinity.
+    A validator warns on a document that breaks either rule. The rule is part
+    of the canonical form, not a normalization step: a verifier hashes the
+    value as parsed, so a legacy document that carries a `1.0` keeps the hash
+    it was stamped with, which only a parser that preserves the integer/float
+    distinction can reproduce; re-deriving it with a current engine removes the
+    problem (the engine writes the integer form).
+  - See `playbook_engine/canonicalize.py` for the reference implementation and
+    conformance vector 015 (§10.2) for the cases above.
 - **`content_hash`** — `sha256:` + hex digest of the canonical form of the
   *whole document*, excluding two things so the hash is neither
   self-referential nor perturbed by non-content run metadata: the
@@ -1005,7 +1068,7 @@ governed which document and lineage is reconstructible end to end (§8).
 OPF 0.4 and earlier carried an optional top-level `curation` section of
 attorney-pinned clause positions. OPF 0.6 has no `curation` section (issue
 #233; the review loop that produced pins was retired in issue #239). The
-0.5 schema rejects a document that carries a top-level `curation` key, and
+0.6 schema rejects a document that carries a top-level `curation` key, and
 `identity.section_digests` has no `curation` digest. Section number 3.11 is
 left unassigned so the numbering of later sections is stable.
 
@@ -1039,8 +1102,8 @@ An OPF 0.6 document carries `digest_version` "5" (§3.12.2).
 > **History (replaced in place 2026-10-09, issue #234).** `digest_version` "3"
 > (per clause: our standard, the deal counts, the grouped signed variants and
 > refused asks) is replaced by digest 4, which is digest 3 plus the fields of
-> §3.12.2. Nothing consumed digest 3; the engine emits and validates only
-> digest 4, and its definition and vectors are in git history.
+> §3.12.2. Nothing consumed digest 3; digest 4 was in turn replaced in place by digest 5
+> (§3.12.2), the only digest the engine emits and validates, and its definition and vectors are in git history.
 
 #### 3.12.1 `digest_version` "3" (retired)
 
@@ -1426,8 +1489,16 @@ Every sibling-scoped id below MUST be **unique among its siblings**:
 
 - `evidence.clauses[].id` — unique across the clause list.
 - `evidence.precedent[].id` — unique across the precedent record (§3.5.4).
+- `evidence.absence.records[].id` — unique across the absence records (§3.5.8).
 - `floor.invariants[].id` — unique across the Floor's invariant list.
 - `corpus.documents[].document_id` — unique across the corpus.
+- `taxonomy.entries[].id` — unique across the taxonomy (§3.3); a duplicate
+  makes "classify only into active entries" ambiguous.
+- `baseline.prior_templates[].label` — unique across our former forms (§3.2).
+- `manifest.hard_rules[].rule_id` — unique across the manifest (§3.12.3).
+
+This list is the whole of the rule: it covers every set of siblings keyed by an
+id or label that anything else cites or looks up.
 
 The JSON Schema cannot express "unique across siblings," so this is enforced
 only by a conformant validator, the same way §3.12's digest-consistency rule
@@ -1444,7 +1515,7 @@ Every asserted clause text MUST be traceable.
 { "document_id": "string", "version": 4, "clause_path": "8.1", "char_span": [start, end] }
 ```
 - `document_id`, `version`, and `clause_path` are REQUIRED; `char_span` is optional.
-- `clause_path` is the dotted clause numbering in the normalized document, not the raw PDF page. A clause the reference engine cut out of another (§3.3, re-segmentation) is numbered `<clause>.r<k>`; its `char_span` lies inside the span of the clause it was cut from. One citation form is a list: an `our_standard` joined from several template clauses (§3.5) cites them all, so its `clause_path` is their dotted paths in document order separated by `, ` (for example `2, 5, 7`), and it carries no `char_span`. A `?` entry stands for a clause the compiler could not number; it has no navigation target. Every other citation names exactly one clause.
+- `clause_path` is the dotted clause numbering in the normalized document, not the raw PDF page. A clause the reference engine cut out of another (§3.3, re-segmentation) is numbered `<clause>.r<k>`; its `char_span` lies inside the span of the clause it was cut from. One citation form is a list: an `our_standard` joined from several template clauses (§3.5), and a `signed_text` or `opening_text` joined from several clauses of one deal (§3.5.5), cite them all, so its `clause_path` is their dotted paths in document order separated by `, ` (for example `2, 5, 7`), and it carries no `char_span`. A `?` entry stands for a clause the compiler could not number; it has no navigation target. Every other citation names exactly one clause. A text asserted from several clauses is never cited by one of them: this section's first sentence outranks any rule that cites only the first node. A validator holds no source bytes and cannot compare a text with its clause, but SHOULD warn on a text longer than the one `char_span` it cites, and MUST reject a list citation that carries a `char_span`.
 - `char_span`, when present, indexes into the document's full normalized text (document-relative — same coordinate system as `ClauseNode.char_span` in the clause-tree artifact), not the clause's own text. It spans the whole cited clause — from the start of its heading line through the end of its own body text (sub-clauses excluded; each carries its own span) — so a consumer resolving it lands on the clause language, not only its heading. (The reference engine also cuts an execution/signature block out of the clause that precedes it, so that block is not part of the clause text or its span.)
 - `version` is the inferred ordinal (1-based); `"template"` is reserved for the baseline, today's form (`document_id` `"template"`), and `"prior_template"` for one of our former forms (§3.5.7), whose `document_id` is `prior_template:` followed by the form's `baseline.prior_templates[].label` (for example `{"document_id": "prior_template:2019 form", "version": "prior_template", ...}`). A former form is never cited as `"template"`: that names today's bytes. Every citation's `(document_id, version)` MUST resolve against `corpus.documents` (or, for `"template"`, `baseline.template_ref`; for `"prior_template"`, a `baseline.prior_templates[]` entry that carries a `sha256`) — dangling citations are non-conformant. When the cited document publishes `version_files` (§3.8), the cited version MUST have an entry there — a citation naming bytes no consumer can verify is likewise non-conformant.
 
@@ -1481,7 +1552,7 @@ A conformant consumer MUST treat the three sections with three different binding
 |---|---|---|
 | **Floor** | **Hard** | run the fail-closed coverage gate in code — every invariant evaluated and logged on every review, an unevaluated invariant fails the run; a `violation` verdict forces the outcome; the model and Posture cannot override it. The verdict itself is an LLM judgment (a dedicated Floor judge, with adversarial second-pass/escalation per the live-eval policy), not lexical matching — the determinism is in **coverage and consequence, not detection**. |
 | **Posture** | **Soft** | compose into the model's instructions to shape judgment; never let it, alone, gate a decision. |
-| **Evidence** | **Advisory** | surface to the model as cited material to reason over; never treat `historical_stance` as a directive. |
+| **Evidence** | **Advisory** | surface to the model as cited material to reason over; never treat any Evidence (counts, variants, refused asks, judged labels) as a directive. |
 
 This is the load-bearing contract of v0.2: it is what lets a stochastic model be pointed at high-stakes legal work. The model gets freedom in the soft middle; the Floor is the guarantee underneath it.
 
@@ -1525,26 +1596,40 @@ Confidence is advisory, not statistical authority. It is a function of precedent
 
 ## 10. Conformance
 
-- A **conformant playbook** carries `opf_version` "0.6", validates against `spec/playbook.schema-0.6.json`, and obeys the normative rules in §2.3, §3.4, §3.5.4, §3.5.5, §3.6, §3.7, §3.8, §3.12, §3.13 and §5. A conformant validator rejects any other `opf_version` — including the retired "0.1" to "0.5" — as unsupported (`playbook_engine/validator.py`). The §2.2 evidence-depth rule capped a stance that 0.5 and 0.6 no longer carry, and paper side gates nothing.
+- A **conformant playbook** carries `opf_version` "0.6", validates against `spec/playbook.schema-0.6.json`, and obeys the normative rules in §2.3, §3.4, §3.5.4, §3.5.5, §3.6, §3.7, §3.8, §3.12, §3.13 and §5. A conformant validator rejects any other `opf_version` — including the retired "0.1" to "0.5" — as unsupported (`playbook_engine/validator.py`). Paper side gates nothing.
 - A **conformant producer** emits conformant playbooks, records out-of-scope documents, drafts the Posture from a recorded interview, and only *proposes* (never auto-promotes) Floor candidates.
 - A **conformant consumer** honors the determinism boundary (§5), honors provenance (§2.3), surfaces confidence (§9) and citations (§4), loads only pinned+verified composed modules (§3.4), and records the lineage fields (§8).
 
-### 10.1 Vendor extensions (`x_*`)
+### 10.1 Extensions (`x_*`)
 
-The schema reserves an `x_*` prefix for vendor extensions at designated
-levels (the document root, `evidence.clauses[]` and their observations,
-`clause_library[]` entries, `posture`, `floor` and its invariants,
-and `corpus.documents[]` entries). Extensions are not
-permitted where hash integrity or mechanical resolvability depends on a
-closed shape (`identity`, citations, `agreement_type`, `taxonomy` entries,
-`compiler`).
+The schema reserves an `x_*` prefix at designated levels: the document root,
+`posture`, `floor` and its invariants, and `corpus.documents[]` entries.
+(The schema also tolerates `x_*` on `digest`, `manifest` and
+`provenance_index`, but those three are derived sections that a conformant
+validator requires to equal their recomputation, so a producer MUST NOT put
+an `x_*` key there; it would be rejected.) Extensions are not permitted where
+hash integrity or mechanical resolvability depends on a closed shape
+(`identity`, citations, `agreement_type`, `taxonomy` entries, `compiler`,
+`evidence.clauses[]` and `evidence.precedent[]`).
 
-- Conformant consumers MUST ignore unknown `x_*` fields.
-- Producers MUST NOT put normative behavior behind `x_*` fields — a
-  playbook stripped of every `x_*` field must mean the same thing.
-- `x_*` fields ARE content: they participate in `identity.content_hash`
-  and the section digests, so two documents differing only in an `x_*`
-  value are different playbooks.
+There are two kinds of `x_*` key, and the rules differ:
+
+- **Reserved keys defined by this specification** — `x_taxonomy_id`,
+  `x_direction`, `x_required_presence`, `x_condition`, `x_permissible_proof`,
+  `x_signed_by`, `x_signed_at` and `x_signed_hash` on a Floor invariant, and
+  `x_retired` on the Floor (§3.7, §3.12.3). They are normative:
+  their meaning is the one given there, the hard-rule manifest is derived from
+  them, and a consumer or editor MUST interpret and preserve them. They are
+  the one exception to the stripping rule below, and the only normative
+  behavior an `x_*` key may carry.
+- **Vendor keys** — every other `x_*` key.
+  - Conformant consumers MUST ignore unknown vendor keys.
+  - Producers MUST NOT put normative behavior behind a vendor key — a
+    playbook stripped of every vendor key must mean the same thing.
+
+All `x_*` fields, of either kind, ARE content: they participate in
+`identity.content_hash` and the section digests, so two documents differing
+only in an `x_*` value are different playbooks.
 
 ### 10.2 Conformance vectors — canonicalization and digest (normative)
 
@@ -1571,11 +1656,8 @@ grouping by §3.5.4's grouping key (including its counterparty-alias and
 `perspective.party` neutralization), the `n_deals`/`last_signed` ordering,
 the cap with uncapped totals, refused-ask grouping across deals, the
 sentence-boundary summary, and `perspective` carried as `null` when the
-document has none; vector 005 carries the opening evidence of §3.5.5; vector 006 pins the opening rules (`n_opened_standard`/`n_kept_standard`, `n_from_standard`/`n_unchanged`, `changed_openings` and its refused-ask exclusion); vector 007 pins the `vs_standard` collapse, tier order, the part maps (a mixed changed opening) and `uncovered_clause_types`; vector 008 pins the hard-rule manifest (a presence or predicate rule names its clause), the dossier excerpt order (the concession's own record, the `signed_on` then lowest-`precedent_id` record order and a refused-ask excerpt) and the budget (a whole excerpt dropped and named, a single over-budget excerpt kept whole with its Floor rule dropped, and the last Floor rule dropped whole from a dossier with no excerpt so that it fits), and the provenance index with its corpus snapshot hash, source-file hashes and the dropped excerpt indexed as `omitted` with its deal (§3.12.3); vector 009 pins the part rules on a standard of several parts (a repeated passage's `-2` `part_id`, multi-token part maps with omissions and additions, part reasons naming parts other than the first) and an owner label carried with `label_by` `owner` and the owner's reason (§3.5.6, §3.12.2, §3.12.3); vector 010 pins the signing dates (§3.8, §3.12.2): month-only and full dates, every `signed_on_basis`, a signed deal with no date, an unsigned deal, and the `first_signed` / `last_signed` months of the corpus, a clause, a signed variant and a refused ask; vector 011 pins `settled` (§3.5.6, §3.12.2, §3.12.3): all four outcomes on signed variants, a refused ask, a changed opening and a dossier excerpt, a disagreement awaiting adjudication read as `unchecked`, an owner judgment (which carries no check) read as `owner`, and the collapsed equivalent entry's `settled_counts`. The canonical-serialization algorithm itself is stated in
-`spec/conformance/README.md`. (The OPF 0.3 / digest 2 vector set, which also
-pinned key ordering, Unicode emission and float/int formatting edge cases,
-was retired with that format, issue #238; those edge cases are unit-tested
-in `tests/test_canonicalize.py`.)
+document has none; vector 005 carries the opening evidence of §3.5.5; vector 006 pins the opening rules (`n_opened_standard`/`n_kept_standard`, `n_from_standard`/`n_unchanged`, `changed_openings` and its refused-ask exclusion); vector 007 pins the `vs_standard` collapse, tier order, the part maps (a mixed changed opening) and `uncovered_clause_types`; vector 008 pins the hard-rule manifest (a presence or predicate rule names its clause), the dossier excerpt order (the concession's own record, the `signed_on` then lowest-`precedent_id` record order and a refused-ask excerpt) and the budget (a whole excerpt dropped and named, a single over-budget excerpt kept whole with its Floor rule dropped, and the last Floor rule dropped whole from a dossier with no excerpt so that it fits), and the provenance index with its corpus snapshot hash, source-file hashes and the dropped excerpt indexed as `omitted` with its deal (§3.12.3); vector 009 pins the part rules on a standard of several parts (a repeated passage's `-2` `part_id`, multi-token part maps with omissions and additions, part reasons naming parts other than the first) and an owner label carried with `label_by` `owner` and the owner's reason (§3.5.6, §3.12.2, §3.12.3); vector 010 pins the signing dates (§3.8, §3.12.2): month-only and full dates, every `signed_on_basis`, a signed deal with no date, an unsigned deal, and the `first_signed` / `last_signed` months of the corpus, a clause, a signed variant and a refused ask; vector 011 pins `settled` (§3.5.6, §3.12.2, §3.12.3): all four outcomes on signed variants, a refused ask, a changed opening and a dossier excerpt, a disagreement awaiting adjudication read as `unchecked`, an owner judgment (which carries no check) read as `owner`, and the collapsed equivalent entry's `settled_counts`. Vector 014 pins verified absence (§3.5.8, §3.12.2); vector 015 pins the canonical-form rules a verifier on another language's JSON parser must reproduce: a whole number written as an integer, decimals that need no exponent, object keys sorted by code point (a key above U+FFFF sorts after U+FFFF), and Unicode emitted literally and never normalized. The canonical-serialization algorithm itself is stated in §3.10 (and, with the reference call, in
+`spec/conformance/README.md`).
 
 This exists because a hand-maintained downstream port of `canonicalize.py`
 or `digest.py` (Contract Toaster carries one, pinned to an engine commit by
@@ -1590,15 +1672,32 @@ OPF uses semantic versioning. `opf_version` is required.
 
 **Stability policy (normative, effective at 1.0):** 1.0 is the first
 non-beta release — the format is no longer "breaking changes possible until
-1.0." Within the 1.x series:
-- A 1.x release MAY add a new OPTIONAL field, or a new `x_*` vendor
-  extension (§10.1).
-- A 1.x release MUST NOT add a new REQUIRED field, remove or retype an
-  existing field, or change what an existing field means or how its
-  contents are selected.
-- Removing or retyping a field, or changing a normative MUST, requires a
-  2.0 release — never an in-place edit or a same-major-version reinterpretation
-  of an existing rule.
+1.0." The policy binds a **published `opf_version`**, and the major version of
+this specification:
+- Within one `opf_version` nothing changes: no field is added, removed or
+  retyped and no MUST changes meaning (the immutability rule below).
+- A change that adds a new REQUIRED field, removes or retypes a field, or
+  changes a normative MUST ships as a NEW `opf_version` AND a new major
+  version of this specification and of the reference engine (2.0, 3.0 …). It
+  is never an in-place edit and never a same-major reinterpretation of an
+  existing rule.
+- A change that only adds an OPTIONAL field or a new `x_*` extension (§10.1)
+  ships as a new `opf_version` within the same major version.
+
+> **Disclosure (QA sweep 2026-11-03).** This policy was not applied between
+> 1.0.0 (2026-08-22, OPF 0.3) and the engine release that precedes this
+> text: OPF 0.4 replaced the evidence shape, OPF 0.5 added opening evidence and
+> OPF 0.6 added REQUIRED fields (`evidence.absence`, `precedent[].signed_on`,
+> `corpus.documents[].signed_on` / `signed_on_basis`), while the reference
+> engine's `compiler.version` stayed `1.0.x`. The owner approved each
+> change in the open, with no installed consumer (see the retirement
+> paragraph below); the fault is only that the version number did not say so.
+> Two consequences for a consumer: `compiler.version` does NOT identify a
+> document's format between those releases, so key on `opf_version` and
+> `digest_version`, never on the engine's version; and the first release
+> after this text takes a new major version so that "1.x" and "2.x" mean what
+> the policy says. Within a major version from then on, `compiler.version`
+> and `opf_version` move together for every format change.
 
 **Normative rule changes (normative, effective at 1.0):** the drift class
 that actually bites a consumer is a normative rule changing *without* a
@@ -1629,16 +1728,16 @@ unsupported. Retirement removes a format from the
 reference implementation; it never edits one — the retired schemas and
 vectors are unchanged in git history and in contract-opf/opf.
 
-**How the 1.x series relates to `opf_version` (normative):** the engine's
-1.x series and the document shape's `opf_version` are versioned
-independently, and the stability policy and the immutability rule above
-compose as follows — an additive 1.x change (a new OPTIONAL field or `x_*`
-extension, permitted by the stability policy) ships as a NEW `opf_version`
-(e.g. 0.5 → 0.6), per the immutability rule; it is never an in-place edit
-of a frozen shape. A consumer pinned to the earlier `opf_version` is
-unaffected by such a change; a consumer that wants the new field upgrades
-its pin to the new `opf_version`. "A published version is frozen" and "1.x
-is additive-only" are therefore both true without conflict.
+**How the engine's major version relates to `opf_version` (normative):** the
+engine's (and this specification's) major version and the document shape's
+`opf_version` are versioned independently, and the rules above compose as
+follows. A published `opf_version` is frozen. A change of any kind ships as a
+NEW `opf_version` (e.g. 0.5 → 0.6) and is never an in-place edit of a frozen
+shape; if the change is breaking (a new REQUIRED field, a removed or retyped
+field, a changed MUST) it also takes a new major version, and if it is
+additive it does not. A consumer pinned to the earlier `opf_version` is
+unaffected by either kind of change; a consumer that wants the new shape
+upgrades its pin to the new `opf_version`.
 
 **Migrations.** The 0.1 → 0.2, 0.2 → 0.3, 0.3 → 0.4, 0.4 → 0.5 and 0.5 → 0.6
 migration notes described upgrade paths between formats the engine no longer
@@ -1665,6 +1764,7 @@ must be re-mined, not only re-projected.
 - **0.5** — Opening evidence (§3.5.5): every precedent record gains `opened_with` (`standard` | `non_standard` | `absent` | `null`) and `opening_text` is recorded for any distinct opening, whatever its origin (0.4 recorded it only for our standard struck before signing). Three new validator MUSTs. The optional top-level `curation` section (§3.11) and `identity.section_digests.curation` are removed: the 0.5 schema rejects them (issue #233, after the review loop that produced pins was retired in issue #239). New schema file `playbook.schema-0.5.json`; it replaced 0.4 in the reference engine (no consumer ever bound 0.4). `digest_version` "3" is unchanged until digest 4 lands (epic #236); 0.5 has no consumer until contract-opf/contract-toaster#128 vendors it.
 - **Retirement (issue #238)** — The reference engine reads and writes only 0.4 (now 0.5); OPF 0.1–0.3 and `digest_version` "2" are retired (validators reject them as unsupported). Not a new shape: 0.4 is unchanged. §3.5.1–§3.5.3 and §3.12's digest 2 rules are replaced by history notes.
 - **0.4** — Verdict-free per-deal precedent record as the evidence shape (§3.5.4): `evidence.{clauses, precedent}` with distinct-deal counts, deterministic `standard`, three-valued paper metadata that gates nothing, and recomputable precedent ids; `digest_version` "3" (§3.12.1) with `perspective`, grouped signed variants and refused asks, and a digest-equals-recomputation rule; judged verdicts only under `x_judgments`. New schema file `playbook.schema-0.4.json`; 0.3 frozen.
+- **2.0** — Reference engine 2.0.0; `opf_version` stays "0.6". The rule changes from the 2026-11-03 QA sweep are listed in the repository `CHANGELOG.md`. **Deliberate deviation from the immutability rule above, decided by the maintainer (2026-11-06):** the rule changes ship inside 0.6; there is no OPF 0.7. Conformance vector 014 is re-stamped in place (a whole-number score is written `1`, not `1.0`) and vector 015 is new. A consumer that vendored the earlier 0.6 vectors must re-vendor `spec/conformance/0.6/`. The immutability rule applies in full to every later change.
 - **1.0** — Stability commitment, not a shape change: the document shape (`opf_version` "0.3") is unchanged. New §11 stability policy (1.x changes are additive-only — new OPTIONAL fields and new `x_*` extensions permitted; no new REQUIRED field, no removing/retyping a field, no changing a normative MUST without a 2.0 release) and new §11 normative-rule-change policy (any new or changed MUST, whether or not it touches the schema, gets a `CHANGELOG.md` entry under a `### Normative rule changes` heading in the release it ships under).
 - **0.3** — `digest` section (§3.12): compact model-facing projection of `evidence` (stances, preferred variations verbatim, text_summary-only concession/unacceptable summaries, frequency-banded deduplicated exemplar forms with `example_ref` drill-down); single-file bundle artifact `playbook.opf.html` embedding the canonical JSON + digest; additive over 0.2.
 - **0.2** — Three-section model (Evidence / Posture / Floor); `historical_stance` (descriptive) replaces `rollup.position` (prescriptive); `composes` (pinned external modules); determinism boundary (§5); producer/author/consumer responsibilities (§6); Posture interview (§7); lineage boundary with the consumer (§8); `identity` — canonical serialization, `content_hash`, per-section digests, producer-assigned `id`/`version`/`supersedes` (§3.10, issue #143); `curation` — embedded attorney-pinned positions surviving recompile with deterministic conflict-flagging (§3.11, issue #147).
